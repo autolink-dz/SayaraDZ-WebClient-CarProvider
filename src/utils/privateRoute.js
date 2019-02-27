@@ -12,7 +12,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
         const localId = localStorage.getItem('localId');
         if (localId != null) {
             const admin = myDecipher(localStorage.getItem(decy));
-            if (admin===true) {
+            if (admin==='true') {
                return (
                    <div>
                        <Redirect to='/admin'/>
