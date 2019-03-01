@@ -1,0 +1,12 @@
+.main{
+    background-color: white;
+    height: 100vh;
+    width: 100%;
+    font-family: Avenir, serif;
+    overflow: scroll;
+}
+.add{
+    margin-top: -7% ;
+    background-color: white;
+    margin-left: 94%;
+}

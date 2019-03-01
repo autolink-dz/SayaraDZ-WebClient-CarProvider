@@ -12,10 +12,10 @@ class App extends Component {
         <Router>
           <div className="backGround">
             <Switch>
-              {/* A user can't go to the HomePage if is not authenticated */}
               <Route path="/" component={SignInUi} exact />
               <PrivateRoute path="/admin" component={Admin} />
               <PrivateRoute path="/fabricant" component={Fabricant} />
+              <Route component={SignInUi} />
             </Switch>
           </div>
         </Router>
