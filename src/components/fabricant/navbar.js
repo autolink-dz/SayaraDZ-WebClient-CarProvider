@@ -117,6 +117,31 @@ class NavBar extends React.Component {
       etat : 4
     }})
   };
+  getModel = () => {
+    console.log(this.props.marques)
+    let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
+               const requestType = new Request(url, {
+                    method: 'GET',
+                });
+                fetch(requestType)
+                    .then(responseType => {
+                    if (responseType.status < 200 || responseType.status >= 300) {
+                        throw new Error(responseType.statusText);
+                    }
+                    return responseType.json();
+                    })
+                    .then((responseType) => {
+                     //  console.log(responseType.data) 
+                       this.props.dispatch({type : 'SELECT_MARQUES', payload: responseType.data})
+                       console.log(this.props.marques)
+                      // datas = Array.from(this.props.marques)
+                  })
+  }
+
+  menuGestionjson = () =>{
+    this.menuGestion();
+    this.getModel();
+  }
   
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
@@ -144,7 +169,7 @@ class NavBar extends React.Component {
             </IconButton>
                <Button color="inherit" className={classes.btn} onClick={this.menuDashbord}>Dashbord</Button>
            <div className={classes.btns}>
-              <Button className={classes.btn} color="inherit" onClick={this.menuGestion}>Gestion</Button>
+              <Button className={classes.btn} color="inherit" onClick={this.menuGestionjson}>Gestion</Button>
               <Button className={classes.btn} color="inherit" onClick={this.menuStock}>Stock</Button>
               <Button className={classes.btn} color="inherit" onClick={this.menuSimulation}>Simulation</Button>
               <Button className={classes.btn} color="inherit" onClick={this.menuCommande}>Commande</Button> 
