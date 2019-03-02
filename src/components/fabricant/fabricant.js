@@ -11,9 +11,17 @@ import {bindActionCreators} from "redux";
 import Main  from './main'
 import MainGestion  from './mains/maingestion'
 import Grid from '@material-ui/core/Grid';
+
+import Modele from './mains/gestion/modele'
+import Version from './mains/gestion/version'
+import Option from './mains/gestion/option'
+import Couleur from './mains/gestion/couleur'
+
 class Fabricant extends Component {
     render() {
         const s=this.props.etat;
+        const s2=this.props.s_etat;
+        
         let affiche;
         let main;
         if (s == 0) {
@@ -21,7 +29,15 @@ class Fabricant extends Component {
             main = <Main />;
         } else if(s == 1) {
             affiche = <Gestion/>;
-            main = <MainGestion />;
+            if(s2==1){
+                main = <Modele />;
+            }else if(s2==2){
+                main = <Version />;
+            }else if(s2==3){
+                main = <Option />;
+            }else if(s2==4){
+                main = <Couleur />;
+            }
         }else if(s == 2){
             affiche = <Stock/>;
         }else if(s == 3){
@@ -43,7 +59,9 @@ class Fabricant extends Component {
 
 function mapStateToProps(state) {
     return {
-        etat : state.navbarReducer.etat
+        etat : state.navbarReducer.etat,
+        s_etat : state.navbarReducer.s_etat
+        
     };
 }
 function matchDispatchToProps(dispatch) {

@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import navbarReducer  from './../../reducers/navbarReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
+import DataModele from './../../fichier_json/modele.json'
 
 const styles = theme => ({
   root: {
@@ -117,7 +118,7 @@ class NavBar extends React.Component {
       etat : 4
     }})
   };
-  getModel = () => {
+ /* getModel = () => {
     console.log(this.props.marques)
     let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
                const requestType = new Request(url, {
@@ -137,7 +138,12 @@ class NavBar extends React.Component {
                       // datas = Array.from(this.props.marques)
                   })
   }
-
+*/
+  getModel = () => {
+    console.log('---------------------------')
+    this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
+    console.log(DataModele)
+  }
   menuGestionjson = () =>{
     this.menuGestion();
     this.getModel();
@@ -198,6 +204,12 @@ NavBar.propTypes = {
   et:PropTypes.number
 };
 
+function mapStateToProps(state) {
+  return {
+    marques : state.gestionReducer.marques
+  };
+}
+
 function matchDispatchToProps(dispatch) {
   let actions =  bindActionCreators({
       navbarReducer
@@ -206,5 +218,5 @@ function matchDispatchToProps(dispatch) {
 }
 
 export default connect(
-  matchDispatchToProps
+  mapStateToProps,matchDispatchToProps
 )(withStyles(styles)(NavBar));
