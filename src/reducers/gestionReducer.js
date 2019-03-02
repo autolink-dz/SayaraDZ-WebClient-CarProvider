@@ -1,5 +1,10 @@
 const initialState = {
     marques: {},
+    modeles: {},
+    versions: {},
+    options: {},
+    couleurs: {}
+    
 };
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
@@ -8,6 +13,12 @@ const gestionReducer = (state=initialState,action)=>{
                 ...state,
                 marques: action.payload
             };
+        case 'SELECT_MODELES':
+            return {
+                ...state,
+                modeles: action.payload
+            };
+        
         default :
             return state;
     }

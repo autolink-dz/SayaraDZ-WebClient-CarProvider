@@ -7,7 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-
+import navbarReducer  from './../../../reducers/navbarReducer'
+import {bindActionCreators} from "redux";
 const styles = theme => ({
     main: {
         width:'100%',
@@ -49,7 +50,29 @@ const styles = theme => ({
     );
   }
 
-class Gestion extends React.Component {      
+
+class Gestion extends React.Component {  
+    mainModele = () => {
+        this.props.dispatch({type : 'MODELE', payload:{
+          etat : 0
+        }})
+      };    
+    mainVersion = () => {
+        this.props.dispatch({type : 'VERSION', payload:{
+          etat : 0
+        }})
+      };    
+    mainOption = () => {
+        this.props.dispatch({type : 'OPTION', payload:{
+          etat : 0
+        }})
+      };    
+    mainCouleur = () => {
+        this.props.dispatch({type : 'COULEUR', payload:{
+          etat : 0
+        }})
+      };    
+      
   render() {
     return (
         <Grid item xs={2}>
@@ -60,7 +83,10 @@ class Gestion extends React.Component {
                        Menu
                     </Typography><br/>
                     <form className={this.props.classes.form}>
-                        <Gest/>
+                        <Button key='1' onClick={this.mainModele}>Gérer Modele</Button>
+                        <Button key='2' onClick={this.mainVersion}>Gérer Version</Button>
+                        <Button key='3'onClick={this.mainOption}>Gérer Option</Button>
+                        <Button key='4'onClick={this.mainCouleur}>Gérer Couleur</Button>
                         <br />
                     </form>
                 </Paper>
@@ -74,4 +100,13 @@ Gestion.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Gestion);
+  function matchDispatchToProps(dispatch) {
+    let actions =  bindActionCreators({
+        navbarReducer
+    });
+    return { ...actions, dispatch };
+  }
+  
+  export default connect(
+    matchDispatchToProps
+  )(withStyles(styles)(Gestion));

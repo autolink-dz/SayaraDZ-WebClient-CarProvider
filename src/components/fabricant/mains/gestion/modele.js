@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './../../../styles/signInInfo.css'
+import './../../../../styles/signInInfo.css'
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,8 +8,8 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 //import PostData from './testjson'
-import SimpleModal from './modal'
-import gestionReducer  from './../../../reducers/gestionReducer'
+import SimpleModal from './../modal'
+import gestionReducer  from './../../../../reducers/gestionReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
 import Card from '@material-ui/core/Card';
@@ -20,7 +20,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import image from './../../../images/renault-logo.jpg';
+import image from './../../../../images/renault-logo.jpg';
 
 const styles = theme => ({
     root: {
@@ -42,7 +42,7 @@ const styles = theme => ({
       },
 });
 
-class MainGestion extends Component {
+class Modele extends Component {
  /* Login = () => {
     alert('rrrrr')
     this.setState({n:1})
@@ -72,16 +72,12 @@ class MainGestion extends Component {
     render() {
         const { classes } = this.props;
         // const datas = Array.from(this.props.marques)
-        const datas = Array.from(this.props.marques)
+        const datas = Array.from(this.props.modeles)
         return (
             <Grid item xs={10}>
-                
             <div className={classes.root}>
-
                 <SimpleModal />
             <Grid container spacing={24}>
-              
-              
               {
                       datas.map(function(item, key){ 
                       return(
@@ -129,13 +125,13 @@ class MainGestion extends Component {
     }
 }
 
-MainGestion.propTypes = {
+Modele.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
   function mapStateToProps(state) {
     return {
-      marques : state.gestionReducer.marques
+      modeles : state.gestionReducer.modeles
     };
   }
 
@@ -147,4 +143,4 @@ MainGestion.propTypes = {
   }
   export default connect(
     mapStateToProps,matchDispatchToProps
-  )(withStyles(styles)(MainGestion));
+  )(withStyles(styles)(Modele));
