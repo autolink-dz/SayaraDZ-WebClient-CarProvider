@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import EnhancedTable  from './test'
+import EnhancedTable  from './dashbord'
 
 const styles = theme => ({
     main: {

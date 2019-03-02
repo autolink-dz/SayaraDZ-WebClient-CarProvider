@@ -117,7 +117,7 @@ class NavBar extends React.Component {
       etat : 4
     }})
   };
-  getModel = () => {
+     getModel = () => {
     console.log(this.props.marques)
     let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
                const requestType = new Request(url, {
