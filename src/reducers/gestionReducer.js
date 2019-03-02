@@ -1,7 +1,7 @@
 const initialState = {
     marques: {},
     modeles: {},
-    versions: {},
+    versions: {'name':'Cupcake', 'calories':305,'fat': 3.7, 'carbs':67,'protein': 4.3},
     options: {},
     couleurs: {}
     
