@@ -79,7 +79,7 @@ const styles = theme => ({
   },
 });
 
-class NavBar extends React.Component {
+export class NavBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
@@ -145,6 +145,7 @@ class NavBar extends React.Component {
     console.log('---------------------------')
     this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
     console.log(DataModele)
+      //return DataModele;
   }
   menuGestionjson = () =>{
     this.menuGestion();

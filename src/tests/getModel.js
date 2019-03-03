@@ -1,1 +1,0 @@
-import { getModel }  from './navebar';
