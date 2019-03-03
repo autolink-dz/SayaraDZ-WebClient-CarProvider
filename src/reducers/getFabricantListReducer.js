@@ -1,7 +1,8 @@
 const initialState = {
     loading: false,
-    response:'',
-    error:false
+    fabricants:[],
+    error:false,
+    add:false
 };
 const getFabricantListReducer = (state=initialState,action)=>{
     switch (action.type) {
@@ -11,10 +12,20 @@ const getFabricantListReducer = (state=initialState,action)=>{
                 loading: false
             };
         case 'END_GET':
+            let fabricants = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            let tmp=false;
+            if(action.payload.data.data ==null){
+                fabricants.push(action.payload.data);
+                tmp =true;
+            }
+            else {
+                fabricants.push(...action.payload.data.data);
+            }
             return {
                 ...state,
                 loading: true,
-                response: action.payload
+                fabricants,
+                add:tmp
             };
         case 'ERROR_GET':
             return {

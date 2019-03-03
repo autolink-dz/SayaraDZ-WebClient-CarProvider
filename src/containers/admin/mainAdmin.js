@@ -5,6 +5,8 @@ import {getFabricantList} from "../../actions/getFabricantList";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from "@material-ui/core/Grid";
 import MediaCard from './../../components/admin/card'
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
 
 class MainAdmin extends Component {
 
@@ -14,17 +16,8 @@ class MainAdmin extends Component {
 
     getGrids(){
        let data = this.props.response.response.data.data;
-       console.log(data.length);
        let cardArray=[];
-       data.map( (elem,index)=>{
-           if(index % 4==0){
-               let g =React.createElement(
-                   Grid,
-                   {item:true ,xs:1},
-                   null
-               );
-               cardArray.push(g);
-           }
+       data.map( (elem)=>{
            let card = React.createElement(
                Grid,
                {item:true ,xs:true},
@@ -38,58 +31,22 @@ class MainAdmin extends Component {
        } );
        return cardArray;
     }
-    lert(){
-        alert("qsd");
-    }
-    getContainers(grids){
-        let arrContainers=[];
-        let arrCards=[];
-        let container=null;
-        grids.map( (grid,index)=>{
-            if(index % 5==0 ){
-                container=React.createElement(
-                    Grid,
-                    {container:true},
-                    arrCards
-                );
-                arrContainers.push(container);
-                arrCards=[];
-            }
-            else{
-                arrCards.push(grid);
-            }
-
-        });
-        container=React.createElement(
-            Grid,
-            {container:true},
-            arrCards
-        );
-        arrContainers.push(container);
-
-        return arrContainers;
-    }
 
     render() {
-        let cards=null;
-        if(this.props.response.loading){
-            console.log(this.getGrids());
-            cards = this.getContainers(this.getGrids());
-            console.log(cards);
-        }
-        let stProgresse = {marginLeft:'50%',marginTop:'10%',textAlign: 'center',paddingTop:20};
-
+        let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
+        //console.log(this.props.fab);
         return (
-            <div style={{paddingLeft:70}}>
+            <div >
                 <h1 style={{ textAlign: 'center',paddingTop:60}}>Liste des Fabricants</h1>
-                <CircularProgress style={this.props.response.loading ? {display:'none',marginLeft:'50%',marginTop:'10%',textAlign: 'center',paddingTop:20}  : stProgresse} />
+                <CircularProgress style={this.props.loading ? {display:'none',marginLeft:'50%',marginTop:'10%',textAlign: 'center',paddingTop:20}  : stProgresse} />
 
-                <div>{cards!=null && cards.map((card,index)=>
-
-                    <div> {card}</div>
-
-                )}
-                </div>
+                <GridList style={{marginLeft:'5%'}} cellHeight={350} cols={4}>
+                    {this.props.loading && this.props.fabricants.map( (fab,index) =>
+                        <GridListTile key={index}>
+                            <MediaCard nom={fab.nom} url={fab.url} key={fab.id} />
+                        </GridListTile>
+                    )}
+                </GridList>
             </div>
         );
     }
@@ -97,7 +54,11 @@ class MainAdmin extends Component {
 
 function mapStateToProps(state) {
     return {
-        response : state.getFabricantListReducer
+        fabricants : state.getFabricantListReducer.fabricants,
+        loading : state.getFabricantListReducer.loading,
+        error : state.getFabricantListReducer.error,
+
+        //fab : state.addFabricantReducer
     };
 }
 function matchDispatchToProps(dispatch) {

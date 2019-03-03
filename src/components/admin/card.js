@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -16,39 +16,45 @@ const styles = {
         marginBottom:50,
     },
     media: {
-        height: 80,
-        width:80,
-        marginLeft:'32%',
+        height: 120,
+        width:120,
+        marginLeft:'22%',
 
     },
 };
 
-function MediaCard(props) {
-    const { classes } = props;
-    return (
-        <Card className={classes.card}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.media}
-                    image="https://www.autobip.com/storage/photos/car_brands/65.png"
-                    title="Brand"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {props.nom}
-                    </Typography>
+class MediaCard extends Component {
 
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary" style={{width:'100%'}}>
-                    Modifier&emsp;&emsp;<EditIcon style={{margin:0,paddingBottom:8}} />
-                </Button>
-            </CardActions>
+    hello(x){
+        console.log(this.props.nom);
+    }
+    render() {
 
-        </Card>
-    );
+        return (
+            <Card style={styles.card} nom={this.props.nom} onClick={(e)=>this.hello(e)}>
+                <CardActionArea>
+                    <CardMedia
+                        style={styles.media}
+                        image={this.props.url}
+                        title="Brand"
+
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {this.props.nom}
+                        </Typography>
+
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    <Button size="small" color="primary" style={{width: '100%'}}>
+                        Modifier&emsp;&emsp;<EditIcon style={{margin: 0, paddingBottom: 8}}/>
+                    </Button>
+                </CardActions>
+
+            </Card>
+        );
+    }
 }
-
 
 export default withStyles(styles)(MediaCard);

@@ -44,6 +44,7 @@ export function signInClick(email,password){
                     return responseType.json();
                     })
                     .then((responseType) => {
+                        console.log(responseType);
                         dispatch(signInEND());
                         let admin = responseType.admin;
                         let myCipher = cipher('hashedSalt');

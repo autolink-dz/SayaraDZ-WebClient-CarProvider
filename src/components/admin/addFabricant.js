@@ -26,11 +26,9 @@ class AddFabricant extends React.Component {
     handleCloseA = () => {
         this.setState({ open: false });
     };
-
     handleAdd = ()=>{
         this.props.dispatch(addFabricant(this.state.name,this.state.url));
         this.handleCloseA();
-
     };
     handleName= (e) =>{
         this.setState({ name: e.target.value });
@@ -40,17 +38,20 @@ class AddFabricant extends React.Component {
     };
 
     render() {
-        if (this.props.loading.loading){
-           if(!this.props.loading.error){
-               let msg = "Fabricant" +this.state.name+" est ajouté avec success !\"";
-               return <SnackBar type='success' msg={msg} />
+        let snack = null;
+        console.log(this.props.add);
+        if (this.props.add){
+           if(!this.props.error){
+               let msg = "Fabricant " +this.state.name+" est ajouté avec success !\"";
+               snack = <SnackBar type='success' msg={msg} />
            }
            else {
-               return <SnackBar type='error' msg='Erreur, veuillez resseyer svp !'/>
+               snack = <SnackBar type='error' msg='Erreur, veuillez resseyer svp !'/>
            }
         }
         return (
             <div>
+                {snack}
                 <Fab color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
                     <AddIcon />
                 </Fab>
@@ -109,7 +110,8 @@ class AddFabricant extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        loading : state.addFabricantReducer
+        add : state.getFabricantListReducer.add,
+        error : state.getFabricantListReducer.error
     };
 }
 function matchDispatchToProps(dispatch) {

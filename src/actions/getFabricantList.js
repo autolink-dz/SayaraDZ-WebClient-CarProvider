@@ -8,6 +8,7 @@ export function getFabricantList() {
         // Send the request
         axios.get('https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0')
             .then(function (response) {
+                console.log(response);
                 dispatch(end(response));
             })
             .catch(function (error) {
