@@ -98,8 +98,7 @@ class Modele extends Component {
                                       {item.nom}
                                       </Typography>
                                       <Typography component="p">
-                                        Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                        across all continents except Antarctica
+                                        
                                       </Typography>
                                     </CardContent>
                                   </CardActionArea>

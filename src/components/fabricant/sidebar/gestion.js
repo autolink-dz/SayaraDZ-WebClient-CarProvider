@@ -32,25 +32,6 @@ const styles = theme => ({
 
 });
 
-  function Gest(props) {
-    const state = {
-        gestion : [
-            {id: 1 ,name:"Gérer Modele"},
-            {id: 2 ,name:"Gérer Version"},
-            {id: 3 ,name:"Gérer Option"},
-            {id: 4 ,name:"Gérer Couleur"}
-        ]
-    }
-    return (
-        state.gestion.map(item => (
-            <div>
-            <Button key={item.id}>{item.name}</Button>
-            </div>
-        ))
-    );
-  }
-
-
 class Gestion extends React.Component {  
     mainModele = () => {
         this.props.dispatch({type : 'MODELE', payload:{

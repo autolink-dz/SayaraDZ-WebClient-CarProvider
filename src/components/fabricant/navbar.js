@@ -141,11 +141,12 @@ export class NavBar extends React.Component {
                   })
   }
 */
-  getModel = () => {
-    console.log('---------------------------')
+
+ getModel = () => {
     this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
-    console.log(DataModele)
-      //return DataModele;
+
+    const datas = Array.from(DataModele.data)   ;
+    return datas;
   }
   menuGestionjson = () =>{
     this.menuGestion();
@@ -209,7 +210,7 @@ NavBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    marques : state.gestionReducer.marques
+    modeles : state.gestionReducer.modeles
   };
 }
 

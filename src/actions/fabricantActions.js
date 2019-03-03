@@ -1,6 +1,6 @@
-const menuGestion = {
-    type = 'GESTION',
-    payload:{
-        etat : 1
-    }
-}
+// const menuGestion = {
+//     type = 'GESTION',
+//     payload:{
+//         etat : 1
+//     }
+// }
