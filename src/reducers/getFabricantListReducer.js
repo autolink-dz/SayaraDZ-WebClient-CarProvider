@@ -9,14 +9,14 @@ const getFabricantListReducer = (state=initialState,action)=>{
         case 'BEGIN_GET':
             return {
                 ...state,
-                loading: false
+                add:true
             };
         case 'END_GET':
             let fabricants = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
             let tmp=false;
             if(action.payload.data.data ==null){
                 fabricants.push(action.payload.data);
-                tmp =true;
+                tmp=true;
             }
             else {
                 fabricants.push(...action.payload.data.data);
@@ -32,6 +32,11 @@ const getFabricantListReducer = (state=initialState,action)=>{
                 ...state,
                 loading: true,
                 err : true
+            };
+        case 'RESET_ADD':
+            return{
+                ...state,
+                add:false
             };
         default :
             return state;

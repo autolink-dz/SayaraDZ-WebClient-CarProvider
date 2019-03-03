@@ -3,6 +3,7 @@ const axios = require('axios');
 export function addFabricant(nom,url) {
 
     return dispatch =>{
+        //dispatch(begin());
         axios.post('https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques', {
             nom: nom,
             url: url

@@ -12,6 +12,7 @@ import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
 import {addFabricant} from "../../actions/addFabricant";
 import SnackBar from "./snackBar";
+import {resetAddFabricant} from "../../actions/resetAddFab";
 
 class AddFabricant extends React.Component {
     state = {
@@ -48,6 +49,7 @@ class AddFabricant extends React.Component {
            else {
                snack = <SnackBar type='error' msg='Erreur, veuillez resseyer svp !'/>
            }
+            this.props.dispatch(resetAddFabricant())
         }
         return (
             <div>
@@ -116,7 +118,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFabricant
+        addFabricant,resetAddFabricant
     });
     return { ...actions, dispatch };
 }
