@@ -14,7 +14,9 @@ export function signInClick(email,password){
                 }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
         });
+
         dispatch(signInBegin());
+
         return fetch(request)
             .then(response => {
                 if (response.status < 200 || response.status >= 300) {
@@ -24,10 +26,10 @@ export function signInClick(email,password){
             })
             .then((response) => {
                 localStorage.setItem('localId', response.localId);
-                console.log(response);
+                localStorage.setItem('idToken', response.idToken);
 
-                let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/admin"
-                const requestType = new Request(url, {
+                api = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/admin";
+                const requestType = new Request(api, {
                     method: 'GET',
                     headers: new Headers({
                         'Content-Type': 'application/json',
@@ -44,7 +46,6 @@ export function signInClick(email,password){
                     return responseType.json();
                     })
                     .then((responseType) => {
-                        console.log(responseType);
                         dispatch(signInEND());
                         let admin = responseType.admin;
                         let myCipher = cipher('hashedSalt');

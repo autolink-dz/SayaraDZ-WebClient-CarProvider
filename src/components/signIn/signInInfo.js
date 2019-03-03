@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './../../styles/signInInfo.css'
 import Grid from '@material-ui/core/Grid';
-import women from './../../assets/Manager.jpg'
+import women from './../../assets/Manager.png'
 import money from './../../assets/money.jpg'
-import sky from './../../assets/sky.jpg'
+import sky from './../../assets/sky.png'
 
 class InfoSignIn extends Component {
     render() {
@@ -11,16 +11,16 @@ class InfoSignIn extends Component {
         return (
             <div>
                 <div id='info'>
-                    <div className="container">
-                        <Grid container>
-
-                            <Grid item xs={1} ></Grid>
+                    <div >
+                        <Grid container className="container">
+                            <Grid item xs={1}></Grid>
                             <Grid item xs>
                                 <div >
                                     <img src={women}  height='200px' width='200px' alt="img" className="cercle" />
-                                    <h2>Lorem Raum</h2>
+                                    <h2>Gestion à distance</h2>
                                     <p>
-                                        Lorem ipsum dolor sit amet, sdaze actetur adipiscing elit, sed do eiusmodret ki tempor incididunt ut labore et dolore magna aliqua. Mi proin sed libero enim sed.
+                                       Créer des liens entre vos collaborateurs, Assurer une certaine cohesion et d'installer
+                                        un climat de confiance .
                                     </p>
                                 </div>
                             </Grid>
@@ -28,18 +28,18 @@ class InfoSignIn extends Component {
                                 <div >
                                     <img src={money}  height='200px' width='200px' alt="img" className="cercle" />
                                 </div>
-                                <h2>Lorem Raum</h2>
+                                <h2> Rentabilité  </h2>
                                 <p>
-                                    Lorem ipsum dolor sit amet, sdaze actetur adipiscing elit, sed do eiusmodret ki tempor incididunt ut labore et dolore magna aliqua. Mi proin sed libero enim sed.
+                                    Attirer plus de clients, booster la reputqtion de vos produits et faire plus de bénéfices .
                                 </p>
                             </Grid>
                             <Grid item xs>
                                 <div >
                                     <img src={sky}  height='200px' width='200px' alt="img" className="cercle" />
                                 </div>
-                                <h2>Lorem Raum</h2>
+                                <h2>Visibilité des offres</h2>
                                 <p>
-                                    Lorem ipsum dolor sit amet, sdaze actetur adipiscing elit, sed do eiusmodret ki tempor incididunt ut labore et dolore magna aliqua. Mi proin sed libero enim sed.
+                                     Etre visible est la condition necessaire au developpement de votre activité.
                                 </p>
                             </Grid>
 

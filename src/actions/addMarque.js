@@ -1,13 +1,21 @@
-const axios = require('axios');
+var request = require('./request/marque');
 
-export function addFabricant(nom,url) {
+export function addMarque(nom, url) {
+
+    let body={
+        nom: nom,
+        url: url
+    };
+
+    let head= {
+        headers: {
+            'Authorization': 'Bearer' + localStorage.getItem('idToken'),
+            'cache-control': 'no-cache'
+        }
+    };
 
     return dispatch =>{
-        //dispatch(begin());
-        axios.post('https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques', {
-            nom: nom,
-            url: url
-        })
+        request.post('/', body, head)
             .then(function (response) {
                 dispatch(end(response));
             })
@@ -17,9 +25,6 @@ export function addFabricant(nom,url) {
             });
     }
 }
-export const begin = () => ({
-    type: "BEGIN_GET"
-});
 
 export const end = (response) => ({
     type: "END_GET",

@@ -10,9 +10,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
-import {addFabricant} from "../../actions/addFabricant";
+import {addMarque} from "../../actions/addMarque";
 import SnackBar from "./snackBar";
-import {resetAddFabricant} from "../../actions/resetAddFab";
+import {resetAddFabricant} from "../../actions/resetAddMarque";
 
 class AddFabricant extends React.Component {
     state = {
@@ -28,7 +28,7 @@ class AddFabricant extends React.Component {
         this.setState({ open: false });
     };
     handleAdd = ()=>{
-        this.props.dispatch(addFabricant(this.state.name,this.state.url));
+        this.props.dispatch(addMarque(this.state.name,this.state.url));
         this.handleCloseA();
     };
     handleName= (e) =>{
@@ -40,7 +40,6 @@ class AddFabricant extends React.Component {
 
     render() {
         let snack = null;
-        console.log(this.props.add);
         if (this.props.add){
            if(!this.props.error){
                let msg = "Fabricant " +this.state.name+" est ajouté avec success !\"";
@@ -118,7 +117,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFabricant,resetAddFabricant
+        addFabricant: addMarque,resetAddFabricant
     });
     return { ...actions, dispatch };
 }

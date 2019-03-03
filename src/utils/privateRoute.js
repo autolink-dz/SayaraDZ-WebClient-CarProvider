@@ -20,13 +20,20 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
                    </div>
                    )
             }
-            else {
+            else if ( admin==='false') {
                 return (
                     <div>
                         <Redirect to='/fabricant'/>
                         <Component {...props} />
                     </div>
                     )
+            }
+            else {
+                return (
+                    <div>
+                        <Redirect to='/'/>
+                    </div>
+                )
             }
         }
         else {

@@ -25,13 +25,10 @@ const styles = {
 
 class MediaCard extends Component {
 
-    hello(x){
-        console.log(this.props.nom);
-    }
     render() {
 
         return (
-            <Card style={styles.card} nom={this.props.nom} onClick={(e)=>this.hello(e)}>
+            <Card style={styles.card} nom={this.props.nom} >
                 <CardActionArea>
                     <CardMedia
                         style={styles.media}
@@ -48,7 +45,7 @@ class MediaCard extends Component {
                 </CardActionArea>
                 <CardActions>
                     <Button size="small" color="primary" style={{width: '100%'}}>
-                        Modifier&emsp;&emsp;<EditIcon style={{margin: 0, paddingBottom: 8}}/>
+                        <EditIcon style={{margin: 0, paddingBottom: 8}}/> &emsp;&emsp; Modifier
                     </Button>
                 </CardActions>
 

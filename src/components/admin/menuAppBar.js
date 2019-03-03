@@ -92,7 +92,7 @@ class MenuAppBar extends React.Component {
                                 >
                                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                                     <MenuItem onClick={this.handleClose}>Mon Compte</MenuItem>
-                                    <MenuItem onClick={this.handleSignOut}>Sign Out</MenuItem>
+                                    <MenuItem onClick={this.handleSignOut}>Déconnecter</MenuItem>
                                 </Menu>
                             </div>
                         )}

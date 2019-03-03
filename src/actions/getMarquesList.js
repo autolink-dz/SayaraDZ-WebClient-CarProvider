@@ -1,9 +1,16 @@
-const axios = require('axios');
+var request = require('./request/marque');
 
-export function getFabricantList() {
+export function getMarquesList() {
+
+    let head= {
+        headers: {
+            'Authorization': 'Bearer' + localStorage.getItem('idToken'),
+            'cache-control': 'no-cache'
+        }
+    };
 
     return dispatch =>{
-        axios.get('https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0')
+        request.get('/?next=0',head)
             .then(function (response) {
                 dispatch(end(response));
             })
