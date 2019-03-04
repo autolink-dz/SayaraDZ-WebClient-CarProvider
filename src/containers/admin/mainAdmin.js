@@ -23,7 +23,7 @@ class MainAdmin extends Component {
             <GridList style={{marginLeft:'5%',marginTop:'5%'}} cellHeight={350} cols={5}>
                 {this.props.loading && this.props.fabricants.map( (fab,index) =>
                 <GridListTile key={index}>
-                    <MediaCard nom={fab.nom} url={"fab.url"} key={fab.id} />
+                    <MediaCard nom={fab.nom} url={fab.url} key={fab.id} />
                 </GridListTile>
             )}
             </GridList>
