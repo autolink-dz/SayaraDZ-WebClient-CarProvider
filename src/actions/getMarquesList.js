@@ -1,6 +1,6 @@
 var request = require('./request/marque');
 
-export function getMarquesList() {
+export function getMarquesList(next) {
 
     let head= {
         headers: {
@@ -10,7 +10,10 @@ export function getMarquesList() {
     };
 
     return dispatch =>{
-        request.get('/?next=0',head)
+        if(next==null){
+            return;
+        }
+        request.get('/?next='+next+'&page=20',head)
             .then(function (response) {
                 dispatch(end(response));
             })

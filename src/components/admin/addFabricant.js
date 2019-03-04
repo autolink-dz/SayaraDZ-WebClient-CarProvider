@@ -51,9 +51,9 @@ class AddFabricant extends React.Component {
             this.props.dispatch(resetAddFabricant())
         }
         return (
-            <div>
+            <div >
                 {snack}
-                <Fab color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
                     <AddIcon />
                 </Fab>
                 <Dialog
@@ -117,7 +117,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFabricant: addMarque,resetAddFabricant
+        addMarque,resetAddFabricant
     });
     return { ...actions, dispatch };
 }

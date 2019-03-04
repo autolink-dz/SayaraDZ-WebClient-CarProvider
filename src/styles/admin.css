@@ -1,12 +1,14 @@
 .main{
     background-color: #E3E3E3;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     font-family: Avenir, serif;
-    overflow: scroll;
+    margin: 0;
+    padding-bottom: 28%;
 }
 .add{
-    margin-top: -7% ;
-    background-color: white;
-    margin-left: 94%;
+    margin-top: 45% ;
+    margin-left: 95%;
+    position: fixed;
+    z-index: 99;
 }

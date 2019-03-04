@@ -2,7 +2,8 @@ const initialState = {
     loading: false,
     fabricants:[],
     error:false,
-    add:false
+    add:false,
+    next:0
 };
 const getFabricantListReducer = (state=initialState,action)=>{
     switch (action.type) {
@@ -25,7 +26,8 @@ const getFabricantListReducer = (state=initialState,action)=>{
                 ...state,
                 loading: true,
                 fabricants,
-                add:tmp
+                add:tmp,
+                next:action.payload.data.next || null
             };
         case 'ERROR_GET':
             return {

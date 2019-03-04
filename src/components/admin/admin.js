@@ -11,12 +11,15 @@ class Admin extends Component {
         return (
             <div>
                 <MenuAppBar />
+
                 <div className='main'>
+                    <div className='add' >
+                        <AddFabricant />
+                    </div>
                     <MainAdmin />
+
                 </div>
-                <div className='add' >
-                    <AddFabricant />
-                </div>
+
                 <Route path={'/admin/gestion'} component={Dashboard}/>
             </div>
         );
