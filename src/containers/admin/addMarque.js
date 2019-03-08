@@ -11,10 +11,11 @@ import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
 import {addMarque} from "../../actions/addMarque";
-import SnackBar from "./snackBar";
+import SnackBar from "../../components/admin/snackBar";
 import {resetAddFabricant} from "../../actions/resetAddMarque";
 
-class AddFabricant extends React.Component {
+
+class AddMarque extends React.Component {
     state = {
         open: false,
         name:'',
@@ -111,8 +112,8 @@ class AddFabricant extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        add : state.getFabricantListReducer.add,
-        error : state.getFabricantListReducer.error
+        add : state.marquesListReducer.add,
+        error : state.marquesListReducer.error
     };
 }
 function matchDispatchToProps(dispatch) {
@@ -123,4 +124,4 @@ function matchDispatchToProps(dispatch) {
 }
 export default connect(
     mapStateToProps,matchDispatchToProps
-)(AddFabricant);
+)(AddMarque);

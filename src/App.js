@@ -25,7 +25,7 @@ class App extends Component {
               <div className="backGround">
                 <Switch>
                   <Route path="/" component={SignInUi} exact />
-                  <PrivateRoute path="/admin" component={Admin} />
+                  <PrivateRoute path='/admin' component={Admin} />
                   <PrivateRoute path="/fabricant" component={Fabricant} />
                   <Route component={SignInUi} />
                 </Switch>

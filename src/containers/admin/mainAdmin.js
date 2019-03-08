@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {getMarquesList} from "../../actions/getMarquesList";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MediaCard from './../../components/admin/card'
+import MediaCard from './card'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import {Waypoint} from "react-waypoint";
@@ -23,7 +23,7 @@ class MainAdmin extends Component {
             <GridList style={{marginLeft:'5%',marginTop:'5%'}} cellHeight={350} cols={5}>
                 {this.props.loading && this.props.fabricants.map( (fab,index) =>
                 <GridListTile key={index}>
-                    <MediaCard nom={fab.nom} url={fab.url} key={fab.id} />
+                    <MediaCard nom={fab.nom} url={fab.url} id={fab.id} />
                 </GridListTile>
             )}
             </GridList>
@@ -59,10 +59,10 @@ class MainAdmin extends Component {
 
 function mapStateToProps(state) {
     return {
-        fabricants : state.getFabricantListReducer.fabricants,
-        loading : state.getFabricantListReducer.loading,
-        error : state.getFabricantListReducer.error,
-        next : state.getFabricantListReducer.next,
+        fabricants : state.marquesListReducer.fabricants,
+        loading : state.marquesListReducer.loading,
+        error : state.marquesListReducer.error,
+        next : state.marquesListReducer.next,
     };
 }
 

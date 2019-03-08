@@ -33,7 +33,7 @@ export function signInClick(email,password){
                     method: 'GET',
                     headers: new Headers({
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer '+response.idToken,
+                        'Authorization': 'Bearer ' + response.idToken,
                         'cache-control': 'no-cache'
                     }),
                 });

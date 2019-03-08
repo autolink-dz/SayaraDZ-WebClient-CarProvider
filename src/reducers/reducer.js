@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux'
 import fireSignIn from './fireSignIn'
-import getFabricantListReducer from "./getFabricantListReducer";
+import marquesListReducer from "./marquesListReducer";
 
 
 const AllReducers = combineReducers({
-    fireSignIn,getFabricantListReducer
+    fireSignIn, marquesListReducer
 });
 
 export default AllReducers;

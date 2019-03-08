@@ -4,7 +4,7 @@ import MenuAppBar from "./menuAppBar";
 import Dashboard from "./dashboard";
 import {Route} from "react-router-dom";
 import MainAdmin from "../../containers/admin/mainAdmin";
-import AddFabricant from "./addFabricant";
+import AddMarque from "../../containers/admin/addMarque";
 
 class Admin extends Component {
     render() {
@@ -14,10 +14,9 @@ class Admin extends Component {
 
                 <div className='main'>
                     <div className='add' >
-                        <AddFabricant />
+                        <AddMarque />
                     </div>
                     <MainAdmin />
-
                 </div>
 
                 <Route path={'/admin/gestion'} component={Dashboard}/>

@@ -1,4 +1,4 @@
-var request = require('./request/marque');
+var request = require('./api/service');
 
 export function addMarque(nom, url) {
 
@@ -9,13 +9,13 @@ export function addMarque(nom, url) {
 
     let head= {
         headers: {
-            'Authorization': 'Bearer' + localStorage.getItem('idToken'),
+            'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
             'cache-control': 'no-cache'
         }
     };
 
     return dispatch =>{
-        request.post('/', body, head)
+        request.post('/marques', body, head)
             .then(function (response) {
                 dispatch(end(response));
             })
