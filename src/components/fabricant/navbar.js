@@ -83,7 +83,7 @@ const styles = theme => ({
   },
 });
 
-class NavBar extends React.Component {
+export class NavBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
@@ -96,6 +96,7 @@ class NavBar extends React.Component {
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
   };
+
  /* getModel = () => {
     console.log(this.props.marques)
     let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
@@ -118,6 +119,7 @@ class NavBar extends React.Component {
   }
 */
 
+
 getModel = () => {
   this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
   let datas = Array.from(DataModele.data)
@@ -138,7 +140,6 @@ menuGestionjson = () =>{
   this.getVersion();
   this.getOption();
 }
-
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
