@@ -37,7 +37,6 @@ class Version extends Component {
                        Version
                     </Typography><br/>
                     <TabVersion />
-
                 </Paper>
             </main>
         </Grid>

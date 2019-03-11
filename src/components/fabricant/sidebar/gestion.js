@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import navbarReducer  from './../../../reducers/navbarReducer'
 import {bindActionCreators} from "redux";
+import { Link } from 'react-router-dom'
 const styles = theme => ({
     main: {
         width:'100%',
@@ -33,27 +34,6 @@ const styles = theme => ({
 });
 
 class Gestion extends React.Component {  
-    mainModele = () => {
-        this.props.dispatch({type : 'MODELE', payload:{
-          etat : 0
-        }})
-      };    
-    mainVersion = () => {
-        this.props.dispatch({type : 'VERSION', payload:{
-          etat : 0
-        }})
-      };    
-    mainOption = () => {
-        this.props.dispatch({type : 'OPTION', payload:{
-          etat : 0
-        }})
-      };    
-    mainCouleur = () => {
-        this.props.dispatch({type : 'COULEUR', payload:{
-          etat : 0
-        }})
-      };    
-      
   render() {
     return (
         <Grid item xs={2}>
@@ -65,9 +45,13 @@ class Gestion extends React.Component {
                     </Typography><br/>
                     <form className={this.props.classes.form}>
                         <Button key='1' onClick={this.mainModele}>Gérer Modele</Button>
-                        <Button key='2' onClick={this.mainVersion}>Gérer Version</Button>
-                        <Button key='3'onClick={this.mainOption}>Gérer Option</Button>
-                        <Button key='4'onClick={this.mainCouleur}>Gérer Couleur</Button>
+                        <Link color="inherit" to="/fabricant/gestion/modele">Gérer Modele</Link>
+                        <hr />
+                        <Link color="inherit" to="/fabricant/gestion/version">Gérer Version</Link>
+                        <hr />
+                        <Link color="inherit" to="/fabricant/gestion/option">Gérer Option</Link>
+                        <hr />
+                        <Link color="inherit" to="/fabricant/gestion/couleur">Gérer Couleur</Link>
                         <br />
                     </form>
                 </Paper>

@@ -60,7 +60,6 @@ const rows = [
   { id: 'prix', numeric: true, disablePadding: false, label: 'Prix' },
   { id: 'date_debut', numeric: true, disablePadding: false, label: 'Date debut' },
   { id: 'date_fin', numeric: true, disablePadding: false, label: 'Date fin' },
-  { id: 'options', numeric: true, disablePadding: false, label: 'options' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -211,7 +210,7 @@ class EnhancedTable extends React.Component {
     orderBy: 'calories',
     selected: [],
     data:
-      Array.from(this.props.versions)
+      Array.from(this.props.options)
     ,
     page: 0,
     rowsPerPage: 5,
@@ -313,7 +312,6 @@ class EnhancedTable extends React.Component {
                       <TableCell align="right">{n.prix}</TableCell>
                       <TableCell align="right">{n.date_debut}</TableCell>
                       <TableCell align="right">{n.date_fin}</TableCell>
-                      <TableCell align="right">btn</TableCell>
                     </TableRow>
                   );
                 })}
@@ -351,7 +349,7 @@ EnhancedTable.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    versions : state.gestionReducer.versions
+    options : state.gestionReducer.options
   };
 }
 

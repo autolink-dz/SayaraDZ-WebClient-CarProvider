@@ -17,52 +17,60 @@ import Version from './mains/gestion/version'
 import Option from './mains/gestion/option'
 import Couleur from './mains/gestion/couleur'
 
+import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 class Fabricant extends Component {
     render() {
         const s=this.props.etat;
         const s2=this.props.s_etat;
+
+        let affiche=<Gestion/>
         
-        let affiche;
-        let main;
-        if (s == 0) {
-            affiche = <Dashbord/>;
-            main = <Main />;
-        } else if(s == 1) {
-            affiche = <Gestion/>;
-            if(s2==1){
-                main = <Modele />;
-            }else if(s2==2){
-                main = <Version />;
-            }else if(s2==3){
-                main = <Option />;
-            }else if(s2==4){
-                main = <Couleur />;
-            }
-        }else if(s == 2){
-            affiche = <Stock/>;
-        }else if(s == 3){
-            affiche = <Simulation/>;
-        }else if(s == 4){
-            affiche = <Commande/>;
-        }
         return (
             <div >
                 <NavBar />
-                <Grid container spacing={24}>
-                {affiche}
-                {main}
-                </Grid>
+                
+                
+                 <Switch>
+                     
+                 <Route path='/fabricant/dashbord' render={props =>
+                    <Grid container spacing={24}>
+                        <Dashbord />
+                        <Main />
+                    </Grid>
+                    } />
+                <Route path='/fabricant/gestion/modele' render={props =>
+                    <Grid container spacing={24}>
+                        {affiche}
+                        <Modele />
+                    </Grid>
+                    } />
+                <Route path='/fabricant/gestion/version' render={props =>
+                    <Grid container spacing={24}>
+                        {affiche}
+                        <Version />
+                    </Grid>
+                    } />
+                <Route path='/fabricant/gestion/option' render={props =>
+                    <Grid container spacing={24}>
+                        {affiche}
+                        <Option />
+                    </Grid>
+                    } />
+                <Route path='/fabricant/gestion/couleur' render={props =>
+                    <Grid container spacing={24}>
+                        {affiche}
+                        <Couleur />
+                    </Grid>
+                    } />
+                 </Switch>
+                
             </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    return {
-        etat : state.navbarReducer.etat,
-        s_etat : state.navbarReducer.s_etat
-        
-    };
+
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({

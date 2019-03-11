@@ -14,7 +14,11 @@ import navbarReducer  from './../../reducers/navbarReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import DataModele from './../../fichier_json/modele.json'
+import DataVersion from './../../fichier_json/version.json'
+import DataOption from './../../fichier_json/option.json'
 
+import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -92,32 +96,6 @@ class NavBar extends React.Component {
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
   };
-
-  menuDashbord = () => {
-    this.props.dispatch({type : 'DASHBORD', payload:{
-      etat : 0
-    }})
-  };
-  menuGestion = () => {
-    this.props.dispatch({type : 'GESTION', payload:{
-      etat : 1
-    }})
-  };
-  menuStock = () => {
-    this.props.dispatch({type : 'STOCK', payload:{
-      etat : 2
-    }})
-  };
-  menuSimulation = () => {
-    this.props.dispatch({type : 'SIMULATION', payload:{
-      etat : 3
-    }})
-  };
-  menuCommande = () => {
-    this.props.dispatch({type : 'COMMANDE', payload:{
-      etat : 4
-    }})
-  };
  /* getModel = () => {
     console.log(this.props.marques)
     let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
@@ -140,17 +118,28 @@ class NavBar extends React.Component {
   }
 */
 
- getModel = () => {
-    this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
-    const datas = Array.from(DataModele.data)
-    console.log(datas)
-    return datas
-  }
-  menuGestionjson = () =>{
-    this.menuGestion();
-    this.getModel();
-  }
-  
+getModel = () => {
+  this.props.dispatch({type : 'SELECT_MODELES', payload: DataModele.data})
+  let datas = Array.from(DataModele.data)
+  return datas
+}
+getVersion = () => {
+  this.props.dispatch({type : 'SELECT_VERSIONS', payload: DataVersion.data})
+  let datas = Array.from(DataVersion.data)
+  return datas
+}
+getOption = () => {
+  this.props.dispatch({type : 'SELECT_OPTIONS', payload: DataOption.data})
+  let datas = Array.from(DataOption.data)
+  return datas
+}
+menuGestionjson = () =>{
+  this.getModel();
+  this.getVersion();
+  this.getOption();
+}
+
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -175,12 +164,12 @@ class NavBar extends React.Component {
             <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
-               <Button color="inherit" className={classes.btn} onClick={this.menuDashbord}>Dashbord</Button>
-           <div className={classes.btns}>
-              <Button className={classes.btn} color="inherit" onClick={this.menuGestionjson}>Gestion</Button>
-              <Button className={classes.btn} color="inherit" onClick={this.menuStock}>Stock</Button>
-              <Button className={classes.btn} color="inherit" onClick={this.menuSimulation}>Simulation</Button>
-              <Button className={classes.btn} color="inherit" onClick={this.menuCommande}>Commande</Button> 
+              <Link className={classes.btn} color="inherit" to="/fabricant/dashbord" onClick={this.menuDashbord}>Dashbord</Link>
+            <div className={classes.btns}>
+              <Link className={classes.btn} color="inherit" to="/fabricant/gestion/modele" onClick={this.menuGestionjson}>Gestion</Link>
+              <Link className={classes.btn} color="inherit" to="/fabricant/gestion/stock" onClick={this.menuStock}>Stock</Link>
+              <Link className={classes.btn} color="inherit" to="/fabricant/gestion/simulation" onClick={this.menuSimulation}>Simulation</Link>
+              <Link className={classes.btn} color="inherit" to="/fabricant/gestion/commande" onClick={this.menuCommande}>Commande</Link>    
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
@@ -208,6 +197,7 @@ NavBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    versions : state.gestionReducer.versions,
     modeles : state.gestionReducer.modeles
   };
 }

@@ -1,7 +1,7 @@
 const initialState = {
     marques: {},
     modeles: {},
-    versions: {'name':'Cupcake', 'calories':305,'fat': 3.7, 'carbs':67,'protein': 4.3},
+    versions: {},
     options: {},
     couleurs: {}
     
@@ -18,7 +18,16 @@ const gestionReducer = (state=initialState,action)=>{
                 ...state,
                 modeles: action.payload
             };
-        
+        case 'SELECT_VERSIONS':
+            return {
+                ...state,
+                versions: action.payload
+            };
+        case 'SELECT_OPTIONS':
+            return {
+                ...state,
+                options: action.payload
+            };
         default :
             return state;
     }
