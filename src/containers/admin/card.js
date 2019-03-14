@@ -18,6 +18,7 @@ import {deleteMarque} from "../../actions/deleteMarque";
 import {connect} from "react-redux";
 import SnackBar from "../../components/admin/snackBar";
 import {putMarque} from "../../actions/putMarque";
+import {Redirect} from "react-router-dom";
 
 
 const styles = {
@@ -63,9 +64,11 @@ class MediaCard extends Component {
         super(props);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.gotoFabricant = this.gotoFabricant.bind(this);
         this.state = {
             open: false,
             snack:null,
+            redirect:false
         };
     }
     handleName= (e) =>{
@@ -101,15 +104,22 @@ class MediaCard extends Component {
         this.props.dispatch(putMarque(this.props.id,this.state.nom,this.state.url));
         this.handleClose();
     }
+    gotoFabricant() {
+        this.setState({
+            redirect:true
+        })
+    }
 
     render() {
-
+        if (this.state.redirect) {
+            return <Redirect push to={'/fabricantAdmin/'+this.props.id} />;
+        }
         return (
             <div>
                 {this.state.snack}
 
-                <Card style={styles.card} nom={this.props.nom} >
-                    <CardActionArea>
+                <Card style={styles.card} nom={this.props.nom}  >
+                    <CardActionArea onClick={this.gotoFabricant}>
                         <CardMedia
                             style={styles.media}
                             image={this.props.url}

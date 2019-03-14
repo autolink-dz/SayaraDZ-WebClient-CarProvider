@@ -9,13 +9,23 @@ const decy = myCecipher('8JhnuSv3e8VRyt4DCv8Dv4lCWMj1');
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => {
+        let url = props.location.pathname;
+        let regex = new RegExp('/fabricantAdmin/?.*');
         const localId = localStorage.getItem('localId');
         if (localId != null) {
             const admin = myDecipher(localStorage.getItem(decy));
             if (admin==='true') {
+                if( regex.test(url)){
+                    return (
+                        <div>
+                            <Redirect to={props.location.pathname}/>
+                            <Component {...props} />
+                        </div>
+                    )
+                }
                return (
                    <div>
-                       <Redirect to='/admin'/>
+                       <Redirect to={'/admin'}/>
                        <Component {...props} />
                    </div>
                    )
@@ -32,6 +42,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
                 return (
                     <div>
                         <Redirect to='/'/>
+                        <Component {...props} />
                     </div>
                 )
             }

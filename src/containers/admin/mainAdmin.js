@@ -15,10 +15,20 @@ class MainAdmin extends Component {
         this.fetchData = this.fetchData.bind(this);
     }
     componentDidMount() {
+        if ( this.props.fabricants.length === 0)
         this.props.dispatch(getMarquesList('0'));
     };
 
     _renderItems(){
+        if (this.props.error){
+            return (
+                <div style={{paddingTop:'17%'}}>
+                    <h2 align="center">
+                        Error, Token expired !
+                    </h2>
+                </div>
+            )
+        }
         return (
             <GridList style={{marginLeft:'5%',marginTop:'5%'}} cellHeight={350} cols={5}>
                 {this.props.loading && this.props.fabricants.map( (fab,index) =>
@@ -27,7 +37,6 @@ class MainAdmin extends Component {
                 </GridListTile>
             )}
             </GridList>
-
         );
     }
     fetchData(){

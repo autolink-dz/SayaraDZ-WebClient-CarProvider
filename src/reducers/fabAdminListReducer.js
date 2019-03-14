@@ -1,42 +1,37 @@
 const initialState = {
     loading: false,
-    fabricants:[],
+    fabs:[],
     error:false,
     add:false,
     next:0
 };
 
-let fabricants=null; // for several uses
+let fabs=[]; // for copy uses
 
-const marquesListReducer = (state=initialState, action)=>{
+const fabAdminListReducer = (state=initialState, action)=>{
     switch (action.type) {
 
-        case 'BEGIN_GET':
-            return {
-                ...state,
-                add:true
-            };
-
-        case 'END_GET':
-            fabricants = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+        case 'END_GET_FABS':
+            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabs)), state.fabs);
             let tmp=false;
             if(action.payload.data.data ==null){
-                fabricants.push(action.payload.data);
+                fabs.push(action.payload.data);
                 tmp=true;
-                fabricants.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
+                fabs.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
-                fabricants.push(...action.payload.data.data);
+                fabs=[];
+                fabs.push(...action.payload.data.data);
             }
             return {
                 ...state,
                 loading: true,
-                fabricants,
+                fabs,
                 add:tmp,
                 next:action.payload.data.next || null
             };
 
-        case 'ERROR_GET':
+        case 'ERROR_GET_FABS':
             return {
                 ...state,
                 loading: true,
@@ -49,34 +44,34 @@ const marquesListReducer = (state=initialState, action)=>{
                 add:false
             };
 
-        case 'BEGIN_DELETE':
+        case 'BEGIN_DELETE_FABS':
             return {
                 ...state,
                 loading: true
             };
 
-        case 'ERROR_DELETE':
+        case 'ERROR_DELETE_FABS':
             return {
                 ...state,
                 loading:false,
                 error:true
             };
 
-        case 'END_DELETE':
-            fabricants = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
-            fabricants.forEach((fab,i)=>{
+        case 'END_DELETE_FABS':
+            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabs.forEach((fab,i)=>{
                 if (fab.id===action.id){
-                    fabricants.splice(i,1);
+                    fabs.splice(i,1);
                 }
             });
             return{
                 ...state,
-                fabricants
+                fabs
             };
 
-        case 'END_PUT':
-            fabricants = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
-            fabricants.forEach(fab=>{
+        case 'END_PUT_FABS':
+            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabs.forEach(fab=>{
                 if (fab.id===action.id){
                     fab.nom = action.nom;
                     fab.url = action.url;
@@ -84,10 +79,10 @@ const marquesListReducer = (state=initialState, action)=>{
             });
             return{
                 ...state,
-                fabricants
+                fabs
             };
         default :
             return state;
     }
 };
-export default marquesListReducer;
+export default fabAdminListReducer;
