@@ -7,40 +7,73 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddIcon from '@material-ui/icons/Add'
 import Cirlce from '@material-ui/icons/AccountCircle'
-import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
 import SnackBar from "../../components/admin/snackBar";
 import {resetAddFabricant} from "../../actions/resetAddMarque";
 import {addFab} from "../../actions/addFab";
+import {showFabDialog} from "../../actions/showFabDialog";
+import {withStyles} from "@material-ui/core";
 
+const styles = {
+    dialog: {
+        textAlign:'center',
+    },
+    actions:{
+        textAlign:'center',
+        display:'inline-block',
+    },
+    edit:{
+        margin: 0,
+        paddingBottom: 8
+    },
+    enable:{
+        color:'#ff2b58',
+    },
+    disable:{
+        color:'#27B863',
+    },
+    cancel:{
+        color:'#4e534d',
+    },
+    title:{
+        textAlign:'center',
+    }
+};
 
-class AddFab extends React.Component {
-    state = {
-        open: false,
-        name:'',
-        prenom:'',
-        password:'',
-        mail:'',
-        adresse:'',
-        phone:'',
-        id_marque:this.props.id_marque
+class PutFab extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            open: false,
+            nom:'',
+            prenom:'',
+            mdp:'',
+            mail:'',
+            adresse:'',
+            num_tlp:'',
+            disabled:false,
+            id:'',
+        };
+    }
+    componentDidMount() {
+        this.handleClickOpen();
+    }
 
-    };
     handleClickOpen = () => {
         this.setState({ open: true });
     };
 
     handleCloseA = () => {
         this.setState({ open: false });
+        this.props.dispatch(showFabDialog(false));
     };
     handleAdd = ()=>{
-        this.props.dispatch(addFab(this.state.name,this.state.prenom , this.state.password , this.state.mail , this.state.adresse , this.state.phone , this.state.id_marque ));
+        //this.props.dispatch(addFab(this.state.nom,this.state.prenom , this.state.password , this.state.mail , this.state.adresse , this.state.num_tlp , this.state.id_marque ));
         this.handleCloseA();
     };
     handleName= (e) =>{
-        this.setState({ name: e.target.value });
+        this.setState({ nom: e.target.value });
     };
     handlePrenom= (e) =>{
         this.setState({ prenom: e.target.value });
@@ -55,7 +88,7 @@ class AddFab extends React.Component {
         this.setState({ adresse: e.target.value });
     };
     handlePhone= (e) =>{
-        this.setState({ phone: e.target.value });
+        this.setState({ num_tlp: e.target.value });
     };
 
 
@@ -63,7 +96,7 @@ class AddFab extends React.Component {
         let snack = null;
         if (this.props.error || this.props.add){
            if(this.props.add ){
-               let msg = "Fabricant " +this.state.name+" est ajouté avec success !\"";
+               let msg = "Fabricant " +this.state.nom+" est modifié avec success !\"";
                snack = <SnackBar type='success' msg={msg} />
            }
            else {
@@ -74,18 +107,16 @@ class AddFab extends React.Component {
         return (
             <div >
                 {snack}
-                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
-                    <AddIcon />
-                </Fab>
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
+                    style={styles.dialog}
                 >
                     <DialogContent>
-                        <div style={{textAlign:'center'}}>
+                        <div style={styles.title} >
                             <Cirlce fontSize='large' />
-                            <DialogTitle id="form-dialog-title">Ajouter un Fabricant</DialogTitle>
+                            <DialogTitle id="form-dialog-title">Modifier un Fabricant</DialogTitle>
                         </div>
                         <DialogContentText>
                             Veuillez introduire les informations concernant le fabricant
@@ -96,11 +127,12 @@ class AddFab extends React.Component {
                             variant='outlined'
                             autoFocus
                             margin="dense"
-                            id="name"
+                            id="nom"
                             label="Nom"
                             fullWidth
                             onChange={ this.handleName }
                             required={true}
+                            defaultValue={this.props.nom}
                         />
                         <TextField
                             autoComplete='off'
@@ -111,6 +143,7 @@ class AddFab extends React.Component {
                             fullWidth
                             onChange={ this.handlePrenom }
                             required={true}
+                            defaultValue={this.props.prenom}
                         />
                         <TextField
                             autoComplete='off'
@@ -121,6 +154,7 @@ class AddFab extends React.Component {
                             fullWidth
                             onChange={ this.handleEmail }
                             required={true}
+                            defaultValue={this.props.mail}
                         />
                         <TextField
                             autoComplete='off'
@@ -148,6 +182,7 @@ class AddFab extends React.Component {
                             fullWidth
                             onChange={ this.handleAdresse }
                             required={true}
+                            defaultValue={this.props.adresse}
                         />
                         <TextField
                             autoComplete='off'
@@ -156,22 +191,28 @@ class AddFab extends React.Component {
                             }}
                             variant='outlined'
                             margin="dense"
-                            id="phone"
-                            label="Téléphone"
+                            id="num_tlp"
+                            label="Télénum_tlp"
                             fullWidth
                             onChange={ this.handlePhone }
                             required={true}
+                            defaultValue={this.props.num_tlp}
                         />
 
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleCloseA} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.handleAdd} color="primary">
-                            Add
-                        </Button>
-                    </DialogActions>
+                    <div style={styles.dialog}>
+                        <DialogActions style={styles.actions}>
+                            <Button onClick={this.handleCloseA} style={styles.cancel}>
+                                Cancel
+                            </Button>
+                            <Button onClick={this.handleAdd} color="primary">
+                                Add
+                            </Button>
+                            <Button style={this.props.disabled ? styles.disable : styles.enable}>
+                                {this.props.disabled ? " Activer" : "Désactiver"}
+                            </Button>
+                        </DialogActions>
+                    </div>
                 </Dialog>
             </div>
         );
@@ -187,10 +228,10 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFab,resetAddFabricant
+        addFab,resetAddFabricant,showFabDialog
     });
     return { ...actions, dispatch };
 }
 export default connect(
     mapStateToProps,matchDispatchToProps
-)(AddFab);
+)(withStyles(styles)(PutFab));

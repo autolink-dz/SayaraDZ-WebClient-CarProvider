@@ -11,9 +11,6 @@ export function addFab(nom, prenom , mdp , mail, adresse , num_tlp,id_marque ) {
         num_tlp ,
         id_marque
     };
-
-    console.log(body);
-
     let head= {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
@@ -24,22 +21,21 @@ export function addFab(nom, prenom , mdp , mail, adresse , num_tlp,id_marque ) {
     return dispatch =>{
         request.post('/fabricants', body, head)
             .then(function (response) {
-                console.log(response);
                 dispatch(end(response));
             })
             .catch(function (error) {
-                dispatch(err(error));
+                dispatch(err(error.response.data.message));
                 console.log(error);
             });
     }
 }
 
 export const end = (response) => ({
-    type: "END_GET_FAB",
+    type: "END_GET_FABS",
     payload: response
 });
 
 export const err = (error) => ({
-    type: "ERROR_GET_FAB",
+    type: "ERROR_GET_FABS",
     payload: error
 });

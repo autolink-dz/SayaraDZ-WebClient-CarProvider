@@ -3,30 +3,31 @@ const initialState = {
     fabs:[],
     error:false,
     add:false,
-    next:0
+    next:0,
+    msg:''
 };
 
-let fabs=[]; // for copy uses
+let fabArray=[]; // for copy uses
 
 const fabAdminListReducer = (state=initialState, action)=>{
     switch (action.type) {
 
         case 'END_GET_FABS':
-            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabs)), state.fabs);
             let tmp=false;
             if(action.payload.data.data ==null){
-                fabs.push(action.payload.data);
+                fabArray = [...state.fabs];
+                fabArray.push(action.payload.data);
+                fabArray.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
                 tmp=true;
-                fabs.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
-                fabs=[];
-                fabs.push(...action.payload.data.data);
+                fabArray=[];
+                fabArray.push(...action.payload.data.data);
             }
             return {
                 ...state,
                 loading: true,
-                fabs,
+                fabs:fabArray,
                 add:tmp,
                 next:action.payload.data.next || null
             };
@@ -35,7 +36,8 @@ const fabAdminListReducer = (state=initialState, action)=>{
             return {
                 ...state,
                 loading: true,
-                error : true
+                error : true,
+                msg:action.payload
             };
 
         case 'RESET_ADD':
@@ -58,20 +60,20 @@ const fabAdminListReducer = (state=initialState, action)=>{
             };
 
         case 'END_DELETE_FABS':
-            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
-            fabs.forEach((fab,i)=>{
+            fabArray = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabArray.forEach((fab,i)=>{
                 if (fab.id===action.id){
-                    fabs.splice(i,1);
+                    fabArray.splice(i,1);
                 }
             });
             return{
                 ...state,
-                fabs
+                fabs:fabArray
             };
 
         case 'END_PUT_FABS':
-            fabs = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
-            fabs.forEach(fab=>{
+            fabArray = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabArray.forEach(fab=>{
                 if (fab.id===action.id){
                     fab.nom = action.nom;
                     fab.url = action.url;
@@ -79,7 +81,7 @@ const fabAdminListReducer = (state=initialState, action)=>{
             });
             return{
                 ...state,
-                fabs
+                fabs:fabArray
             };
         default :
             return state;

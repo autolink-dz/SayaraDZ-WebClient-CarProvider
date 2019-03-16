@@ -17,6 +17,9 @@ import {getFabsList} from "../../actions/getFabsList";
 import Block from '../../assets/clear.svg'
 import Checked from '../../assets/circle.svg'
 import {resetAddFabricant} from "../../actions/resetAddMarque";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PutFab from "./putFab";
+import {showFabDialog} from "../../actions/showFabDialog";
 
 class MainFabricants extends Component {
     constructor(props){
@@ -27,6 +30,11 @@ class MainFabricants extends Component {
             fabArray:[]
         }
     }
+    componentDidMount() {
+        this.fetchImage(this.props.id_marque);
+        this.props.dispatch(getFabsList(this.props.id_marque));
+    }
+
     fetchImage(id){
         let api = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques/"+id;
         const requestType = new Request(api, {
@@ -55,13 +63,11 @@ class MainFabricants extends Component {
             });
 
     }
-    componentDidMount() {
-        this.fetchImage(this.props.id_marque);
-        this.props.dispatch(getFabsList(this.props.id_marque));
-    }
+
     getData(){
         if ( (this.props.fabricants.length !== 0) && (this.state.url !=='') ){
-            this.state.fabArray.push(...this.props.fabricants);
+            let fabArray=[];
+            fabArray.push(...this.props.fabricants);
             return  (
                 <div>
                     <div style={{textAlign:'center'}}>
@@ -89,8 +95,8 @@ class MainFabricants extends Component {
                     columns={[
                         { title: 'Nom', field: 'nom',},
                         { title: 'Prénom', field: 'prenom' },
-                        { title: 'Téléphone', field: 'num_tel' },
-                        { title: 'Email', field: 'email' },
+                        { title: 'Téléphone', field: 'num_tlp' },
+                        { title: 'Email', field: 'mail' },
                         { title: 'État', field: 'disabled',
                             cellStyle:(data)=> {
                                 if (data)
@@ -108,7 +114,7 @@ class MainFabricants extends Component {
                             }
                         },
                     ]}
-                    data={this.state.fabArray}
+                    data={fabArray}
                     title="Fabricants "
                     options={{
                         actionsColumnIndex: -1,
@@ -119,7 +125,10 @@ class MainFabricants extends Component {
                             icon: Edit,
                             tooltip: 'Modifier',
                             onClick: (event, rowData) => {
-                                alert('You clicked user ' + rowData.name)
+                                this.setState({
+                                    fab:rowData
+                                });
+                                this.props.dispatch(showFabDialog(true));
                             },
                         }
                     ]}
@@ -130,10 +139,33 @@ class MainFabricants extends Component {
         }
     }
 
+    loading(){
+        let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
+        return <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
+    }
+
+    dialogFab(){
+        if(this.props.showPut){
+            return ( <PutFab
+                nom={this.state.fab.nom}
+                prenom={this.state.fab.prenom}
+                mdp={this.state.fab.mdp}
+                id={this.state.fab.id}
+                mail={this.state.fab.mail}
+                num_tlp={this.state.fab.num_tlp}
+                adresse={this.state.fab.adresse}
+                disabled={this.state.fab.disabled}
+            /> )
+        }
+    }
+
+
     render() {
         return (
             <div>
+                {this.loading()}
                 {this.getData()}
+                {this.dialogFab()}
             </div>
         );
     }
@@ -143,12 +175,13 @@ function mapStateToProps(state) {
     return {
         fabricants : state.fabAdminListReducer.fabs,
         loading : state.fabAdminListReducer.loading,
+        showPut : state.showDialogReducer.showPut,
     };
 }
 
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        getFabsList,resetAddFabricant
+        getFabsList,resetAddFabricant,showFabDialog
     });
     return { ...actions, dispatch };
 }
