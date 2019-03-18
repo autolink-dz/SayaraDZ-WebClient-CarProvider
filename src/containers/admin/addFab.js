@@ -12,8 +12,8 @@ import Cirlce from '@material-ui/icons/AccountCircle'
 import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
 import SnackBar from "../../components/admin/snackBar";
-import {resetAddFabricant} from "../../actions/resetAddMarque";
-import {addFab} from "../../actions/addFab";
+import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
+import {addFab} from "../../actions/admin/addFab";
 
 
 class AddFab extends React.Component {

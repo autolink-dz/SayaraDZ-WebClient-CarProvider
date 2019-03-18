@@ -46,7 +46,8 @@ const marquesListReducer = (state=initialState, action)=>{
         case 'RESET_ADD':
             return{
                 ...state,
-                add:false
+                add:false,
+                error:false
             };
 
         case 'BEGIN_DELETE':

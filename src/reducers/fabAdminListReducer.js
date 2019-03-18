@@ -3,7 +3,6 @@ const initialState = {
     fabs:[],
     error:false,
     add:false,
-    next:0,
     msg:''
 };
 
@@ -43,45 +42,47 @@ const fabAdminListReducer = (state=initialState, action)=>{
         case 'RESET_ADD':
             return{
                 ...state,
-                add:false
-            };
-
-        case 'BEGIN_DELETE_FABS':
-            return {
-                ...state,
-                loading: true
+                add:false,
+                error:false,
             };
 
         case 'ERROR_DELETE_FABS':
             return {
                 ...state,
-                loading:false,
-                error:true
+                error:true,
+                msg:action.payload.error
             };
 
         case 'END_DELETE_FABS':
-            fabArray = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabArray = [...state.fabs];
             fabArray.forEach((fab,i)=>{
-                if (fab.id===action.id){
+                if (fab.id===action.idFab){
                     fabArray.splice(i,1);
                 }
             });
             return{
                 ...state,
-                fabs:fabArray
+                fabs:fabArray,
+                add:true,
             };
 
         case 'END_PUT_FABS':
-            fabArray = Object.assign(Object.create(Object.getPrototypeOf(state.fabricants)), state.fabricants);
+            fabArray = [...state.fabs];
             fabArray.forEach(fab=>{
                 if (fab.id===action.id){
                     fab.nom = action.nom;
-                    fab.url = action.url;
+                    fab.prenom = action.prenom;
+                    fab.mdp = action.mdp;
+                    fab.mail = action.mail;
+                    fab.adresse = action.adresse;
+                    fab.num_tlp = action.num_tlp;
+                    fab.disabled = action.disabled;
                 }
             });
             return{
                 ...state,
-                fabs:fabArray
+                fabs:fabArray,
+                add:true
             };
         default :
             return state;

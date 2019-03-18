@@ -14,11 +14,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {bindActionCreators} from "redux";
-import {deleteMarque} from "../../actions/deleteMarque";
+import {deleteMarque} from "../../actions/admin/deleteMarque";
 import {connect} from "react-redux";
 import SnackBar from "../../components/admin/snackBar";
-import {putMarque} from "../../actions/putMarque";
-import {Redirect} from "react-router-dom";
+import {putMarque} from "../../actions/admin/putMarque";
+import {Redirect, withRouter} from "react-router-dom";
 
 
 const styles = {
@@ -112,7 +112,7 @@ class MediaCard extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect push to={'/fabricantAdmin/'+this.props.id} />;
+            return <Redirect push to={'/admin/'+this.props.id} />;
         }
         return (
             <div>
@@ -213,6 +213,6 @@ function matchDispatchToProps(dispatch) {
     return { ...actions, dispatch };
 }
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,matchDispatchToProps
-)(withStyles(styles)(MediaCard));
+)(withStyles(styles)(MediaCard)));

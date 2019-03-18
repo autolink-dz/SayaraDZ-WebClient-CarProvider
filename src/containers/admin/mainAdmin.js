@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {getMarquesList} from "../../actions/getMarquesList";
+import {getMarquesList} from "../../actions/admin/getMarquesList";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MediaCard from './card'
 import GridList from "@material-ui/core/GridList";

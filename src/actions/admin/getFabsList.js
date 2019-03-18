@@ -1,30 +1,21 @@
-var request = require('./api/service');
+var request = require('../api/service');
 
-export function addFab(nom, prenom , mdp , mail, adresse , num_tlp,id_marque ) {
+export function getFabsList(id_marque) {
 
-    let body={
-        nom,
-        prenom,
-        mail ,
-        mdp ,
-        adresse ,
-        num_tlp ,
-        id_marque
-    };
     let head= {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
-            'cache-control': 'no-cache',
+            'cache-control': 'no-cache'
         }
     };
 
     return dispatch =>{
-        request.post('/fabricants', body, head)
+        request.get('/fabricants?id_marque='+id_marque ,head)
             .then(function (response) {
                 dispatch(end(response));
             })
             .catch(function (error) {
-                dispatch(err(error.response.data.message));
+                dispatch(err(error));
                 console.log(error);
             });
     }
@@ -32,7 +23,7 @@ export function addFab(nom, prenom , mdp , mail, adresse , num_tlp,id_marque ) {
 
 export const end = (response) => ({
     type: "END_GET_FABS",
-    payload: response
+    payload:response
 });
 
 export const err = (error) => ({

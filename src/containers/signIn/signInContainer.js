@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {withRouter} from "react-router-dom";
 
 const styles = theme => ({
     main: {
@@ -62,6 +63,7 @@ class SignInContainer extends Component {
         let username = e.target[0].value;
         let password = e.target[1].value;
         this.props.dispatch(signInClick(username,password));
+
     }
     render() {
         return (
@@ -123,6 +125,6 @@ function matchDispatchToProps(dispatch) {
     return { ...actions, dispatch };
 }
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,matchDispatchToProps
-)(withStyles(styles)(SignInContainer));
+)(withStyles(styles)(SignInContainer)));

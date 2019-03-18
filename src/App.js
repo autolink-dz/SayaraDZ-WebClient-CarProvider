@@ -24,8 +24,8 @@ class App extends Component {
           <MuiThemeProvider theme={theme}>
             <Router>
                 <Switch>
+                  <PrivateRoute path="/admin/:id" component={FabricantAdmin}/>
                   <PrivateRoute path='/admin' component={Admin} />
-                  <PrivateRoute path="/fabricantAdmin/:id" component={FabricantAdmin}/>
                   <PrivateRoute path="/fabricant" component={Fabricant} />
                   <Route component={SignInUi} />
                   <Route path="/" component={SignInUi} exact />

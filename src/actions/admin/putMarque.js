@@ -1,4 +1,4 @@
-var request = require('./api/service');
+var request = require('../api/service');
 
 export function putMarque(id,nom,url) {
     let head= {

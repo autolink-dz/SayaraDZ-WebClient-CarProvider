@@ -10,10 +10,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Cirlce from '@material-ui/icons/AccountCircle'
 import {bindActionCreators} from "redux";
 import SnackBar from "../../components/admin/snackBar";
-import {resetAddFabricant} from "../../actions/resetAddMarque";
-import {addFab} from "../../actions/addFab";
-import {showFabDialog} from "../../actions/showFabDialog";
+import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
+import {addFab} from "../../actions/admin/addFab";
+import {showFabDialog} from "../../actions/admin/showFabDialog";
 import {withStyles} from "@material-ui/core";
+import {putFab} from "../../actions/admin/putFab";
 
 const styles = {
     dialog: {
@@ -46,14 +47,14 @@ class PutFab extends React.Component {
         super(props);
         this.state = {
             open: false,
-            nom:'',
-            prenom:'',
-            mdp:'',
-            mail:'',
-            adresse:'',
-            num_tlp:'',
-            disabled:false,
-            id:'',
+            nom:this.props.nom,
+            prenom:this.props.prenom,
+            mdp:this.props.mdp,
+            mail:this.props.mail,
+            adresse:this.props.adresse,
+            num_tlp:this.props.num_tlp,
+            disabled:this.props.disabled,
+            id:this.props.id,
         };
     }
     componentDidMount() {
@@ -68,25 +69,37 @@ class PutFab extends React.Component {
         this.setState({ open: false });
         this.props.dispatch(showFabDialog(false));
     };
-    handleAdd = ()=>{
-        //this.props.dispatch(addFab(this.state.nom,this.state.prenom , this.state.password , this.state.mail , this.state.adresse , this.state.num_tlp , this.state.id_marque ));
+
+    handleUpdate = ()=>{
+        this.props.dispatch(putFab(this.state.id,this.state.nom,this.state.prenom , this.state.mdp , this.state.mail , this.state.adresse , this.state.num_tlp , this.state.disabled));
         this.handleCloseA();
     };
+
+    handleDisable = ()=>{
+        this.props.dispatch(putFab(this.state.id,this.state.nom,this.state.prenom , this.state.mdp , this.state.mail , this.state.adresse , this.state.num_tlp , !this.state.disabled));
+        this.handleCloseA();
+    };
+
     handleName= (e) =>{
         this.setState({ nom: e.target.value });
     };
+
     handlePrenom= (e) =>{
         this.setState({ prenom: e.target.value });
     };
+
     handleEmail= (e) =>{
         this.setState({ mail: e.target.value });
     };
+
     handlePassword= (e) =>{
-        this.setState({ password: e.target.value });
+        this.setState({ mdp: e.target.value });
     };
+
     handleAdresse= (e) =>{
         this.setState({ adresse: e.target.value });
     };
+
     handlePhone= (e) =>{
         this.setState({ num_tlp: e.target.value });
     };
@@ -205,11 +218,11 @@ class PutFab extends React.Component {
                             <Button onClick={this.handleCloseA} style={styles.cancel}>
                                 Cancel
                             </Button>
-                            <Button onClick={this.handleAdd} color="primary">
-                                Add
-                            </Button>
-                            <Button style={this.props.disabled ? styles.disable : styles.enable}>
+                            <Button onClick={this.handleDisable} style={this.props.disabled ? styles.disable : styles.enable}>
                                 {this.props.disabled ? " Activer" : "Désactiver"}
+                            </Button>
+                            <Button onClick={this.handleUpdate} color="primary">
+                                Modifier
                             </Button>
                         </DialogActions>
                     </div>
@@ -228,7 +241,10 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFab,resetAddFabricant,showFabDialog
+        addFab,
+        resetAddFabricant,
+        showFabDialog,
+        putFab
     });
     return { ...actions, dispatch };
 }

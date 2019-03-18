@@ -1,6 +1,12 @@
-var request = require('./api/service');
+var request = require('../api/service');
 
-export function deleteMarque(id) {
+export function addMarque(nom, url) {
+
+    let body={
+        nom: nom,
+        url: url
+    };
+
     let head= {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
@@ -9,10 +15,9 @@ export function deleteMarque(id) {
     };
 
     return dispatch =>{
-        dispatch(begin());
-        request.delete('/marques/'+id, head)
+        request.post('/marques', body, head)
             .then(function (response) {
-                dispatch(end(id));
+                dispatch(end(response));
             })
             .catch(function (error) {
                 dispatch(err(error));
@@ -21,17 +26,12 @@ export function deleteMarque(id) {
     }
 }
 
-export const begin = () => ({
-    type: "BEGIN_DELETE",
-});
-
-
-export const end = (id) => ({
-    type: "END_DELETE",
-    id
+export const end = (response) => ({
+    type: "END_GET",
+    payload: response
 });
 
 export const err = (error) => ({
-    type: "ERROR_DELETE",
+    type: "ERROR_GET",
     payload: error
 });

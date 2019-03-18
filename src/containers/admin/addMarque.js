@@ -10,9 +10,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
-import {addMarque} from "../../actions/addMarque";
+import {addMarque} from "../../actions/admin/addMarque";
 import SnackBar from "../../components/admin/snackBar";
-import {resetAddFabricant} from "../../actions/resetAddMarque";
+import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
 
 
 class AddMarque extends React.Component {
