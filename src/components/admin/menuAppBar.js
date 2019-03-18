@@ -5,26 +5,29 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Car from '@material-ui/icons/DirectionsCar'
+import Car from './../../assets/logoWhite.svg'
+
 const styles = {
     root: {
         flexGrow: 1,
     },
     grow: {
         flexGrow: 1,
-        marginLeft:'40%'
+
     },
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
     },
     icon:{
-        marginTop:10
-    }
+        height:35,
+        width:35,
+        marginLeft:'43%'
+
+    },
 };
 
 class MenuAppBar extends React.Component {
@@ -40,6 +43,12 @@ class MenuAppBar extends React.Component {
         this.setState({ anchorEl: null });
     };
 
+    handleSignOut = () => {
+        this.handleClose();
+        localStorage.clear();
+        window.location.reload();
+    };
+
     render() {
         const { classes } = this.props;
         const { auth, anchorEl } = this.state;
@@ -49,12 +58,14 @@ class MenuAppBar extends React.Component {
             <div className={classes.root}>
                 <AppBar>
                     <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
+
+                        <img src={Car}  className={classes.icon} alt="img"/>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
-                            <Car className={classes.icon} /> Sayara
+                            &nbsp;&nbsp;Sayara DZ
                         </Typography>
+
+
+
                         {auth && (
                             <div>
                                 <IconButton
@@ -80,7 +91,8 @@ class MenuAppBar extends React.Component {
                                     onClose={this.handleClose}
                                 >
                                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Mon Compte</MenuItem>
+                                    <MenuItem onClick={this.handleSignOut}>Déconnecter</MenuItem>
                                 </Menu>
                             </div>
                         )}

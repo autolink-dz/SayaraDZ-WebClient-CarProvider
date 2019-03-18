@@ -1,95 +1,66 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {getFabricantList} from "../../actions/getFabricantList";
+import {getMarquesList} from "../../actions/admin/getMarquesList";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from "@material-ui/core/Grid";
-import MediaCard from './../../components/admin/card'
+import MediaCard from './card'
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import {Waypoint} from "react-waypoint";
 
 class MainAdmin extends Component {
-
+    constructor(props)
+    {
+        super(props);
+        this.fetchData = this.fetchData.bind(this);
+    }
     componentDidMount() {
-        this.props.dispatch(getFabricantList())
-    }
+        if ( this.props.fabricants.length === 0)
+        this.props.dispatch(getMarquesList('0'));
+    };
 
-    getGrids(){
-       let data = this.props.response.response.data.data;
-       console.log(data.length);
-       let cardArray=[];
-       data.map( (elem,index)=>{
-           if(index % 4==0){
-               let g =React.createElement(
-                   Grid,
-                   {item:true ,xs:1},
-                   null
-               );
-               cardArray.push(g);
-           }
-           let card = React.createElement(
-               Grid,
-               {item:true ,xs:true},
-               React.createElement(
-                   MediaCard,
-                   {nom:elem.nom ,url:elem.url,key:elem.id},
-                   null
-               )
-           );
-           cardArray.push(card);
-       } );
-       return cardArray;
-    }
-    lert(){
-        alert("qsd");
-    }
-    getContainers(grids){
-        let arrContainers=[];
-        let arrCards=[];
-        let container=null;
-        grids.map( (grid,index)=>{
-            if(index % 5==0 ){
-                container=React.createElement(
-                    Grid,
-                    {container:true},
-                    arrCards
-                );
-                arrContainers.push(container);
-                arrCards=[];
-            }
-            else{
-                arrCards.push(grid);
-            }
-
-        });
-        container=React.createElement(
-            Grid,
-            {container:true},
-            arrCards
+    _renderItems(){
+        if (this.props.error){
+            return (
+                <div style={{paddingTop:'17%'}}>
+                    <h2 align="center">
+                        Error, Token expired !
+                    </h2>
+                </div>
+            )
+        }
+        return (
+            <GridList style={{marginLeft:'5%',marginTop:'5%'}} cellHeight={350} cols={5}>
+                {this.props.loading && this.props.fabricants.map( (fab,index) =>
+                <GridListTile key={index}>
+                    <MediaCard nom={fab.nom} url={fab.url} id={fab.id} />
+                </GridListTile>
+            )}
+            </GridList>
         );
-        arrContainers.push(container);
-
-        return arrContainers;
     }
+    fetchData(){
+        this.props.dispatch(getMarquesList(this.props.next));
+    };
+    _renderWaypoint(){
+        if (this.props.loading){
+            return (
+                <Waypoint
+                    onEnter={this.fetchData}
+                />
+            );
+        }
+    }
+
 
     render() {
-        let cards=null;
-        if(this.props.response.loading){
-            console.log(this.getGrids());
-            cards = this.getContainers(this.getGrids());
-            console.log(cards);
-        }
-        let stProgresse = {marginLeft:'50%',marginTop:'10%',textAlign: 'center',paddingTop:20};
-
+        let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
         return (
-            <div style={{paddingLeft:70}}>
-                <h1 style={{ textAlign: 'center',paddingTop:60}}>Liste des Fabricants</h1>
-                <CircularProgress style={this.props.response.loading ? {display:'none',marginLeft:'50%',marginTop:'10%',textAlign: 'center',paddingTop:20}  : stProgresse} />
-
-                <div>{cards!=null && cards.map((card,index)=>
-
-                    <div> {card}</div>
-
-                )}
-                </div>
+            <div >
+                <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
+                {this._renderItems()}
+                {this._renderWaypoint()}
+                <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
             </div>
         );
     }
@@ -97,16 +68,19 @@ class MainAdmin extends Component {
 
 function mapStateToProps(state) {
     return {
-        response : state.getFabricantListReducer
+        fabricants : state.marquesListReducer.fabricants,
+        loading : state.marquesListReducer.loading,
+        error : state.marquesListReducer.error,
+        next : state.marquesListReducer.next,
     };
 }
+
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        getFabricantList
+        getMarquesList
     });
     return { ...actions, dispatch };
 }
-
 
 export default connect(
     mapStateToProps,matchDispatchToProps

@@ -10,10 +10,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab';
 import {bindActionCreators} from "redux";
-import {addFabricant} from "../../actions/addFabricant";
-import SnackBar from "./snackBar";
+import {addMarque} from "../../actions/admin/addMarque";
+import SnackBar from "../../components/admin/snackBar";
+import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
 
-class AddFabricant extends React.Component {
+
+class AddMarque extends React.Component {
     state = {
         open: false,
         name:'',
@@ -26,11 +28,9 @@ class AddFabricant extends React.Component {
     handleCloseA = () => {
         this.setState({ open: false });
     };
-
     handleAdd = ()=>{
-        this.props.dispatch(addFabricant(this.state.name,this.state.url));
+        this.props.dispatch(addMarque(this.state.name,this.state.url));
         this.handleCloseA();
-
     };
     handleName= (e) =>{
         this.setState({ name: e.target.value });
@@ -40,18 +40,21 @@ class AddFabricant extends React.Component {
     };
 
     render() {
-        if (this.props.loading.loading){
-           if(!this.props.loading.error){
-               let msg = "Fabricant" +this.state.name+" est ajouté avec success !\"";
-               return <SnackBar type='success' msg={msg} />
+        let snack = null;
+        if (this.props.add){
+           if(!this.props.error){
+               let msg = "Fabricant " +this.state.name+" est ajouté avec success !\"";
+               snack = <SnackBar type='success' msg={msg} />
            }
            else {
-               return <SnackBar type='error' msg='Erreur, veuillez resseyer svp !'/>
+               snack = <SnackBar type='error' msg='Erreur, veuillez resseyer svp !'/>
            }
+            this.props.dispatch(resetAddFabricant())
         }
         return (
-            <div>
-                <Fab color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
+            <div >
+                {snack}
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
                     <AddIcon />
                 </Fab>
                 <Dialog
@@ -109,15 +112,16 @@ class AddFabricant extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        loading : state.addFabricantReducer
+        add : state.marquesListReducer.add,
+        error : state.marquesListReducer.error
     };
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addFabricant
+        addMarque,resetAddFabricant
     });
     return { ...actions, dispatch };
 }
 export default connect(
     mapStateToProps,matchDispatchToProps
-)(AddFabricant);
+)(AddMarque);
