@@ -7,9 +7,18 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import navbarReducer  from './../../../reducers/navbarReducer'
 import {bindActionCreators} from "redux";
 import { Link } from 'react-router-dom'
+import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
+
+
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
 const styles = theme => ({
     main: {
         width:'100%',
@@ -30,6 +39,17 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: '#393A7E'
     },
+    menuItem: {
+      
+      '&:focus': {
+        backgroundColor: theme.palette.primary.main,
+        '& $primary, & $icon': {
+          color: theme.palette.common.white,
+        },
+      },
+    },
+    primary: {marginLeft: '-25%',},
+    icon: {},
 
 });
 
@@ -43,17 +63,26 @@ class Gestion extends React.Component {
                     <Typography component="h1" variant="h5">
                        Menu
                     </Typography><br/>
-                    <form className={this.props.classes.form}>
-                        <Button key='1' onClick={this.mainModele}>Gérer Modele</Button>
-                        <Link color="inherit" to="/fabricant/gestion/modele">Gérer Modele</Link>
-                        <hr />
-                        <Link color="inherit" to="/fabricant/gestion/version">Gérer Version</Link>
-                        <hr />
-                        <Link color="inherit" to="/fabricant/gestion/option">Gérer Option</Link>
-                        <hr />
-                        <Link color="inherit" to="/fabricant/gestion/couleur">Gérer Couleur</Link>
-                        <br />
-                    </form>
+                    <MenuList >
+                      <MenuItem className={this.props.classes.menuItem} component={Link} to="/fabricant/gestion/modele">
+                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Gérer modele" />
+                      </MenuItem>
+                      
+                      <MenuItem className={this.props.classes.menuItem} component={Link} to="/fabricant/gestion/version">
+                        
+                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Gérer version" />
+                      </MenuItem>
+                      
+                      <MenuItem className={this.props.classes.menuItem} component={Link} to="/fabricant/gestion/option">
+                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Gérer option" />
+                      </MenuItem>
+          
+                      <MenuItem className={this.props.classes.menuItem} component={Link} to="/fabricant/gestion/couleur">
+                        
+                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Gérer couleur" />
+                      </MenuItem>
+                      
+                    </MenuList>
                 </Paper>
             </main>
         </Grid>
@@ -67,7 +96,6 @@ Gestion.propTypes = {
 
   function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        navbarReducer
     });
     return { ...actions, dispatch };
   }

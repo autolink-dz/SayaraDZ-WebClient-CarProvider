@@ -20,7 +20,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import gestionReducer  from './../../../../reducers/gestionReducer'
+import versionReducer  from './../../../../reducers/versionReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
 import Icon from '@material-ui/core/Icon';
@@ -351,13 +351,13 @@ EnhancedTable.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    versions : state.gestionReducer.versions
+    versions : state.versionReducer.versions
   };
 }
 
 function matchDispatchToProps(dispatch) {
   let actions =  bindActionCreators({
-      gestionReducer
+    versionReducer
   });
   return { ...actions, dispatch };
 }
