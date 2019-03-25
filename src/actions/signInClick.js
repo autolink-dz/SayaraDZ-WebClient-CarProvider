@@ -27,7 +27,6 @@ export function signInClick(email,password){
             .then((response) => {
                 localStorage.setItem('localId', response.localId);
                 localStorage.setItem('idToken', response.idToken);
-
                 api = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/admin";
                 const requestType = new Request(api, {
                     method: 'GET',
