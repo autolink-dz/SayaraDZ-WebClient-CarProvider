@@ -2,9 +2,13 @@ import {combineReducers} from 'redux'
 import fireSignIn from './fireSignIn'
 import gestionReducer from './gestionReducer'
 import versionReducer from './versionReducer'
+import marquesListReducer from "./marquesListReducer";
+import fabAdminListReducer from "./fabAdminListReducer";
+import showDialogReducer from "./showDialogReducer";
+
 
 const AllReducers = combineReducers({
-    fireSignIn, gestionReducer, versionReducer
+    fireSignIn, marquesListReducer,fabAdminListReducer,showDialogReducer
 });
 
 export default AllReducers;
