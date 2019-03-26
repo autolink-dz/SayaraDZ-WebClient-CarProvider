@@ -8,7 +8,7 @@ import showDialogReducer from "./showDialogReducer";
 
 
 const AllReducers = combineReducers({
-    fireSignIn, marquesListReducer,fabAdminListReducer,showDialogReducer
+    fireSignIn, marquesListReducer,fabAdminListReducer,showDialogReducer,gestionReducer,versionReducer
 });
 
 export default AllReducers;

@@ -9,19 +9,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Car from '@material-ui/icons/DirectionsCar';
+import Car from './../../assets/logoWhite.svg'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import Button from '@material-ui/core/Button';
 import {getModelesList} from "./../../actions/modeleActions/getModelesList";
-
-import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
-const axios = require('axios');
 
 const styles = {
     root: {
@@ -29,17 +24,20 @@ const styles = {
     },
     grow: {
         flexGrow: 1,
-        marginLeft:'10%'
     },
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
     },
     icon:{
-        marginTop:10
-    }
+        height:35,
+        width:35,
+    },
+    toolbar: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
 };
-var request = require('./../../actions/api/service');
 class NavBar extends React.Component {
     state = {
         auth: true,
@@ -47,15 +45,10 @@ class NavBar extends React.Component {
         value: 'one',
     };
 
-//////////////////////////////////////////////////////////////////////////
     componentDidMount() {
-        console.log("---------------------------")
         this.props.dispatch(getModelesList('0'));
     };
-    fetchData(){
-        this.props.dispatch(getModelesList(this.props.next));
-    };
-/////////////////////////////////////////////////////////////////////////////
+
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
     };
@@ -67,6 +60,12 @@ class NavBar extends React.Component {
     handleChange = (event, value) => {
       this.setState({ value });
     };
+
+    handleSignOut = () => {
+        this.handleClose();
+        localStorage.clear();
+        window.location.reload();
+    };
  
     render() {
         const { classes } = this.props;
@@ -76,23 +75,20 @@ class NavBar extends React.Component {
         return (
             <div className={classes.root}>
                 <AppBar>
-                
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
+                    <Toolbar className={classes.toolbar}>
+
+                        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+                            <img src={Car}  className={classes.icon} alt="img"/>
+                            &nbsp;&nbsp;Sayara-DZ
+                        </Typography>
+
                         <Tabs value={value} onChange={this.handleChange}>
                           <Tab value="one" label="Dashbord" component={Link} to="/fabricant/dashbord" onClick={this.menuDashbord} />
                           <Tab value="two" label="Gestion" component={Link} to="/fabricant/gestion/modele" />
                           <Tab value="three" label="Stock" component={Link} to="/fabricant/stock" />
                           <Tab value="four" label="Simulation" to="/fabricant/simulation" />
                           <Tab value="five" label="Commande" component={Link} to="/fabricant/commande" />
-                          
                         </Tabs>
-          
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            <Car className={classes.icon} /> Sayara
-                        </Typography>   
                         {auth && (
                             <div>
                                 <IconButton
@@ -118,7 +114,8 @@ class NavBar extends React.Component {
                                     onClose={this.handleClose}
                                 >
                                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Mon Compte</MenuItem>
+                                    <MenuItem onClick={this.handleSignOut}>Déconnecter</MenuItem>
                                 </Menu>
                             </div>
                         )}
@@ -136,7 +133,6 @@ NavBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
-   // versions : state.gestionReducer.versions,
     modeles : state.gestionReducer.modeles
   };
 }
