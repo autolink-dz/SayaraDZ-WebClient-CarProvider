@@ -10,6 +10,7 @@ import Version from './mains/gestion/version'
 import Option from './mains/gestion/option'
 
 import { Route, Switch} from 'react-router-dom'
+import {FirebaseContext} from "../../utils/firebase/indexFireBase";
 
 class Fabricant extends Component {
     render() {
@@ -52,9 +53,14 @@ class Fabricant extends Component {
                             } />
 
                         <Route path='/fabricant/stock' render={props =>
-                            <Grid container spacing={24}>
-                                <Stock />
-                            </Grid>
+                            <FirebaseContext.Consumer>{
+                                firebase=>
+                                    {
+                                        return <Stock firebase={firebase} />
+                                    }
+                            }
+                            </FirebaseContext.Consumer>
+
                             } />
                         <Route path='/fabricant/simulation' render={props =>
                             <Grid container spacing={24}>

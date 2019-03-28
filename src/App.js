@@ -12,7 +12,8 @@ import FabricantAdmin from "./components/admin/fabricantAdmin";
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#158CF6' },
-    secondary: { main: '#158CF6' }
+    secondary: { main: '#158CF6' },
+    submit: { main: '#3BB540' }
   },
   typography: { useNextVariants: true },
 });
@@ -26,7 +27,7 @@ class App extends Component {
                 <Switch>
                   <PrivateRoute path="/admin/:id" component={FabricantAdmin}/>
                   <PrivateRoute path='/admin' component={Admin} />
-                  <PrivateRoute path="/fabricant" component={Fabricant} />
+                  <Route path="/fabricant" component={Fabricant} />
                   <Route component={SignInUi} />
                   <Route path="/" component={SignInUi} exact />
                 </Switch>

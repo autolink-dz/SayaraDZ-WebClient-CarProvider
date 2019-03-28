@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -29,15 +28,16 @@ const styles = {
         marginLeft: -12,
         marginRight: 20,
     },
-    icon:{
-        height:35,
-        width:35,
+    icon: {
+        height: 35,
+        width: 35,
     },
     toolbar: {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
 };
+
 class NavBar extends React.Component {
     state = {
         auth: true,
@@ -82,7 +82,11 @@ class NavBar extends React.Component {
                             &nbsp;&nbsp;Sayara-DZ
                         </Typography>
 
-                        <Tabs value={value} onChange={this.handleChange}>
+                        <Tabs TabIndicatorProps={{
+                            style: {
+                                backgroundColor: "#ffffff"
+                            }
+                        }} value={value} onChange={this.handleChange}>
                           <Tab value="one" label="Dashbord" component={Link} to="/fabricant/dashbord" onClick={this.menuDashbord} />
                           <Tab value="two" label="Gestion" component={Link} to="/fabricant/gestion/modele" />
                           <Tab value="three" label="Stock" component={Link} to="/fabricant/stock" />

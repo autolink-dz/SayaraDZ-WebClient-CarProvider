@@ -1,99 +1,199 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { connect } from 'react-redux';
-import {bindActionCreators} from "redux";
-import { Link } from 'react-router-dom'
-import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
+import Chip from "@material-ui/core/Chip";
+import FaceIcon from '@material-ui/icons/CloudUpload';
+import UploadIcon from '@material-ui/icons/CreateNewFolderOutlined';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import SnackBar from "../../../components/admin/snackBar";
 
-
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 const styles = theme => ({
-    main: {
-        width:'100%',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-
+    container: {
+        margin: '2%',
+        padding: '2%',
+        borderRadius: 20,
+        display: 'Block',
+        height:'78vh'
     },
-    paper: {
-      //  marginTop: theme.spacing.unit * 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-        height:550
+    input: {
+        display: 'none',
     },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: '#393A7E'
-    },
-    menuItem: {
-      
-      '&:focus': {
-        backgroundColor: theme.palette.primary.main,
-        '& $primary, & $icon': {
-          color: theme.palette.common.white,
+    submit: {
+        justifyContent: 'center',
+        marginLeft: '47%',
+        marginTop: '2%',
+        backgroundColor: theme.palette.submit.main,
+        color:'#FFF',
+        '&:hover': {
+            backgroundColor: '#2b862e',
         },
-      },
-    },
-    primary: {marginLeft: '-25%',},
-    icon: {},
-
+    }
 });
 
-class Stock extends React.Component {  
-  render() {
-    return (
-        <Grid item xs={2}>
-            <main className={this.props.classes.main}>
-                <CssBaseline />
-                <Paper className={this.props.classes.paper}>
-                    <Typography component="h1" variant="h5">
-                       Menu
-                    </Typography><br/>
-                    <MenuList >
-                      <MenuItem className={this.props.classes.menuItem} component={Link} to="stock">
-                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Stock 1" />
-                      </MenuItem>
-                      
-                      <MenuItem className={this.props.classes.menuItem} component={Link} to="stock">
-                        
-                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Stock 2" />
-                      </MenuItem>
-                      
-                      <MenuItem className={this.props.classes.menuItem} component={Link} to="stock">
-                        <ListItemText classes={{ primary: this.props.classes.primary }} inset primary="Stock 3" />
-                      </MenuItem>
-                    </MenuList>
-                </Paper>
-            </main>
-        </Grid>
+class Stock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            colorStock: 'default',
+            colorTarifs: 'default',
+            fileStock: null,
+            fileTarifs: null,
+            submit: false,
+            finish:false
+        };
+        this.input1 = React.createRef();
+        this.input2 = React.createRef();
+    }
+
+     handleStock(e) {
+         let file = e.target.files[0];
+         if (file) {
+             let r = new FileReader();
+             r.onload = () => {
+                 this.setState({
+                     fileStock: file,
+                     colorStock: 'secondary'
+                 });
+                 console.log(this.state);
+             };
+             r.readAsText(file);
+         }
+     }
+
+    handleTarifs(e){
+        let file = e.target.files[0];
+        if(file){
+            let r = new FileReader();
+            r.onload= ()=>{
+                this.setState({
+                    fileTarifs:file,
+                    colorTarifs:'secondary'
+                });
+                console.log(this.state);
+            };
+            r.readAsText(file);
+        }
+    }
+    handleSubmit(){
+        this.setState({
+            submit:true
+        });
+
+        this.props.firebase.storage().ref().child('/csv/stocks/'+localStorage.getItem('id_marque')+'.csv')
+            .put(this.state.fileStock).then(()=> {
+            this.props.firebase.storage().ref().child('/csv/tarifs/'+localStorage.getItem('id_marque')+'.csv')
+                .put(this.state.fileTarifs).then(() => {
+                this.setState({
+                    finish:true,
+                    submit: false,
+                });
+                setTimeout(()=>{
+                    this.setState({
+                        colorStock: 'default',
+                        colorTarifs: 'default',
+                        fileStock: null,
+                        fileTarifs: null,
+                        submit: false,
+                        finish:false
+                    });
+                    this.input1.current.value='';
+                    this.input2.current.value='';
+                },3000)
+            });
+        });
+    }
+
+    render() {
+        const { classes } = this.props;
+        let snackBar=null;
+        if(this.state.finish) snackBar = <SnackBar type='success' msg={'Les fichiers sont uploadé avec succès'} />
+        return (
+            <div>
+                {snackBar}
+                <Paper className={classes.container} elevation={2}>
+                 <h1 align="center">Uploader des fichiers</h1><br/><br/>
+                 <Grid container >
+                     <Grid item xs={12}>
+                         <Grid container spacing={16} >
+                             <Grid item xs align={"center"}>
+                                 <Chip
+                                     icon={<FaceIcon />}
+                                     label="Uploader fichier stock"
+                                     clickable={false}
+                                     className={classes.chip}
+                                     color={this.state.colorStock}
+                                     variant="outlined"
+                                     style={{
+                                         backgroundColor: "#ffffff"
+                                     }}
+                                 />
+                                 <br/><br/>
+                                 <p align="justify">
+                                     1- Upload de la liste des véhicules actuellement disponibles. Ce fichier est au format CSV et contient les informations telles que numéro de châssis, version et options
+                                 </p>
+                                 <br/><br/>
+                                 <input
+                                     accept="text/csv"
+                                     className={classes.input}
+                                     id="contained-button-fileStock"
+                                     type="file"
+                                     onChange={(e)=>this.handleStock(e)}
+                                     ref={this.input1}
+                                 />
+                                 <label htmlFor="contained-button-fileStock">
+                                     <Button variant="contained" component="span" color={"primary"} >
+                                         Upload
+                                     </Button>
+                                 </label>
+                             </Grid>
+                             <Grid item xs  align={"center"}>
+                                 <Chip
+                                     icon={<UploadIcon />}
+                                     label="Uploader fichier tarifs"
+                                     clickable={false}
+                                     className={classes.chip}
+                                     color={this.state.colorTarifs}
+                                     variant="outlined"
+                                 />
+                                 <br/><br/>
+                                 <p align="justify">
+                                     2- Upload d’un fichier CSV contenant une liste de lignes de tarifs. Ces lignes de tarifs seront utilisées pour le calcul des prix des véhicules pour les commandes.                                 </p>
+                                 <br/>
+                                 <input
+                                     accept="text/csv"
+                                     className={classes.input}
+                                     id="contained-button-file"
+                                     type="file"
+                                     multiple
+                                     onChange={(e)=>this.handleTarifs(e)}
+                                     ref={this.input2}
+                                 />
+                                 <label htmlFor="contained-button-file">
+                                     <Button variant="contained" component="span" color={"primary"}>
+                                         Upload
+                                     </Button>
+                                 </label>
+                             </Grid>
+                         </Grid>
+                     </Grid>
+                     </Grid>
+                 <br/>
+                 <LinearProgress variant="query" style={(this.state.submit?{display:'block'}:{display:'none'})} />
+                 <Button
+                     variant="contained"
+                     className={classes.submit}
+                     disabled={!(this.state.fileStock != null && this.state.fileTarifs != null) || this.state.submit}
+                     onClick={()=>this.handleSubmit() }
+                 >
+                     Submit
+                 </Button>
+                 </Paper>
+
+          </div>
     );
   }
 }
 
-Stock.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-  function matchDispatchToProps(dispatch) {
-    let actions =  bindActionCreators({
-    });
-    return { ...actions, dispatch };
-  }
-  
-  export default connect(
-    matchDispatchToProps
-  )(withStyles(styles)(Stock));
+export default (withStyles(styles)(Stock));

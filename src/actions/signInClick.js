@@ -50,14 +50,36 @@ export function signInClick(email,password){
                         let myCipher = cipher('hashedSalt');
                         let _SSID = myCipher('8JhnuSv3e8VRyt4DCv8Dv4lCWMj1');
                         let response = myCipher(String(admin));
-
                         localStorage.setItem(_SSID, response);
-
                         if (admin){
                             window.location.assign("/admin");
                         }
                         else {
-                            window.location.assign("/fabricant");
+                            api = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/fabricants/"+localStorage.getItem('localId');
+                            const requestType = new Request(api, {
+                                method: 'GET',
+                                headers: new Headers({
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
+                                    'cache-control': 'no-cache'
+                                }),
+                            });
+                            fetch(requestType)
+                                .then(responseType => {
+                                    if (responseType.status < 200 || responseType.status >= 300) {
+                                        throw new Error(responseType.statusText);
+                                    }
+                                    return responseType.json();
+                                })
+                                .then((responseType) => {
+                                    localStorage.setItem('id_marque',responseType.id_marque);
+                                    window.location.assign("/fabricant");
+                                })
+                                .catch((e)=>{
+                                    dispatch(signInErr(e));
+                                    console.log(e);
+                                });
+
                         }
                     })
                     .catch((e)=>{
