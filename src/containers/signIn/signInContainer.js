@@ -115,7 +115,7 @@ class SignInContainer extends Component {
 }
 function mapStateToProps(state) {
     return {
-        loading : state.fireSignIn.loading
+        loading : state.signInReducer.loading
     };
 }
 function matchDispatchToProps(dispatch) {

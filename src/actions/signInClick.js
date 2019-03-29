@@ -45,13 +45,14 @@ export function signInClick(email,password){
                     return responseType.json();
                     })
                     .then((responseType) => {
-                        dispatch(signInEND());
+
                         let admin = responseType.admin;
                         let myCipher = cipher('hashedSalt');
                         let _SSID = myCipher('8JhnuSv3e8VRyt4DCv8Dv4lCWMj1');
                         let response = myCipher(String(admin));
                         localStorage.setItem(_SSID, response);
                         if (admin){
+                            dispatch(signInEND());
                             window.location.assign("/admin");
                         }
                         else {
@@ -72,6 +73,7 @@ export function signInClick(email,password){
                                     return responseType.json();
                                 })
                                 .then((responseType) => {
+                                    dispatch(signInEND());
                                     localStorage.setItem('id_marque',responseType.id_marque);
                                     window.location.assign("/fabricant");
                                 })

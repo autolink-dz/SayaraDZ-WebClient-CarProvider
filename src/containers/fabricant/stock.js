@@ -7,9 +7,16 @@ import Chip from "@material-ui/core/Chip";
 import FaceIcon from '@material-ui/icons/CloudUpload';
 import UploadIcon from '@material-ui/icons/CreateNewFolderOutlined';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import SnackBar from "../../../components/admin/snackBar";
+import SnackBar from "../../components/admin/snackBar";
 
 const styles = theme => ({
+    root:{
+        backgroundColor:'#e5e5e5',
+        height:'100%',
+        width:'100%',
+        paddingTop:60,
+        margin:0
+    },
     container: {
         margin: '2%',
         padding: '2%',
@@ -110,7 +117,7 @@ class Stock extends React.Component {
         let snackBar=null;
         if(this.state.finish) snackBar = <SnackBar type='success' msg={'Les fichiers sont uploadé avec succès'} />
         return (
-            <div>
+            <div className={classes.root}>
                 {snackBar}
                 <Paper className={classes.container} elevation={2}>
                  <h1 align="center">Uploader des fichiers</h1><br/><br/>
