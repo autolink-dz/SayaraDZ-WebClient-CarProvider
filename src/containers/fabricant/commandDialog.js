@@ -13,6 +13,11 @@ import SnackBar from "../../components/admin/snackBar";
 import {showFabDialog} from "../../actions/admin/showFabDialog";
 import {withStyles} from "@material-ui/core";
 import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from "@material-ui/core/Typography";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 
 const styles = {
@@ -38,6 +43,11 @@ const styles = {
     },
     title: {
         textAlign: 'center',
+    },
+    h3:{
+        marginTop:0,
+        paddingBottom:10,
+        borderBottom:'1px grey solid'
     }
 };
 
@@ -50,6 +60,7 @@ class CommandDialog extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         this.handleClickOpen();
     }
 
@@ -72,30 +83,6 @@ class CommandDialog extends React.Component {
         this.handleCloseA();
     };
 
-    handleName = (e) => {
-        this.setState({nom: e.target.value});
-    };
-
-    handlePrenom = (e) => {
-        this.setState({prenom: e.target.value});
-    };
-
-    handleEmail = (e) => {
-        this.setState({mail: e.target.value});
-    };
-
-    handlePassword = (e) => {
-        this.setState({mdp: e.target.value});
-    };
-
-    handleAdresse = (e) => {
-        this.setState({adresse: e.target.value});
-    };
-
-    handlePhone = (e) => {
-        this.setState({num_tlp: e.target.value});
-    };
-
 
     render() {
         let snack = null;
@@ -116,16 +103,49 @@ class CommandDialog extends React.Component {
                     onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
                     style={styles.dialog}
+                    scroll='body'
+                    maxWidth='sm'
                 >
                     <DialogContent>
                         <div style={styles.title}>
-                            <Cirlce fontSize='large'/>
-                            <DialogTitle id="form-dialog-title">Modifier un Fabricant</DialogTitle>
+                            <img src={this.props.version.url} alt="car photo" width="240" height="200"/>
+                            <h3 style={styles.h3}>{this.props.version.nom}</h3>
                         </div>
-                        <DialogContentText>
-                            Veuillez introduire les informations concernant le fabricant
-                        </DialogContentText>
-                        <br/>
+                        <ExpansionPanel defaultExpanded>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Expansion Panel 1</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                                    sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+
+                        <ExpansionPanel defaultExpanded>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Expansion Panel 1</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                                    sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+
+                        <ExpansionPanel defaultExpanded>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>Expansion Panel 1</Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                                    sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
 
                     </DialogContent>
                     <div style={styles.dialog}>

@@ -6,6 +6,7 @@ import {withStyles} from "@material-ui/core";
 import MaterialTable from 'material-table'
 import Block from "../../assets/clear.svg";
 import Checked from "../../assets/circle.svg";
+import Info from "../../assets/info.svg";
 import Search from '@material-ui/icons/Search'
 import SaveAlt from '@material-ui/icons/SaveAlt'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
@@ -23,7 +24,6 @@ import Avatar from "@material-ui/core/Avatar";
 import {getCommandes} from "../../actions/fabricant/getCommandes";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {showFabDialog} from "../../actions/admin/showFabDialog";
-import PutFab from "../admin/mainFabricants";
 import CommandDialog from "./commandDialog";
 
 const styles = theme => ({
@@ -41,11 +41,17 @@ class Commande extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nom: '',
-            url: '',
-            cmdArray: [],
             open: false,
-            id_marque: localStorage.getItem('id_marque')
+            id_marque: localStorage.getItem('id_marque'),
+            cmd_id:'',
+            automobiliste_id:'',
+            version_id:''
+        }
+    }
+
+    getCmd(id){
+        for(let cmd of this.props.cmdArray){
+            if (cmd.id===id)return cmd
         }
     }
 
@@ -55,10 +61,12 @@ class Commande extends Component {
     }
 
     commandDialog() {
-        if (this.props.showPut) {
-            return (<CommandDialog
-
-            />)
+        if (this.props.showCmd) {
+            return <CommandDialog
+                automobiliste={this.props.automobilistes[this.state.automobiliste_id]}
+                version={this.props.versions[this.state.version_id]}
+                commmande={this.getCmd(this.state.cmd_id)}
+            />
         }
     }
 
@@ -104,10 +112,8 @@ class Commande extends Component {
         return <CircularProgress style={this.props.loading ? {display: 'none'} : stProgresse}/>
     }
 
-    getData() {
+    showData() {
         if ((this.props.cmdArray.length !== 0) && (this.state.url !== '')) {
-            let cmdArray = [];
-            cmdArray.push(...this.props.cmdArray);
             return (
                 <div>
                     <div style={{textAlign: 'center'}}>
@@ -133,13 +139,12 @@ class Commande extends Component {
                             }}
                             columns={[
                                 {
-                                    title: 'Avatar',
-                                    field: 'avatar',
+                                    title: 'Photo',
+                                    field: 'photo',
                                     render: rowData => {
-                                        //TODO : VERIFY URL !
-                                        if (rowData) {
+                                        if (rowData.photo != null) {
                                             return (
-                                                <Avatar alt={'Logo'} src={this.state.url}/>
+                                                <Avatar alt={'Logo'} src={rowData.photo}/>
                                             )
                                         } else {
                                             return <AccountCircle/>
@@ -147,28 +152,35 @@ class Commande extends Component {
                                     }
 
                                 },
-                                {title: 'Automobilist', field: 'nom',},
-                                {title: 'Vehicule(nom version)', field: 'version'},
-                                {title: 'Prix', field: 'prix', type: 'currency'},
+                                {title: 'Client', field: 'nom',},
+                                {title: 'Vehicule', field: 'version'},
+                                {title: 'Prix', field: 'prix'},
+                                {title: 'Versement', field: 'versement'},
                                 {
-                                    title: 'État', field: 'disabled',
+                                    title: 'État', field: 'etas',
                                     cellStyle: (data) => {
-                                        if (data)
+                                        if (data === 'rejeté')
                                             return {
                                                 backgroundImage: `url(${Block})`,
                                                 backgroundRepeat: 'no-repeat',
                                                 backgroundPosition: 'center'
                                             };
-                                        else
+                                        else if (data === 'approuvé')
                                             return {
                                                 backgroundImage: `url(${Checked})`,
                                                 backgroundRepeat: 'no-repeat',
                                                 backgroundPosition: 'center'
                                             };
+                                        else if (data === 'en cours')
+                                            return {
+                                                backgroundImage: `url(${Info})`,
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition: 'left',
+                                            };
                                     }
                                 },
                             ]}
-                            data={cmdArray}
+                            data={this.props.commandes}
                             title="Commandes "
                             options={{
                                 actionsColumnIndex: -1,
@@ -180,10 +192,12 @@ class Commande extends Component {
                                     tooltip: 'Modifier',
                                     onClick: (event, rowData) => {
                                         this.setState({
-                                            fab: rowData
+                                            cmd_id: rowData.id,
+                                            automobiliste_id:rowData.id_automobiliste,
+                                            version_id:rowData.id_version,
                                         });
                                         this.props.dispatch(showFabDialog(true));
-                                    },
+                                    }
                                 },
                                 {
                                     icon: Supprimer,
@@ -201,36 +215,35 @@ class Commande extends Component {
                     </div>
                 </div>
             )
+        } else if (this.props.cmdArray.length === 0 && this.props.loading) {
+            return <h1 style={{textAlign: 'center', paddingTop: 250}}>Pas de commandes pour le moment.</h1>;
         }
     }
-
-    //else if (this.props.fabricants.length === 0 && this.props.loading) {
-    //return <h1 style={{textAlign:'center',paddingTop:250}}>Ajouter des fabricants svp.</h1>;
-    //}
     render() {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
                 {this.loading()}
-                {this.getData()}
+                {this.showData()}
                 {this.commandDialog()}
             </div>
         );
     }
 }
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
     return {
         loading: state.commandesReducer.loading,
-        cmdArray: state.commandesReducer.cmdArray
+        cmdArray: state.commandesReducer.cmdArray,
+        automobilistes: state.commandesReducer.automobilistes,
+        versions: state.commandesReducer.versions,
+        commandes: state.commandesReducer.commandes,
+
+        showCmd: state.showDialogReducer.showPut,
     };
 }
 
-function
-
-matchDispatchToProps(dispatch) {
+function matchDispatchToProps(dispatch) {
     let actions = bindActionCreators({
         getCommandes,
         showFabDialog
@@ -238,16 +251,4 @@ matchDispatchToProps(dispatch) {
     return {...actions, dispatch};
 }
 
-export default withRouter(connect
-
-(
-    mapStateToProps
-    ,
-    matchDispatchToProps
-)(
-    withStyles(styles)
-
-    (
-        Commande
-    )))
-;
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(withStyles(styles)(Commande)));
