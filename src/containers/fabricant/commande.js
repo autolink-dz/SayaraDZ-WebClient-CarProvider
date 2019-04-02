@@ -18,13 +18,14 @@ import FilterList from '@material-ui/icons/FilterList'
 import Remove from '@material-ui/icons/Remove'
 import Reset from '@material-ui/icons/Clear'
 import Edit from '@material-ui/icons/Edit'
-import Supprimer from '@material-ui/icons/Close'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Avatar from "@material-ui/core/Avatar";
 import {getCommandes} from "../../actions/fabricant/getCommandes";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {showFabDialog} from "../../actions/admin/showFabDialog";
 import CommandDialog from "./commandDialog";
+import SnackBar from "../../components/admin/snackBar";
+import {resetAddFabricant} from "../../actions/admin/resetAddMarque";
 
 const styles = theme => ({
     root: {
@@ -43,15 +44,15 @@ class Commande extends Component {
         this.state = {
             open: false,
             id_marque: localStorage.getItem('id_marque'),
-            cmd_id:'',
-            automobiliste_id:'',
-            version_id:''
+            cmd_id: '',
+            automobiliste_id: '',
+            version_id: ''
         }
     }
 
-    getCmd(id){
-        for(let cmd of this.props.cmdArray){
-            if (cmd.id===id)return cmd
+    getCmd(id) {
+        for (let cmd of this.props.commandes) {
+            if (cmd.id === id) return cmd
         }
     }
 
@@ -65,17 +66,13 @@ class Commande extends Component {
             return <CommandDialog
                 automobiliste={this.props.automobilistes[this.state.automobiliste_id]}
                 version={this.props.versions[this.state.version_id]}
-                commmande={this.getCmd(this.state.cmd_id)}
+                commande={this.getCmd(this.state.cmd_id)}
             />
         }
     }
 
     handleClickOpen = () => {
         this.setState({open: true});
-    };
-
-    handleClose = () => {
-        this.setState({open: false});
     };
 
     fetchImage(id) {
@@ -113,7 +110,7 @@ class Commande extends Component {
     }
 
     showData() {
-        if ((this.props.cmdArray.length !== 0) && (this.state.url !== '')) {
+        if ((this.props.commandes.length !== 0) && (this.state.url !== '')) {
             return (
                 <div>
                     <div style={{textAlign: 'center'}}>
@@ -159,19 +156,19 @@ class Commande extends Component {
                                 {
                                     title: 'État', field: 'etas',
                                     cellStyle: (data) => {
-                                        if (data === 'rejeté')
+                                        if (data === 'Rejetée')
                                             return {
                                                 backgroundImage: `url(${Block})`,
                                                 backgroundRepeat: 'no-repeat',
-                                                backgroundPosition: 'center'
+                                                backgroundPosition: 'left',
                                             };
-                                        else if (data === 'approuvé')
+                                        else if (data === 'Approuvée')
                                             return {
                                                 backgroundImage: `url(${Checked})`,
                                                 backgroundRepeat: 'no-repeat',
-                                                backgroundPosition: 'center'
+                                                backgroundPosition: 'left',
                                             };
-                                        else if (data === 'en cours')
+                                        else if (data === 'En cours')
                                             return {
                                                 backgroundImage: `url(${Info})`,
                                                 backgroundRepeat: 'no-repeat',
@@ -186,6 +183,16 @@ class Commande extends Component {
                                 actionsColumnIndex: -1,
                                 pageSize: 10
                             }}
+                            onRowClick={
+                                (event, rowData, toggleDetailPanel) => {
+                                    this.setState({
+                                        cmd_id: rowData.id,
+                                        automobiliste_id: rowData.id_automobiliste,
+                                        version_id: rowData.id_version,
+                                    });
+                                    this.props.dispatch(showFabDialog(true));
+                                }
+                            }
                             actions={[
                                 {
                                     icon: Edit,
@@ -193,36 +200,37 @@ class Commande extends Component {
                                     onClick: (event, rowData) => {
                                         this.setState({
                                             cmd_id: rowData.id,
-                                            automobiliste_id:rowData.id_automobiliste,
-                                            version_id:rowData.id_version,
+                                            automobiliste_id: rowData.id_automobiliste,
+                                            version_id: rowData.id_version,
                                         });
                                         this.props.dispatch(showFabDialog(true));
                                     }
                                 },
-                                {
-                                    icon: Supprimer,
-                                    tooltip: 'Supprimer',
-                                    onClick: (event, rowData) => {
-                                        this.setState({
-                                            idFab: rowData.id,
-                                            nomFab: rowData.nom
-                                        });
-                                        this.handleClickOpen();
-                                    },
-                                }
                             ]}
                         />
                     </div>
                 </div>
             )
-        } else if (this.props.cmdArray.length === 0 && this.props.loading) {
+        } else if (this.props.commandes.length === 0 && this.props.loading) {
             return <h1 style={{textAlign: 'center', paddingTop: 250}}>Pas de commandes pour le moment.</h1>;
         }
     }
+
     render() {
-        const {classes} = this.props;
+        let snack = null;
+        let {classes} = this.props;
+        if (this.props.error || this.props.add) {
+            if (this.props.add) {
+                let msg = "L'opération sur la commande est effectuée avec success !";
+                snack = <SnackBar type='success' msg={msg}/>
+            } else {
+                snack = <SnackBar type='error' msg={this.props.msg}/>
+            }
+            this.props.dispatch(resetAddFabricant())
+        }
         return (
             <div className={classes.root}>
+                {snack}
                 {this.loading()}
                 {this.showData()}
                 {this.commandDialog()}
@@ -234,19 +242,20 @@ class Commande extends Component {
 function mapStateToProps(state) {
     return {
         loading: state.commandesReducer.loading,
-        cmdArray: state.commandesReducer.cmdArray,
         automobilistes: state.commandesReducer.automobilistes,
         versions: state.commandesReducer.versions,
         commandes: state.commandesReducer.commandes,
-
         showCmd: state.showDialogReducer.showPut,
+        add: state.commandesReducer.add,
+        error: state.commandesReducer.error,
     };
 }
 
 function matchDispatchToProps(dispatch) {
     let actions = bindActionCreators({
         getCommandes,
-        showFabDialog
+        showFabDialog,
+        resetAddFabricant,
     });
     return {...actions, dispatch};
 }
