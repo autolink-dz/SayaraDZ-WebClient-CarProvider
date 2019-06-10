@@ -9,14 +9,55 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
-import OptionsCheck from "./../../components/fabricant/mains/gestion/gestionModele/optionsCheck";
 
 import {addModele} from "./../../actions/modeleActions/addModele";
 import {resetAddModele} from "./../../actions/modeleActions/resetAddModele";
 
+import MyForm from "./../../components/fabricant/mains/gestion/gestionModele/OptionsForm";
+import CouleursForm from "./../../components/fabricant/mains/gestion/gestionModele/CouleursForm";
+import { getFormValues} from 'redux-form'
 
+
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Chip from '@material-ui/core/Chip';
+import Divider from '@material-ui/core/Divider';
+//import {FloatingActionButtons} from "./panelOptions"
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 3,
+      },
+      card: {
+        width:'100%',
+        maxWidth: 345,
+        
+      },
+      media: {
+        // ⚠️ object-fit is not supported by IE 11.
+        objectFit: 'cover',
+      },
+      button: {
+        margin: theme.spacing.unit,
+      },
+      hh:{
+       // width : 1500,
+        
+      }
+});
 
 class AddModele extends React.Component {
     state = {
@@ -26,6 +67,7 @@ class AddModele extends React.Component {
         code:''
     };
     handleClickOpen = () => {
+        
         this.setState({ open: true });
     };
 
@@ -33,7 +75,13 @@ class AddModele extends React.Component {
         this.setState({ open: false });
     };
     handleAdd = ()=>{
-        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code));
+
+        if(this.props.options === undefined){
+          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
+        }else{
+          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
+        }
+
         this.handleCloseA();
     };
     handleName= (e) =>{
@@ -47,6 +95,7 @@ class AddModele extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
         let snack = null;
         if (this.props.add){
            if(!this.props.error){
@@ -64,9 +113,15 @@ class AddModele extends React.Component {
                 <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
                     <AddIcon />
                 </Fab>
+             { //<FloatingActionButtons/>
+             
+             }  
+
                 <Dialog
+                
+                className={classes.hh}
                     open={this.state.open}
-                    onClose={this.handleCloseA}
+                //    onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">Ajouter un Modele</DialogTitle>
@@ -96,6 +151,69 @@ class AddModele extends React.Component {
                             fullWidth
                             onChange={ this.handleUrl }
                         />
+
+<div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+              <MyForm />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small">Cancel</Button>
+          <Button size="small" color="primary">
+            Save
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>
+
+                     
+    <div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+          <CouleursForm />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small">Cancel</Button>
+          <Button size="small" color="primary">
+            Save
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>   
+                        <hr />
+                        
                         {
                             /*
                              <br />
@@ -121,10 +239,19 @@ class AddModele extends React.Component {
     }
 }
 
+AddModele.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+
 function mapStateToProps(state) {
     return {
         add : state.gestionReducer.add,
-        error : state.gestionReducer.error
+        error : state.gestionReducer.error,
+        options: getFormValues('MyForm')(state),
+        couleurs: getFormValues('CouleursForm')(state),
+        
+    //    couleurs: getFormValues('CouleursForm')(state)
+        
     };
 }
 function matchDispatchToProps(dispatch) {
@@ -135,4 +262,4 @@ function matchDispatchToProps(dispatch) {
 }
 export default connect(
     mapStateToProps,matchDispatchToProps
-)(AddModele);
+)(withStyles(styles)(AddModele));

@@ -15,8 +15,8 @@ export function getModelesList(next) {
         }
         request.get('/modeles?next='+next+'&page=20',head)
             .then(function (response) {
-                console.log('***----')
-                console.log(response)
+            //    console.log('***----')
+           //     console.log(response)
                 
                 dispatch({type : 'SELECT_MODELES', payload: response});
             })

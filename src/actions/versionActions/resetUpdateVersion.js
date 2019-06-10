@@ -1,4 +1,4 @@
-export function resetUpdateModele() {
+export function resetUpdateVersion() {
     return dispatch =>{
         setTimeout( ()=>{
             dispatch(reset());
@@ -6,5 +6,5 @@ export function resetUpdateModele() {
     }
 }
 export const reset = () => ({
-    type: "RESET_UPDATE_MODELE"
+    type: "RESET_UPDATE_VERSION"
 });

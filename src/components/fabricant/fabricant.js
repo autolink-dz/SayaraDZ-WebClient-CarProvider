@@ -12,7 +12,7 @@ import MainGestion  from './mains/maingestion'
 import Grid from '@material-ui/core/Grid';
 
 import Modele from './mains/gestion/gestionModele/modele'
-import Version from './mains/gestion/version'
+import Version from './mains/gestion/gestionVersion/version'
 import Option from './mains/gestion/option'
 
 import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'

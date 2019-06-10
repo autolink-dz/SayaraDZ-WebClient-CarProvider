@@ -1,6 +1,6 @@
 var request = require('./../api/service');
 
-export function getModelesList(next) {
+export function getVersionsList(next) {
 
     let head= {
         headers: {
@@ -13,12 +13,12 @@ export function getModelesList(next) {
         if(next==null){
             return;
         }
-        request.get('/modeles?next='+next+'&page=20',head)
+        request.get('/versions?next='+next+'&page=20',head)
             .then(function (response) {
-                console.log('***----')
+            /*    console.log("+**+*+**++*+**+*+*+********+++++++++")
                 console.log(response)
-                
-                dispatch({type : 'SELECT_MODELES', payload: response});
+                console.log("+**+*+**++*+**+*+*+********+++++++++")*/
+                dispatch({type : 'SELECT_VERSIONS', payload: response});
             })
             .catch(function (error) {
                 dispatch(err(error));

@@ -14,12 +14,14 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import Button from '@material-ui/core/Button';
 import {getModelesList} from "./../../actions/modeleActions/getModelesList";
+import {getVersionsList} from "./../../actions/versionActions/getVersionList";
 
 import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import { Link } from 'react-router-dom'
-
+//import {deleteVersion} from './../../actions/versionActions/deleteVersion'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { allModeles } from '../../actions/modeleActions/allModeles';
 
 const axios = require('axios');
 
@@ -51,6 +53,13 @@ class NavBar extends React.Component {
     componentDidMount() {
         console.log("---------------------------")
         this.props.dispatch(getModelesList('0'));
+        this.props.dispatch(getVersionsList('0'));
+        this.props.dispatch(allModeles());
+     //   this.props.dispatch(deleteVersion("hRnfDx2nW1NM6r3ZE4to"));
+     
+        console.log("----------------------")
+        console.log(this.props.versions)
+        
     };
     fetchData(){
         this.props.dispatch(getModelesList(this.props.next));
@@ -136,7 +145,7 @@ NavBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
-   // versions : state.gestionReducer.versions,
+    versions : state.versionReducer.versions,
     modeles : state.gestionReducer.modeles
   };
 }

@@ -1,5 +1,14 @@
 const initialState = {
     modeles: [{"id":"eee","nom":"eeeeeeeeeeee"}],
+    allModeles: [],
+  /*  options:[{code: "VOL_CADDY_DZ",
+    couleurs: [],
+    id: "v4h4os5ZHQhK7EjcHDnM",
+    id_marque: "HE54VwUdghgPRb6ZO6I8",
+    nom: "Volkswagen Caddy",
+    options:  [],
+    url: "https://www.autobip.com/storage/photos/car_models/3191.png"
+    }],*/
     error:false,
 
     add:false,
@@ -10,13 +19,22 @@ const initialState = {
     next:0
 };
 let modeles=null;
+let options=null;
+let couleurs=null;
+
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
-            case 'SELECT_MARQUES':
+        case 'SELECT_MARQUES':
             return {
                 ...state,
-                marques: action.payload
+                allModeles: action.payload
             };
+        case 'ALL_MODELES':
+             return {
+                ...state,
+                allModeles: action.payload
+            };
+        
         case 'SELECT_MODELES':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp=false;
@@ -35,7 +53,12 @@ const gestionReducer = (state=initialState,action)=>{
                 add:tmp,
                 next:action.payload.data.next || null
             };
-            
+        case 'PUT_OPTIONS':
+             options= action.payload
+             return{
+                 ...state,
+                 options
+             }
         case 'ADD_MODELE':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp1=false;
@@ -43,9 +66,16 @@ const gestionReducer = (state=initialState,action)=>{
                 modeles.push(action.payload.data);
                 tmp1=true;
                 modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
+                console.log("************************************")
+                console.log(modeles)
+                console.log("****************************************")
             }
             else {
                 modeles.push(...action.payload.data.data);
+                console.log("+++++++++++++++++++++++++++++++++++++")
+                console.log(modeles)
+                console.log("+++++++++++++++++++++++++++++++++++++")
+                
             }
             return {
                 ...state,
@@ -64,6 +94,23 @@ const gestionReducer = (state=initialState,action)=>{
             modeles.forEach(modele=>{
                 if (modele.id===action.id){
                     modele.nom = action.nom;
+                    modele.code = action.code;
+                    modele.url = action.url;
+                    modele.options=action.options;
+                    modele.couleurs=action.couleurs;
+                }
+            });
+            return{
+                ...state,
+                update:true,
+                modeles
+            };
+        case 'PUT_MODELE2':
+            modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
+            modeles.forEach(modele=>{
+                if (modele.id===action.id){
+                    modele.nom = action.nom;
+                    modele.code = action.code;
                     modele.url = action.url;
                 }
             });

@@ -1,6 +1,6 @@
 var request = require('./../api/service');
 
-export function putModele(id,nom,url) {
+export function putModele(id,nom,code,url,options,couleurs) {
     let head= {
         headers: {
             "Accept": "application/json",
@@ -12,22 +12,28 @@ export function putModele(id,nom,url) {
     let body={
         id,
         nom,
-        url
+        code,
+        url,
+        options,
+        couleurs
     };
     return dispatch =>{
         request.put('/modeles/'+id,body,head)
             .then(function (response) {
                 
-                dispatch(end(id,nom,url));
+                dispatch(end(id,nom,code,url,options,couleurs));
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 }
-export const end = (id,nom,url) => ({
+export const end = (id,nom,code,url,options,couleurs) => ({
     type: "PUT_MODELE",
     id,
     nom,
-    url
+    code,
+    url,
+    options,
+    couleurs
 });

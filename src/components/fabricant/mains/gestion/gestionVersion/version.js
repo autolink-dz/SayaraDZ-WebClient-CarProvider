@@ -1,3 +1,56 @@
+/*import React, {Component} from 'react';
+import './../../../../../styles/signInInfo.css'
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TabVersion  from './../tabVersion'
+
+
+const styles = theme => ({
+    main: {
+        width:'100%',
+        height:'100%',
+        display: 'block', // Fix IE 11 issue.
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+    },
+    paper: {
+      //  marginTop: theme.spacing.unit * 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+        height:'100%'
+    },
+});
+
+class Version extends Component {
+    render() {
+        return (
+        <Grid item xs={10}>
+          <main className={this.props.classes.main}>
+                <CssBaseline />
+                <Paper className={this.props.classes.paper}>
+                    <Typography component="h1" variant="h5">
+                       Version
+                    </Typography><br/>
+                    <TabVersion />
+                </Paper>
+            </main>
+        </Grid>
+        );
+    }
+}
+
+Version.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+  
+export default withStyles(styles)(Version);*/
+
 import React, {Component} from 'react';
 import './../../../../../styles/signInInfo.css'
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +62,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 //import PostData from './testjson'
 import SimpleModal from './../../modal'
-import gestionReducer  from './../../../../../reducers/gestionReducer'
+import versionReducer  from './../../../../../reducers/versionReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
 import Card from '@material-ui/core/Card';
@@ -26,18 +79,20 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { getFormValues} from 'redux-form'
 
 //import FieldArraysForm from './FieldArraysForm'
-import MediaCard from './cardModele'
-import MediaCard2 from './cardModele2'
-import MyForm from './OptionsForm'
+import MediaCard from './cardVersion'
+/*import MediaCard2 from './cardModele2'
+import MyForm from './FieldArraysForm'
+*/
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Waypoint} from "react-waypoint";
 import CustomizedSnackbars from "./../../../snackBar";
 
 
-import AddModele from './../../../../../containers/fabricant/addModele'
-import {getModelesList} from './../../../../../actions/modeleActions/getModelesList'
-import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpdateModele";
-import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
+import AddVersion from './../../../../../containers/fabricant/addVersion'
+import {getVersionsList} from './../../../../../actions/versionActions/getVersionList'
+import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
+import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
 
 
 const styles = theme => ({
@@ -61,27 +116,26 @@ const styles = theme => ({
       },
 });
 
-class Modele extends Component {
+class Version extends Component {
   constructor(props)
     {
         super(props);
         this.fetchData = this.fetchData.bind(this);
     }
   _renderItems(){
- //   setTimeout(()=>{console.log(this.props.modeles)},5000);
-    console.log(this.props.modeles)
+    console.log(this.props.versions)
     return (
       <Grid container spacing={24}>
-          {this.props.modeles.map( (modele,index) =>
+          {this.props.versions.map( (version,index) =>
             <Grid item xs={12} md={3} sm={6}>
-             <MediaCard nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />
+             <MediaCard nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} idModele={version.id_modele} />
              </Grid>
       )}
        </Grid>
     );
 }
 fetchData(){
-  this.props.dispatch(getModelesList(this.props.next));
+ // this.props.dispatch(getVersionsList(this.props.next));
 
 };
 _renderWaypoint(){
@@ -110,73 +164,72 @@ _renderItems2(){
     render() {
       
         const { classes } = this.props;
-        const datas = this.props.modeles;
+        const datas = this.props.versions;
         let snack = null;
         if (this.props.update){
             if(!this.props.error){
-               // let msg = "Modele " +this.props.nom+" est modifié avec success !\"";
-                let msg = "Modele est modifié avec success !\"";
-                
+                let msg = "Version " +this.props.nom+" est modifié avec success !\"";
                 snack = <CustomizedSnackbars type='success' msg={msg} />
             }
             else {
                 snack = <CustomizedSnackbars type='error' msg='Erreur, veuillez resseyer svp !'/>
             }
-             this.props.dispatch(resetUpdateModele())
+             this.props.dispatch(resetUpdateVersion())
          }
          if (this.props.delete){
             if(!this.props.error){
-              //  let msg = "Modele " +this.props.nom+" est supprimé avec success !\"";
-                let msg = "Modele est supprimé avec success !\"";
+                let msg = "Version " +this.props.nom+" est supprimé avec success !\"";
                 snack = <CustomizedSnackbars type='success' msg={msg} />
             }
             else {
                 snack = <CustomizedSnackbars type='error' msg='Erreur, veuillez resseyer svp !'/>
             }
-             this.props.dispatch(resetDeleteModele())
+             this.props.dispatch(resetDeleteVersion())
          }
          let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
         return (
 
           <Grid item xs={10}>
           <div className={classes.root}>
-              <AddModele />
+          
+              <AddVersion />
               {snack}
             <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
             {
               this._renderItems()
             }
             {this._renderWaypoint()}
-            <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
+        {/*    <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
+          */}
           </div>
           </Grid>
         );
     }
 }
 
-Modele.propTypes = {
+Version.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
   function mapStateToProps(state) {
     return {
-      modeles : state.gestionReducer.modeles,
-      options : state.gestionReducer.options,
-      loading : state.gestionReducer.loading,
-      error : state.gestionReducer.error,
-      next : state.gestionReducer.next,
-      update : state.gestionReducer.update,
-      delete : state.gestionReducer.delete,
-      opts: getFormValues('MyForm')(state)
+      versions : state.versionReducer.versions,
+      options : state.versionReducer.options,
+      loading : state.versionReducer.loading,
+      error : state.versionReducer.error,
+      next : state.versionReducer.next,
+      update : state.versionReducer.update,
+      delete : state.versionReducer.delete,
+    //  opts: getFormValues('MyForm')(state)
     };
   }
 
   function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-      getModelesList
+      getVersionsList
     });
     return { ...actions, dispatch };
   }
   export default connect(
     mapStateToProps,matchDispatchToProps
-  )(withStyles(styles)(Modele));
+  )(withStyles(styles)(Version));

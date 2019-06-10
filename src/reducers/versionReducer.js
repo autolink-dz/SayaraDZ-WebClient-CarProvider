@@ -1,7 +1,5 @@
 const initialState = {
-    versions: [{"id":"ceAD233W6ZuOPn6vX33L","nom":"1.0","prix":77000000,"date_debut":"01-06-2019","date_fin":"01-09-2019","options":["ops2","ops3","ops5"]},
-    {"id":"lsq8mz9Un09gSs51Sbel","nom":"1.2","prix":1500000,"date_debut":"01-06-2019","date_fin":"01-09-2019","options":["ops1","ops2","ops4"]}
-    ],
+    versions: [],
     error:false,
     add:false,
     update:false,
@@ -31,7 +29,7 @@ const gestionReducer = (state=initialState,action)=>{
                 next:action.payload.data.next || null
             };
             
-        case 'ADD_VERSION':
+        case 'ADD_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp1=false;
             if(action.payload.data.data ==null){
@@ -59,7 +57,12 @@ const gestionReducer = (state=initialState,action)=>{
                 versions.forEach(version=>{
                 if (version.id===action.id){
                     version.nom = action.nom;
+                    version.code = action.code;
                     version.url = action.url;
+                    version.options = action.options;
+                    version.couleurs = action.couleurs; 
+                    version.id_modele = action.id_modele;
+
                 }
             });
             return{

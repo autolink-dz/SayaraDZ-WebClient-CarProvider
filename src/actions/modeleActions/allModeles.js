@@ -1,6 +1,7 @@
 var request = require('./../api/service');
 
-export function deleteVersion(id) {
+export function allModeles() {
+
     let head= {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
@@ -9,10 +10,12 @@ export function deleteVersion(id) {
     };
 
     return dispatch =>{
-        dispatch(begin());
-        request.delete('/versions/'+id, head)
+        request.get('/modeles?next',head)
             .then(function (response) {
-                dispatch(end(id));
+           /*     console.log("++++++++++++++++++++++++++++++++++++++")
+                console.log(response.data)
+                console.log("++++++++++++++++++++++++++++++++++++++")*/
+                dispatch({type : 'ALL_MODELES', payload: response.data.data});
             })
             .catch(function (error) {
                 dispatch(err(error));
@@ -21,17 +24,7 @@ export function deleteVersion(id) {
     }
 }
 
-export const begin = () => ({
-    type: "BEGIN_DELETE_VERSION",
-});
-
-
-export const end = (id) => ({
-    type: "END_DELETE_VERSION",
-    id
-});
-
 export const err = (error) => ({
-    type: "ERROR_DELETE_VERSION",
+    type: "ERROR_GET",
     payload: error
 });
