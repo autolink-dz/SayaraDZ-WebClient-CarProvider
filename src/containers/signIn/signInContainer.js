@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {withRouter} from "react-router-dom";
 
 const styles = theme => ({
     main: {
@@ -22,6 +23,7 @@ const styles = theme => ({
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
+        boxShadow: '0px 2px 46px -2px rgba(0,0,0,0.48)'
 
     },
     paper: {
@@ -34,7 +36,7 @@ const styles = theme => ({
     },
     avatar: {
         margin: theme.spacing.unit,
-        backgroundColor: '#393A7E'
+        backgroundColor: '#116FBE'
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -77,6 +79,7 @@ class SignInContainer extends Component {
         let username = e.target[0].value;
         let password = e.target[1].value;
         this.props.dispatch(signInClick(username,password));
+
     }
     render() {
         return (
@@ -88,15 +91,15 @@ class SignInContainer extends Component {
                             <User />
                         </Avatar><br/>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Se Connecter
                         </Typography><br/>
                         <form onSubmit={(e)=>this.handelSignIn(e)} className={this.props.classes.form}>
                             <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="email">Email Address</InputLabel><br/>
+                                <InputLabel htmlFor="email">Address Email</InputLabel><br/>
                                 <Input id="email" name="email" autoComplete="email" autoFocus />
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="password">Password</InputLabel><br/>
+                                <InputLabel htmlFor="password">Mot de Passe</InputLabel><br/>
                                 <Input name="password" type="password" id="password" autoComplete="current-password" />
                             </FormControl><br/><br/>
                             <FormControlLabel
@@ -112,7 +115,7 @@ class SignInContainer extends Component {
                                 className={this.props.classes.submit}
                                 disabled={this.props.loading}
                             >
-                                Sign in
+                                Se Connecter
                             </Button>
                             <br/><br/>
                             <div >
@@ -138,6 +141,6 @@ function matchDispatchToProps(dispatch) {
     return { ...actions, dispatch };
 }
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,matchDispatchToProps
-)(withStyles(styles)(SignInContainer));
+)(withStyles(styles)(SignInContainer)));
