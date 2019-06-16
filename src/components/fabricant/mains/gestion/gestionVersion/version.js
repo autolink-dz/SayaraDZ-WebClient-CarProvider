@@ -128,7 +128,7 @@ class Version extends Component {
       <Grid container spacing={24}>
           {this.props.versions.map( (version,index) =>
             <Grid item xs={12} md={3} sm={6}>
-             <MediaCard nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} idModele={version.id_modele} />
+             <MediaCard nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} fiche_tech={version.fiche_tech} idModele={version.id_modele} />
              </Grid>
       )}
        </Grid>

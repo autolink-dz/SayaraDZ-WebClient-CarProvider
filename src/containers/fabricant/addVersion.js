@@ -7,9 +7,25 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
+import Badge from '@material-ui/core/Badge';
+import Chip from '@material-ui/core/Chip';
+
+
+import clsx from 'clsx';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
+
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
 import OptionsCheck from "./../../components/fabricant/mains/gestion/gestionVersion/optionsCheck";
 import CouleursCheck from "./../../components/fabricant/mains/gestion/gestionVersion/couleursCheck";
@@ -21,6 +37,36 @@ import SelectModele from './../../components/fabricant/mains/gestion/gestionVers
 import FichTech from "./../../components/fabricant/mains/gestion/gestionVersion/FichTechForm";
 import { getFormValues} from 'redux-form'
 
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 3,
+      },
+      card: {
+        width:'100%',
+        maxWidth: 345,
+        
+      },
+      media: {
+        // ⚠️ object-fit is not supported by IE 11.
+        objectFit: 'cover',
+      },
+      button: {
+        margin: theme.spacing.unit,
+      },
+      hh:{
+        width : 1500,
+        
+      },
+      chip: {
+        marginRight: theme.spacing.unit * 20,
+      },
+      chip2: {
+        marginRight: theme.spacing.unit * 15,
+      },
+});
 
 class AddVersion extends React.Component {
     constructor(props) {
@@ -36,7 +82,7 @@ class AddVersion extends React.Component {
             couleurs:[],
             optionsChecked:[],
             couleursChecked:[],
-            modele:'e',
+            modele:'',
         };
       }
     
@@ -50,8 +96,28 @@ class AddVersion extends React.Component {
     handleAdd = ()=>{
         console.log(this.state.optionsChecked)
         console.log(this.state.couleursChecked)
-        this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked));
-        this.handleCloseA();
+        if(this.state.modele != ''){
+            if(this.props.fichTech === undefined){
+                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,{}));
+            }else{
+                let obj={}
+                if(this.props.fichTech.fiche_tech.length > 0){
+                        let i=0;
+                        for(i=0 ; i<this.props.fichTech.fiche_tech.length;i++){
+                            obj[this.props.fichTech.fiche_tech[i].attr]=this.props.fichTech.fiche_tech[i].val;
+                        }
+                    }
+                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,obj));
+                console.log(obj)
+            }
+            this.handleCloseA();
+        }else{
+            alert("choose modele")
+        }
+        
+            
+      //  this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,obj));
+        
     };
     handleName= (e) =>{
         this.setState({ name: e.target.value });
@@ -114,6 +180,7 @@ class AddVersion extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
         let snack = null;
         if (this.props.add){
            if(!this.props.error){
@@ -134,6 +201,8 @@ class AddVersion extends React.Component {
                     <AddIcon />
                 </Fab>
                 <Dialog
+                    PaperProps={{ style: { maxWidth: 'none' } }}
+                    className={classes.hh}
                     open={this.state.open}
                     onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
@@ -170,18 +239,65 @@ class AddVersion extends React.Component {
             
                  {/*       <MyForm />*/}
                         
-                             <br />
-                            <h3>choisir les options</h3>
-     
+                             
+                             
+                             <br /><br /><br />
+                            <Chip
+                            color="primary"
+                             label={<h3>choisir les options</h3>} 
+                             variant="outlined" />
                             <DialogContent>
                                <OptionsCheck onRef={ref => (this.child = ref)} options={this.state.options} handleOptionsChecked={this.handleOptionsChecked} /> 
                             </DialogContent>
                             <br />
-                            <h3>choisir les couleurs</h3>
+                            
+                            <br /><br /><br />
+                            <Chip
+                            color="primary"
+                             label={<h3>choisir les couleurs</h3>} 
+                             variant="outlined" />
                             <DialogContent>
                                <CouleursCheck onRef={ref => (this.child2 = ref)} couleurs={this.state.couleurs} handleCouleursChecked={this.handleCouleursChecked} /> 
                             </DialogContent>
-                            <FichTech />
+
+                            <div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Fiche technique : </Typography>
+          </div>
+           
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les options</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+             <FichTech />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque ligne a un no du champ et la valeurs du champ"
+          clickable
+          className={classes.chip}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+          
+           
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>
+                            
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleCloseA} color="primary">
@@ -196,6 +312,10 @@ class AddVersion extends React.Component {
         );
     }
 }
+
+AddVersion.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
 
 function mapStateToProps(state) {
     return {
@@ -215,4 +335,4 @@ function matchDispatchToProps(dispatch) {
 }
 export default connect(
     mapStateToProps,matchDispatchToProps
-)(AddVersion);
+)(withStyles(styles)(AddVersion));

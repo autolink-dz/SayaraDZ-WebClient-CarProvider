@@ -60,21 +60,6 @@ const styles = theme => ({
 class SignInContainer extends Component {
     handelSignIn(e){
         console.log(localStorage)
-        let tab2={}
-        
-        const tab= [
-                    {'code':'code1','val':'val1'},
-                    {'code':'code2','val':'val2'},
-                    {'code':'code3','val':'val3'},
-                    {'code':'code4','val':'val4'}
-                   ]
-                   console.log(tab)
-                   let i=0;
-                   for(i=0 ; i<tab.length;i++){
-                    //console.log(tab.length)
-                    tab2[tab[i].code]=tab[i].val;
-                   }
-                   console.log(tab2)
         e.preventDefault();
         let username = e.target[0].value;
         let password = e.target[1].value;

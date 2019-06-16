@@ -81,7 +81,7 @@ class CouleursCheck extends React.Component {
               tabIndex={-1}
               disableRipple
             />
-            <ListItemText primary={`Line item ${value.nom }`} />
+            <ListItemText primary={`${value.nom }`} />
             <ListItemSecondaryAction>
               <IconButton aria-label="Comments">
                 <CommentIcon />

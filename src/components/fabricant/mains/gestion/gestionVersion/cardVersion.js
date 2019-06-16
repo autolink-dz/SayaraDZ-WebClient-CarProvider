@@ -17,15 +17,24 @@ import {bindActionCreators} from "redux";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
-
+import Chip from '@material-ui/core/Chip';
 import PropTypes from 'prop-types';
+
+import clsx from 'clsx';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 
 import CustomizedSnackbars from "./../../../snackBar";
 import {putVersion} from "./../../../../../actions/versionActions/putVersion";
 import {deleteVersion} from "./../../../../../actions/versionActions/deleteVersion";
 import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
 import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
-
+import FichTech from "./FichTechForm";
 
 import SelectModele from './selectModeleUpdate'
 import OptionsCheck from './optionsCheckUpdate'
@@ -75,6 +84,20 @@ const styles =  theme =>  ({
       button: {
         margin: theme.spacing.unit,
       },
+      cardLeft:{
+        width : 1500,
+    //    marginLeft : -theme.spacing.unit * 50,
+      },
+      cardRight:{
+        width : 1500,
+        marginRight : -theme.spacing.unit * 50,
+      },
+      chip: {
+        marginRight: theme.spacing.unit * 20,
+      },
+      chip2: {
+        marginRight: theme.spacing.unit * 15,
+      },
 });
 
 class MediaCard extends Component {
@@ -86,15 +109,17 @@ class MediaCard extends Component {
         this.state = {
             open: false,
             snack:null,
-            initialValues: null,
+        //    initialValues: null,
             modele:this.props.idModele,
             options:[],
             couleurs:[],
             optionsChecked:[],
             couleursChecked:[],
+            initialValuesFichTech: null,
         };
     }
     componentDidMount() {
+     // this.props.dispatch(deleteVersion("X3OmvlSgET7FoOrRARYq"));
         this.setState({ nom: this.props.nom });
         this.setState({ url: this.props.url });
         this.setState({ code: this.props.code });
@@ -103,8 +128,14 @@ class MediaCard extends Component {
         this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.idModele).couleurs });
         this.setState({ optionsChecked: this.props.versionOptions });
         this.setState({ couleursChecked: this.props.versionCouleurs });
-    //    this.setState({ initialValues: {'options':[{'code':'Axl Rose', 'nom':'Brian Johnson'}]} });
-    //  this.setState({ initialValues: {'options':this.props.options }})
+        //let tt = [{attr : "efefe",val:"rfzref"}]//this.props.fiche_tech
+        let tt = {aaa : "aaaaaaaa",bbb:"bbbbbb"} 
+        let obj = this.props.fiche_tech
+        //find(x => x.id === this.state.modele).options
+        var result = Object.keys(obj).map(function(key) {
+          return  {attr:key ,  val: obj[key]}; 
+        });
+        this.setState({ initialValuesFichTech: {'fiche_tech':result }})
     };
 
     handleName= (e) =>{
@@ -136,11 +167,23 @@ class MediaCard extends Component {
         this.props.dispatch(deleteVersion(this.props.id));
         this.handleClose();
     };
-
+    handleFichTech= (e) =>{
+      let obj={}
+        if(this.props.newFichTech.fiche_tech.length > 0){
+                   let i=0;
+                   for(i=0 ; i<this.props.newFichTech.fiche_tech.length;i++){
+                    obj[this.props.newFichTech.fiche_tech[i].attr]=this.props.newFichTech.fiche_tech[i].val;
+                   }
+            }
+            console.log(obj)
+      this.setState({ initialValuesFichTech: {'fiche_tech':obj } })
+    };
     handleUpdate(){
-
-            this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.modele));
-        
+      
+        this.handleFichTech();
+        setTimeout(()=>{
+          this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.initialValuesFichTech.fiche_tech,this.state.modele));
+        },1000); 
     /*    if (this.props.loading){
 
             if(!this.props.error){console.log(this.props.loading)
@@ -259,21 +302,64 @@ class MediaCard extends Component {
                                 defaultValue={this.props.url}
                             />
 
-                            <br />
-                            <h3>choisir les options</h3>
-     
+                             <br /><br /><br />
+                            <Chip
+                            color="primary"
+                             label={<h3>choisir les options</h3>} 
+                             variant="outlined" />
                             <DialogContent>
                             <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.state.options} versionOptions={this.props.options}
                             handleOptionsChecked={this.handleOptionsChecked}  />
                             </DialogContent>
 
                             <br />
-                            <h3>choisir les couleurs</h3>
+                            
+                            <br /><br /><br />
+                            <Chip
+                            color="primary"
+                             label={<h3>choisir les couleurs</h3>} 
+                             variant="outlined" />
                             <DialogContent>
                             <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.state.couleurs} versionCouleurs={this.props.couleurs}
                             handleCouleursChecked={this.handleCouleursChecked}  />
                             </DialogContent>
-                            
+<div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>OPTIONS : </Typography>
+          </div>
+           
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les options</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+            <FichTech initialValues={this.state.initialValuesFichTech}/>
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque option a un code d'option et le nom de l'option"
+          clickable
+          className={classes.chip}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+          
+           
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>
                             
                             {/*
                             <MyForm initialValues={this.state.initialValues} />
@@ -319,7 +405,7 @@ function mapStateToProps(state) {
         update : state.versionReducer.update,
         delete : state.versionReducer.delete,
         allModeles : state.gestionReducer.allModeles,
-    //    newoptions: getFormValues('MyForm')(state),
+        newFichTech: getFormValues('FichTech')(state),
     };
 }
 function matchDispatchToProps(dispatch) {

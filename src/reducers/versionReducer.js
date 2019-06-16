@@ -60,7 +60,8 @@ const gestionReducer = (state=initialState,action)=>{
                     version.code = action.code;
                     version.url = action.url;
                     version.options = action.options;
-                    version.couleurs = action.couleurs; 
+                    version.couleurs = action.couleurs;
+                    version.fiche_tech = action.fiche_tech;
                     version.id_modele = action.id_modele;
 
                 }

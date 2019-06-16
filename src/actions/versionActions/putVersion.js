@@ -1,6 +1,6 @@
 var request = require('./../api/service');
 
-export function putVersion(id,nom,code,url,options,couleurs,id_modele) {
+export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele) {
     let head= {
         headers: {
             "Accept": "application/json",
@@ -16,20 +16,21 @@ export function putVersion(id,nom,code,url,options,couleurs,id_modele) {
         url,
         options,
         couleurs,
+        fiche_tech,
         id_modele
     };
     return dispatch =>{
         request.put('/versions/'+id,body,head)
             .then(function (response) {
                 
-                dispatch(end(id,nom,code,url,options,couleurs,id_modele));
+                dispatch(end(id,nom,code,url,options,couleurs,fiche_tech,id_modele));
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 }
-export const end = (id,nom,code,url,options,couleurs,id_modele) => ({
+export const end = (id,nom,code,url,options,couleurs,fiche_tech,id_modele) => ({
     type: "PUT_VERSION",
     id,
     nom,
@@ -37,5 +38,6 @@ export const end = (id,nom,code,url,options,couleurs,id_modele) => ({
     url,
     options,
     couleurs,
+    fiche_tech,
     id_modele
 });

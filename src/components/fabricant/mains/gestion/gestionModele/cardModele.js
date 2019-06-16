@@ -17,8 +17,19 @@ import {bindActionCreators} from "redux";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
+import Grid from '@material-ui/core/Grid';
 
 import PropTypes from 'prop-types';
+
+import clsx from 'clsx';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Chip from '@material-ui/core/Chip';
+import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 
 import CustomizedSnackbars from "./../../../snackBar";
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
@@ -71,6 +82,20 @@ const styles =  theme =>  ({
       },
       button: {
         margin: theme.spacing.unit,
+      },
+      cardLeft:{
+        width : 1500,
+    //    marginLeft : -theme.spacing.unit * 50,
+      },
+      cardRight:{
+        width : 1500,
+        marginRight : -theme.spacing.unit * 50,
+      },
+      chip: {
+        marginRight: theme.spacing.unit * 20,
+      },
+      chip2: {
+        marginRight: theme.spacing.unit * 15,
       },
 });
 
@@ -183,15 +208,18 @@ class MediaCard extends Component {
                 </IconButton>
               </CardActions>
 
-
               <Dialog
+                        PaperProps={{ style: { maxWidth: 'none' } }}
+                        className={classes.cardLeft}
                         open={this.state.open}
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"
                        
                     >
                         <h2 style={styles.title}>Modifier La Marque {this.props.nom}</h2>
+
                         <img src={this.props.url} alt="brand" style={styles.brand} height="200"/>
+
                         <DialogContent>
                             <DialogContentText>
                                 Veuillez introduire le nom du fabricant ainsi que l'url de sa photo
@@ -227,8 +255,80 @@ class MediaCard extends Component {
                                 onChange={ this.handleUrl }
                                 defaultValue={this.props.url}
                             />
-                            <MyForm initialValues={this.state.initialValues}/>
-                            <CouleursForm initialValues={this.state.initialValuesCouleurs} />
+                            
+                            
+<div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>OPTIONS : </Typography>
+          </div>
+           
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les options</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+            <MyForm initialValues={this.state.initialValues}/>
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque option a un code d'option et le nom de l'option"
+          clickable
+          className={classes.chip}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+          
+           
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>
+                        
+    <div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Couleurs : </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les couleurs</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+        
+          <div className={clsx(classes.column, classes.helper)}>
+            <CouleursForm initialValues={this.state.initialValuesCouleurs} />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque Couleur a un code de couleur et le nom de la couleur"
+          clickable
+          className={classes.chip2}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div> 
                             {/*<OptionsForm initialValues={this.props.options} />
                             <input
                                 accept="image/*"
@@ -243,6 +343,8 @@ class MediaCard extends Component {
                                 </Button>
                             </label>*/}
                         </DialogContent>
+                        
+                        
                         <DialogActions style={styles.actions}>
                             <Button onClick={this.handleClose} color="default">
                                 Cancel
@@ -254,7 +356,10 @@ class MediaCard extends Component {
                                 Modifier
                             </Button>
                         </DialogActions>
+
                     </Dialog>
+
+                    
             </Card>
         );
     }

@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import gestionReducer  from './../../../../../reducers/gestionReducer'
 import DeleteIcon from '@material-ui/icons/Delete';
+import Badge from '@material-ui/core/Badge';
+import Fab from '@material-ui/core/Fab';
 /*const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
     <label>{label}</label>
@@ -25,14 +27,14 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   )
 
 const renderMembers = ({ fields, meta: { touched, error } }) => (
-  <ul>
+  <div>
 
       {touched && error && <span>{error}</span>}
     { fields.map((member, index) =>
-      <li key={index}>
-
-        <h4>Option #{index + 1}</h4>
-        
+      <div key={index}>
+  
+        <Badge badgeContent={index + 1} color="primary">
+        </Badge>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
         <Field 
           name={`${member}.code`}
           component={renderTextField} 
@@ -41,20 +43,21 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           name={`${member}.nom`} 
           component={renderTextField} 
           label="Nom Option"/>
-          <Button
-          type="button"
-          title="Remove Member"
-          onClick={() => fields.remove(index)}
-          size="small" variant="contained"
-          color="secondary"><DeleteIcon fontSize="large" /></Button>
-        <hr />
+          &nbsp; &nbsp; &nbsp;
+        <Fab aria-label="Delete"
+            title="Remove Member"
+            color="secondary"
+            size="small" variant="contained"
+            onClick={() => fields.remove(index)}
+            >
+          <DeleteIcon />
+        </Fab>
        {/*  <FieldArray name={`${member}.hobbies`} component={renderHobbies}/>*/ }
-       
-      </li>
-    )}<Button type="button" onClick={() => fields.push({})} size="small" variant="contained" color="primary">Add option</Button>
+      </div>
+    )}<br /><Button type="button" onClick={() => fields.push({})} size="small" variant="contained" color="primary">Add option</Button>
     {console.log(fields.getAll())
     }
-  </ul>
+  </div>
 )
 /*
 const renderHobbies = ({ fields, meta: { error } }) => (
@@ -94,12 +97,9 @@ const MyForm = ({ handleSubmit, pristine, reset, submitting }) => {
 
    */} 
       <FieldArray name="options" component={renderMembers}/>
+      <hr />
       <div>
-        
-      <button>initialize from form</button>
-        <button type="submit" disabled={submitting}>Submit</button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
-          
+        <Button type="button" size="small" variant="contained" color="primary" disabled={pristine || submitting} onClick={reset}>Supprimer tous les options</Button>
       </div>
     </form>
   )

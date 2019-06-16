@@ -12,6 +12,10 @@ import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
+
+import Avatar from '@material-ui/core/Avatar';
+import DoneIcon from '@material-ui/icons/Done';
+
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
 
 import {addModele} from "./../../actions/modeleActions/addModele";
@@ -54,9 +58,15 @@ const styles = theme => ({
         margin: theme.spacing.unit,
       },
       hh:{
-       // width : 1500,
+        width : 1500,
         
-      }
+      },
+      chip: {
+        marginRight: theme.spacing.unit * 20,
+      },
+      chip2: {
+        marginRight: theme.spacing.unit * 15,
+      },
 });
 
 class AddModele extends React.Component {
@@ -76,9 +86,19 @@ class AddModele extends React.Component {
     };
     handleAdd = ()=>{
 
-        if(this.props.options === undefined){
+        if(this.props.options === undefined && this.props.couleurs === undefined)
+        {
           this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
-        }else{
+        }
+        else if(this.props.options != undefined && this.props.couleurs === undefined)
+        {
+          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],this.props.couleurs.couleurs));
+        }
+        else if(this.props.options === undefined && this.props.couleurs != undefined)
+        {
+          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,[]));
+        }else
+        {
           this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
         }
 
@@ -116,9 +136,9 @@ class AddModele extends React.Component {
              { //<FloatingActionButtons/>
              
              }  
-
+             
                 <Dialog
-                
+                PaperProps={{ style: { maxWidth: 'none' } }}
                 className={classes.hh}
                     open={this.state.open}
                 //    onClose={this.handleCloseA}
@@ -160,10 +180,11 @@ class AddModele extends React.Component {
           id="panel1c-header"
         >
           <div className={classes.column}>
-            <Typography className={classes.heading}>Location</Typography>
+            <Typography className={classes.heading}>OPTIONS : </Typography>
           </div>
+           
           <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
+            <Typography className={classes.secondaryHeading}> declarer les options</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
@@ -174,15 +195,21 @@ class AddModele extends React.Component {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
-            Save
-          </Button>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque option a un code d'option et le nom de l'option"
+          clickable
+          className={classes.chip}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+          
+           
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>
-
-                     
+                        
     <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -191,10 +218,10 @@ class AddModele extends React.Component {
           id="panel1c-header"
         >
           <div className={classes.column}>
-            <Typography className={classes.heading}>Location</Typography>
+            <Typography className={classes.heading}>Couleurs : </Typography>
           </div>
           <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
+            <Typography className={classes.secondaryHeading}> declarer les couleurs</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
@@ -205,10 +232,15 @@ class AddModele extends React.Component {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
-            Save
-          </Button>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque Couleur a un code de couleur et le nom de la couleur"
+          clickable
+          className={classes.chip2}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>   

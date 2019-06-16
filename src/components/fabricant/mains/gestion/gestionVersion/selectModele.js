@@ -81,18 +81,6 @@ class SelectModele extends React.Component {
               icon: classes.icon,
             }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="1">
-              <em>111111111</em>
-            </MenuItem>
-            <MenuItem value="2">
-              <em>22222222222</em>
-            </MenuItem>
-            <MenuItem value="3">
-              <em>33333333</em>
-            </MenuItem>
             {this.props.allModeles.map( (modele,index) =>
                                <MenuItem value={modele.id}>{modele.nom}</MenuItem>
                     )}

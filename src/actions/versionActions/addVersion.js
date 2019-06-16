@@ -1,6 +1,6 @@
 var request = require('./../api/service');
 
-export function addVersion(nom,code, url,id_modele,options,couleurs) {
+export function addVersion(nom,code, url,id_modele,options,couleurs,fiche_tech) {
 
     let body={
         "nom": nom,
@@ -11,7 +11,7 @@ export function addVersion(nom,code, url,id_modele,options,couleurs) {
         "id_marque": "HE54VwUdghgPRb6ZO6I8",
         "options": options,
         "couleurs": couleurs,
-        "fiche_tech":""
+        "fiche_tech":fiche_tech
      //   "id": "AAAAAAAAAAAA"
     };
 
