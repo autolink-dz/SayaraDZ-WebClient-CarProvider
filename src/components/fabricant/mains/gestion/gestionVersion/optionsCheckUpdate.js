@@ -32,6 +32,7 @@ class OptionsCheck extends React.Component {
   this.setState({
     checked: this.props.versionOptions
   });
+  this.props.handleOptionsChecked(this.props.versionOptions)
  /* setTimeout(()=>{
     console.log(this.state.checked)
   },1000);*/  
@@ -50,6 +51,7 @@ class OptionsCheck extends React.Component {
   handleToggle = value => () => {
     const { checked } = this.state;
     //const currentIndex = checked.indexOf(value);
+    console.log(checked)
     const currentIndex = checked.findIndex(i => i.nom === value.nom && i.code === value.code)
    /* this.setState({
       checked: this.props.optionsChecked,

@@ -1,5 +1,5 @@
 const initialState = {
-    modeles: [{"id":"eee","nom":"eeeeeeeeeeee"}],
+    modeles: [],
     allModeles: [],
   /*  options:[{code: "VOL_CADDY_DZ",
     couleurs: [],

@@ -7,8 +7,8 @@ export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele
             'Content-Type':'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
         }
+        
     };
-
     let body={
         id,
         nom,
@@ -20,10 +20,12 @@ export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele
         id_modele
     };
     return dispatch =>{
+        
         request.put('/versions/'+id,body,head)
             .then(function (response) {
                 
                 dispatch(end(id,nom,code,url,options,couleurs,fiche_tech,id_modele));
+                
             })
             .catch(function (error) {
                 console.log(error);

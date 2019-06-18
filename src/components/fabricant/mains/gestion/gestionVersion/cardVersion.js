@@ -136,6 +136,7 @@ class MediaCard extends Component {
           return  {attr:key ,  val: obj[key]}; 
         });
         this.setState({ initialValuesFichTech: {'fiche_tech':result }})
+        //setTimeout(()=>{console.log(this.state.initialValuesFichTech)},1000);
     };
 
     handleName= (e) =>{
@@ -156,6 +157,7 @@ class MediaCard extends Component {
     };
     
     handleClickOpen = () => {
+       console.log(this.props.newFichTech) 
         this.setState({ open: true });
     };
 
@@ -168,15 +170,16 @@ class MediaCard extends Component {
         this.handleClose();
     };
     handleFichTech= (e) =>{
-      let obj={}
+      let ob={}
         if(this.props.newFichTech.fiche_tech.length > 0){
                    let i=0;
                    for(i=0 ; i<this.props.newFichTech.fiche_tech.length;i++){
-                    obj[this.props.newFichTech.fiche_tech[i].attr]=this.props.newFichTech.fiche_tech[i].val;
+                    ob[this.props.newFichTech.fiche_tech[i].attr]=this.props.newFichTech.fiche_tech[i].val;
                    }
             }
-            console.log(obj)
-      this.setState({ initialValuesFichTech: {'fiche_tech':obj } })
+            
+      this.setState({ initialValuesFichTech: {'fiche_tech':this.props.newFichTech.fiche_tech } })
+      setTimeout(()=>{console.log(this.state.initialValuesFichTech)},1000); 
     };
     handleUpdate(){
       
@@ -319,10 +322,12 @@ class MediaCard extends Component {
                             color="primary"
                              label={<h3>choisir les couleurs</h3>} 
                              variant="outlined" />
+
                             <DialogContent>
                             <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.state.couleurs} versionCouleurs={this.props.couleurs}
                             handleCouleursChecked={this.handleCouleursChecked}  />
                             </DialogContent>
+
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -342,6 +347,7 @@ class MediaCard extends Component {
         
           <div className={clsx(classes.column, classes.helper)}>
             <FichTech initialValues={this.state.initialValuesFichTech}/>
+            
           </div>
         </ExpansionPanelDetails>
         <Divider />

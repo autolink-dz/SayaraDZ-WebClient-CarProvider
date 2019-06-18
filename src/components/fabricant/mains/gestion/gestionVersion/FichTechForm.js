@@ -30,6 +30,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
   <div>
 
       {touched && error && <span>{error}</span>}
+      {console.log(fields.getAll())}
     { fields.map((member, index) =>
       <div key={index}>
 
@@ -44,7 +45,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           component={renderTextField} 
           label="valeurs"/>
           &nbsp; &nbsp; &nbsp;
-          <Fab aria-label="Delete"
+        <Fab aria-label="Delete"
             title="Remove Member"
             color="secondary"
             size="small" variant="contained"
@@ -53,9 +54,8 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           <DeleteIcon />
         </Fab>
        {/*  <FieldArray name={`${member}.hobbies`} component={renderHobbies}/>*/ }
-       
       </div>
-    )}<Button type="button" onClick={() => fields.push({})} size="small" variant="contained" color="primary">Add ligne</Button>
+    )}<br /><Button type="button" onClick={() => fields.push({})} size="small" variant="contained" color="primary">Add ligne</Button>
     {console.log(fields.getAll())
     }
   </div>

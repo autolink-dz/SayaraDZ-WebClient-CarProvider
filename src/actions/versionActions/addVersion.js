@@ -4,17 +4,14 @@ export function addVersion(nom,code, url,id_modele,options,couleurs,fiche_tech) 
 
     let body={
         "nom": nom,
-        "code":"aaaaaaaaaaaaaaaaaa",
+        "code":code,
         "url": "https://www.autobip.com/storage/photos/car_models/3235.png",
-        "code": "VOL_PASSAT_DZ TEST 30",
         "id_modele":id_modele,
         "id_marque": "HE54VwUdghgPRb6ZO6I8",
         "options": options,
         "couleurs": couleurs,
         "fiche_tech":fiche_tech
-     //   "id": "AAAAAAAAAAAA"
     };
-
     let head= {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
@@ -24,7 +21,7 @@ export function addVersion(nom,code, url,id_modele,options,couleurs,fiche_tech) 
     return dispatch =>{
         request.post('/versions', body, head)
             .then(function (response) {
-                console.log("success")
+                console.log("success add version")
                 dispatch({type : 'ADD_VERSIONS', payload: response});
             })
             .catch(function (error) {

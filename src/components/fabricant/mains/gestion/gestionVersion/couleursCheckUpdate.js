@@ -32,6 +32,7 @@ class CouleursCheck extends React.Component {
     this.setState({
       checked: this.props.versionCouleurs
     });
+    this.props.handleCouleursChecked(this.props.versionCouleurs)
   }
   componentWillUnmount() {
     this.props.onRef(undefined)
