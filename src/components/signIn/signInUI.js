@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SignInContainer from './../../containers/signIn/signInContainer'
+import SignInContainer from '../../containers/signIn/SignInContainer'
 import SignInInfo from './signInInfo'
 import './../../styles/signIn.css'
 import {withRouter} from "react-router-dom";
