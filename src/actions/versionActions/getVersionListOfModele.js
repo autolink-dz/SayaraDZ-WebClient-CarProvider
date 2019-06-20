@@ -1,6 +1,6 @@
 var request = require('./../api/service');
 
-export function allModeles() {
+export function getVersionListOfModele(next,modele_id) {
 
     let head= {
         headers: {
@@ -10,9 +10,12 @@ export function allModeles() {
     };
 
     return dispatch =>{
-        request.get('/modeles?next',head)
+        if(next==null){
+            return;
+        }//ome50dBzVvuAP7h7f3na
+        request.get('/versions?next='+next+'&id_modele='+modele_id+'&page=20',head)
             .then(function (response) {
-                dispatch({type : 'ALL_MODELES', payload: response.data.data});
+                dispatch({type : 'SELECT_VERSIONS', payload: response});
             })
             .catch(function (error) {
                 dispatch(err(error));

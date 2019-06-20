@@ -57,8 +57,7 @@ const styles = theme => ({
         margin: theme.spacing.unit,
       },
       hh:{
-        width : 1500,
-        
+        width : 1500, 
       },
       chip: {
         marginRight: theme.spacing.unit * 20,
@@ -66,6 +65,11 @@ const styles = theme => ({
       chip2: {
         marginRight: theme.spacing.unit * 15,
       },
+      fab: {
+        //  position: 'absolute',
+          bottom: theme.spacing.unit * 2,
+          left:'95%',
+        },
 });
 
 class AddVersion extends React.Component {
@@ -85,7 +89,11 @@ class AddVersion extends React.Component {
             modele:'',
         };
       }
-    
+      componentDidMount() {
+        this.setState({ options: this.props.allModeles.find(x => x.id === this.props.id).options });
+        this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.id).couleurs });
+        this.setState({ modele: this.props.id });
+      }
     handleClickOpen = () => {
         this.setState({ open: true });
     };
@@ -98,7 +106,7 @@ class AddVersion extends React.Component {
         console.log(this.state.couleursChecked)
         if(this.state.modele != ''){
             if(this.props.fichTech === undefined){
-                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,{}));
+                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,{}));
             }else{
                 let obj={}
                 if(this.props.fichTech.fiche_tech.length > 0){
@@ -107,7 +115,7 @@ class AddVersion extends React.Component {
                             obj[this.props.fichTech.fiche_tech[i].attr]=this.props.fichTech.fiche_tech[i].val;
                         }
                     }
-                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,obj));
+                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,obj));
                 console.log(obj)
             }
             this.handleCloseA();
@@ -130,18 +138,15 @@ class AddVersion extends React.Component {
         this.setState({ url: e.target.value });
     };
 
-    handleModele= (m) =>{
+    handleModele= () =>{
 
-        this.setState({ modele: m });
         this.child.clearChecked()
         this.child2.clearChecked()
         
         setTimeout(()=>{this.handleOptions()},1000);
-       /// setTimeout(()=>{this.setState({ optionsChecked: [] });},1000);
        this.setState({ optionsChecked: [] });
        this.setState({ couleursChecked: [] });
-       
-     //   this.handleOptions()
+
     };
 
     handleOptionsChecked= (array) =>{
@@ -151,32 +156,10 @@ class AddVersion extends React.Component {
     handleCouleursChecked= (array) =>{
         this.setState({ couleursChecked: array });
     };
-
-    handleOptions= ()=>{
-        let ops=null ;
-        if( this.props.allModeles.find(x => x.id === this.state.modele)==undefined){
-            ops=null
-            this.setState({ options: ['option 1 ','option 2'] });
-            this.setState({ couleurs: ['couleur 1','couleur 2'] });
-            
-            console.log(this.props.allModeles.find(x => x.id === this.state.modele))
-        }else{
-            ops= this.props.allModeles.find(x => x.id === this.state.modele).options
-            this.setState({ options: this.props.allModeles.find(x => x.id === this.state.modele).options });
-            this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.state.modele).couleurs });
-            
-            console.log(this.props.allModeles.find(x => x.id === this.state.modele).options)
-        }
-    }
-
     
     handleClick = () => {
-     //   console.log(this.refs.child.changeName())
         this.child.clearChecked()
         this.child2.clearChecked()
-            
-        //this.setState({ i: this.state.i +1 });
-    //getWrappedInstance().  
     };
 
     render() {
@@ -192,12 +175,11 @@ class AddVersion extends React.Component {
            }
             this.props.dispatch(resetAddVersion())
         }
-
         return (
             <div >
                 {snack}
                 
-                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position='static' >
                     <AddIcon />
                 </Fab>
                 <Dialog
@@ -212,7 +194,6 @@ class AddVersion extends React.Component {
                         <DialogContentText>
                             Veuillez introduire le nom du Version ainsi que l'url de sa photo
                         </DialogContentText>
-                        <SelectModele handleModele={this.handleModele} allModeles={this.props.allModeles} />
 
                         <TextField
                             autoFocus

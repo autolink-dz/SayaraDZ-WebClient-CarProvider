@@ -43,32 +43,6 @@ const styles = theme => ({
 });
 
 class MainGestion extends Component {
- /* Login = () => {
-    alert('rrrrr')
-    this.setState({n:1})
-    //console.log(this.state.n)
-    console.log(this.props.marques)
-    
-    let url = "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/marques?next=0&fbclid=IwAR0Vn2F_tAbL-kIIl0sT8OD8l-FqoTes1QaWkcCEGhr6fDow04EcaCIA_i0"
-               const requestType = new Request(url, {
-                    method: 'GET',
-                });
-
-                fetch(requestType)
-                    .then(responseType => {
-                    if (responseType.status < 200 || responseType.status >= 300) {
-                        throw new Error(responseType.statusText);
-                    }
-                   
-                    return responseType.json();
-                    })
-                    .then((responseType) => {
-                     //  console.log(responseType.data) 
-                       this.props.dispatch({type : 'SELECT_MARQUES', payload: responseType.data})
-                       console.log(this.props.marques)
-                  })
-                  
-  }*/
     render() {
         const { classes } = this.props;
         // const datas = Array.from(this.props.marques)

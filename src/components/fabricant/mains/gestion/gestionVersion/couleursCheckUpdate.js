@@ -49,9 +49,7 @@ class CouleursCheck extends React.Component {
     const { checked } = this.state;
     const currentIndex = checked.findIndex(i => i.nom === value.nom && i.code === value.code)
     const newChecked = [...checked];
-/*    console.log(checked.indexOf(value))
-    console.log(value)
-   */ 
+ 
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -68,7 +66,6 @@ class CouleursCheck extends React.Component {
   };
   test=()=>{
     const { checked } = this.state;
-    console.log(checked)
   }
   render() {
     const { classes } = this.props;

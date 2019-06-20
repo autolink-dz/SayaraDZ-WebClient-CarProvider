@@ -41,7 +41,6 @@ class OptionsCheck extends React.Component {
   };
   test=()=>{
     const { checked } = this.state;
-    console.log(checked)
   }
   render() {
     const { classes } = this.props;

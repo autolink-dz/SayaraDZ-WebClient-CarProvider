@@ -23,24 +23,49 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { allModeles } from '../../actions/modeleActions/allModeles';
 
+import classNames from 'classnames';
+
 const axios = require('axios');
 
-const styles = {
+const drawerWidth = 240;
+const styles = theme => ({
     root: {
-        flexGrow: 1,
+        display: 'flex',
     },
     grow: {
         flexGrow: 1,
-        marginLeft:'10%'
+        marginLeft:'24%'
     },
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
     },
     icon:{
-        marginTop:10
-    }
-};
+    //    marginTop:10
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+      },
+      appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+      },
+      menuButton: {
+        marginLeft: 12,
+        marginRight: 36,
+      },
+      hide: {
+        display: 'none',
+      },
+});
 var request = require('./../../actions/api/service');
 class NavBar extends React.Component {
     state = {
@@ -53,7 +78,7 @@ class NavBar extends React.Component {
     componentDidMount() {
         console.log("---------------------------")
         this.props.dispatch(getModelesList('0'));
-        this.props.dispatch(getVersionsList('0'));
+      //  this.props.dispatch(getVersionsList('0'));
         this.props.dispatch(allModeles());
      //   this.props.dispatch(deleteVersion("hRnfDx2nW1NM6r3ZE4to"));
      
@@ -76,18 +101,27 @@ class NavBar extends React.Component {
     handleChange = (event, value) => {
       this.setState({ value });
     };
- 
+
+      
     render() {
         const { classes } = this.props;
         const { auth, anchorEl, value } = this.state;
         const open = Boolean(anchorEl);
 
         return (
-            <div className={classes.root}>
-                <AppBar>
+                <AppBar position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: this.props.openMenu,
+          })}>
                 
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                    <Toolbar disableGutters={!this.props.openMenu}>
+                        <IconButton color="inherit"
+                                    aria-label="mENU"
+                                    onClick={this.props.handleDrawerOpen}
+                                    className={classNames(classes.menuButton, {
+                                        [classes.hide]: this.props.openMenu,
+                                    })}
+                         >
                             <MenuIcon />
                         </IconButton>
                         <Tabs value={value} onChange={this.handleChange}>
@@ -101,7 +135,7 @@ class NavBar extends React.Component {
           
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             <Car className={classes.icon} /> Sayara
-                        </Typography>   
+                        </Typography>     
                         {auth && (
                             <div>
                                 <IconButton
@@ -133,7 +167,6 @@ class NavBar extends React.Component {
                         )}
                     </Toolbar>
                 </AppBar>
-            </div>
         );
     }
 }

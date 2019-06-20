@@ -20,7 +20,6 @@ export function addModele(nom, url,code,opts,cols) {
     return dispatch =>{
         request.post('/modeles', body, head)
             .then(function (response) {
-                console.log(response)
                 dispatch({type : 'ADD_MODELE', payload: response});
             })
             .catch(function (error) {

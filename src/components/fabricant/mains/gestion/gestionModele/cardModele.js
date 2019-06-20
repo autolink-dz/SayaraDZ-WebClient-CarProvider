@@ -18,9 +18,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
 import Grid from '@material-ui/core/Grid';
-
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-
 import clsx from 'clsx';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -30,16 +29,19 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-
+import ButtonBase from '@material-ui/core/ButtonBase';
 import CustomizedSnackbars from "./../../../snackBar";
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
 import {deleteModele} from "./../../../../../actions/modeleActions/deleteModele";
+import { allModeles } from "./../../../../../actions/modeleActions/allModeles";
+import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
 import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpdateModele";
 import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
-
 import MyForm from './OptionsForm'
 import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'
+import AlertDialogSlide from './validateDelete'
+
 
 const styles =  theme =>  ({
 
@@ -149,28 +151,27 @@ class MediaCard extends Component {
 
     handleDelete(){
         this.props.dispatch(deleteModele(this.props.id));
+        setTimeout(()=>{
+          this.props.dispatch(allModeles());
+        },5000);
         this.handleClose();
     };
+
+    test = () => {
+      this.props.dispatch(getVersionListOfModele(0,this.props.id));
+  };
 
     handleUpdate(){
         this.handleoptions()
         if(this.props.newoptions==undefined){
-            console.log('***************************')
             this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
-        }else{ console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
+        }else{
             this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
         
         }
-    /*    if (this.props.loading){
-
-            if(!this.props.error){console.log(this.props.loading)
-                let msg = "La marque est modifieé avec success !\"";
-                this.setState({snack:<CustomizedSnackbars type='success' msg={msg} />});
-            }
-            else {
-                this.setState({snack:<CustomizedSnackbars type='error' msg='Erreur, veuillez resseyer svp !'/>});
-            }
-        }*/
+        setTimeout(()=>{
+          this.props.dispatch(allModeles());
+        },5000);
         this.handleClose();
     }
 
@@ -189,6 +190,7 @@ class MediaCard extends Component {
                   className={classes.media}
                   image={this.props.url}
                   title="Contemplative Reptile"
+                  onClick={this.props.test.bind(this,this.props.code,this.props.nom,this.props.url,this.props.options,this.props.couleurs)}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
@@ -200,29 +202,31 @@ class MediaCard extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions>
+
+                <Button component={Link} to={"/fabricant/gestion/versions/"+this.props.id+"/"+this.props.nom} onClick={this.test} size="small" variant="contained" color="secondary" className={classes.button}>
+                   versions
+                </Button>
                 <Button size="small" variant="contained" color="secondary" className={classes.button} onClick={this.handleClickOpen}>
                    Modifier
                 </Button>
-                <IconButton aria-label="Delete" className={classes.margin} onClick={this.handleDelete}>
-                <DeleteIcon fontSize="large" />
-                </IconButton>
+                <AlertDialogSlide nom={this.props.nom} handleDelete={this.handleDelete} btn={0} />
               </CardActions>
+
 
               <Dialog
                         PaperProps={{ style: { maxWidth: 'none' } }}
                         className={classes.cardLeft}
                         open={this.state.open}
                         onClose={this.handleCloseA}
-                        aria-labelledby="fo"
-                       
+                        aria-labelledby="fo"     
                     >
-                        <h2 style={styles.title}>Modifier La Marque {this.props.nom}</h2>
+                        <h2 style={styles.title}>Modifier Le modele {this.props.nom}</h2>
 
-                        <img src={this.props.url} alt="brand" style={styles.brand} height="200"/>
+                        {/*<img src={this.props.url} alt="brand" style={styles.brand} height="200"/>*/}
 
                         <DialogContent>
                             <DialogContentText>
-                                Veuillez introduire le nom du fabricant ainsi que l'url de sa photo
+                                Veuillez modifier les information que vous voulez
                             </DialogContentText>
                             <TextField
                                 autoFocus
@@ -329,37 +333,19 @@ class MediaCard extends Component {
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div> 
-                            {/*<OptionsForm initialValues={this.props.options} />
-                            <input
-                                accept="image/*"
-                                id="contained-button-file"
-                                multiple
-                                type="file"
-                                style={{display:'none'}}
-                            />
-                            <label htmlFor="contained-button-file">
-                                <Button variant="contained" component="span" >
-                                    Upload
-                                </Button>
-                            </label>*/}
-                        </DialogContent>
-                        
-                        
+                        </DialogContent>             
                         <DialogActions style={styles.actions}>
                             <Button onClick={this.handleClose} color="default">
                                 Cancel
                             </Button>
-                            <Button onClick={this.handleDelete} style={styles.delete}>
-                                Delete
-                            </Button>
+
+                            <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
+                            
                             <Button onClick={this.handleUpdate} color="primary">
                                 Modifier
                             </Button>
                         </DialogActions>
-
                     </Dialog>
-
-                    
             </Card>
         );
     }
@@ -380,7 +366,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        putModele,deleteModele
+        putModele,deleteModele,allModeles,getVersionListOfModele
     });
     return { ...actions, dispatch };
 }

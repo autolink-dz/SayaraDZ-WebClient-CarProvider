@@ -15,9 +15,6 @@ export function getVersionsList(next) {
         }
         request.get('/versions?next='+next+'&page=20',head)
             .then(function (response) {
-            /*    console.log("+**+*+**++*+**+*+*+********+++++++++")
-                console.log(response)
-                console.log("+**+*+**++*+**+*+*+********+++++++++")*/
                 dispatch({type : 'SELECT_VERSIONS', payload: response});
             })
             .catch(function (error) {

@@ -41,6 +41,7 @@ import OptionsCheck from './optionsCheckUpdate'
 import CouleursCheck from './couleursCheckUpdate'
 //import MyForm from './FieldArraysForm'
 import { getFormValues} from 'redux-form'
+import AlertDialogSlide from './validateDelete'
 
 const styles =  theme =>  ({
 
@@ -92,6 +93,9 @@ const styles =  theme =>  ({
         width : 1500,
         marginRight : -theme.spacing.unit * 50,
       },
+      hh:{
+        width : 1500, 
+      },
       chip: {
         marginRight: theme.spacing.unit * 20,
       },
@@ -128,15 +132,12 @@ class MediaCard extends Component {
         this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.idModele).couleurs });
         this.setState({ optionsChecked: this.props.versionOptions });
         this.setState({ couleursChecked: this.props.versionCouleurs });
-        //let tt = [{attr : "efefe",val:"rfzref"}]//this.props.fiche_tech
         let tt = {aaa : "aaaaaaaa",bbb:"bbbbbb"} 
         let obj = this.props.fiche_tech
-        //find(x => x.id === this.state.modele).options
         var result = Object.keys(obj).map(function(key) {
           return  {attr:key ,  val: obj[key]}; 
         });
         this.setState({ initialValuesFichTech: {'fiche_tech':result }})
-        //setTimeout(()=>{console.log(this.state.initialValuesFichTech)},1000);
     };
 
     handleName= (e) =>{
@@ -150,14 +151,11 @@ class MediaCard extends Component {
         this.setState({ url: e.target.value });
     };
     handleOptions= (e) =>{
-      //  this.setState({ initialValues: {'options':this.props.newoptions.options } });
-      
       this.setState({ options: this.props.allModeles.find(x => x.id === this.state.modele).options });
       this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.state.modele).couleurs });
     };
     
     handleClickOpen = () => {
-       console.log(this.props.newFichTech) 
         this.setState({ open: true });
     };
 
@@ -187,16 +185,6 @@ class MediaCard extends Component {
         setTimeout(()=>{
           this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.initialValuesFichTech.fiche_tech,this.state.modele));
         },1000); 
-    /*    if (this.props.loading){
-
-            if(!this.props.error){console.log(this.props.loading)
-                let msg = "La marque est modifieé avec success !\"";
-                this.setState({snack:<CustomizedSnackbars type='success' msg={msg} />});
-            }
-            else {
-                this.setState({snack:<CustomizedSnackbars type='error' msg='Erreur, veuillez resseyer svp !'/>});
-            }
-        }*/
         this.handleClose();
     }
 
@@ -208,11 +196,9 @@ class MediaCard extends Component {
         this.child2.clearChecked()
         
         setTimeout(()=>{this.handleOptions()},1000);
-       /// setTimeout(()=>{this.setState({ optionsChecked: [] });},1000);
        this.setState({ optionsChecked: [] });
        this.setState({ couleursChecked: [] });
        
-     //   this.handleOptions()
     };
 
     handleOptionsChecked= (array) =>{
@@ -238,6 +224,7 @@ class MediaCard extends Component {
                   className={classes.media}
                   image={this.props.url}
                   title="Contemplative Reptile"
+                  onClick={this.props.test.bind(this,this.props.code,this.props.nom,this.props.url,this.props.options,this.props.couleurs,this.props.fiche_tech)}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
@@ -252,23 +239,22 @@ class MediaCard extends Component {
                 <Button size="small" variant="contained" color="secondary" className={classes.button} onClick={this.handleClickOpen}>
                    Modifier
                 </Button>
-                <IconButton aria-label="Delete" className={classes.margin} onClick={this.handleDelete}>
-                <DeleteIcon fontSize="large" />
-                </IconButton>
+                <AlertDialogSlide nom={this.props.nom} handleDelete={this.handleDelete} btn={0} />
               </CardActions>
 
 
               <Dialog
+                        PaperProps={{ style: { maxWidth: 'none' } }}
+                        className={classes.hh}
                         open={this.state.open}
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"
                        
                     >
-                        <h2 style={styles.title}>Modifier La Marque {this.props.nom}</h2>
-                        <img src={this.props.url} alt="brand" style={styles.brand} height="200"/>
+                        <h2 style={styles.title}>Modifier la version {this.props.nom}</h2>
                         <DialogContent>
                             <DialogContentText>
-                                Veuillez introduire le nom du fabricant ainsi que l'url de sa photo
+                                  Veuillez modifier les information que vous voulez
                             </DialogContentText>
                             <SelectModele handleModele={this.handleModele} allModeles={this.props.allModeles} idModele={this.props.idModele} />
 
@@ -311,7 +297,7 @@ class MediaCard extends Component {
                              label={<h3>choisir les options</h3>} 
                              variant="outlined" />
                             <DialogContent>
-                            <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.state.options} versionOptions={this.props.options}
+                            <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.props.allModeles.find(x => x.id === this.props.idModele).options} versionOptions={this.props.options}
                             handleOptionsChecked={this.handleOptionsChecked}  />
                             </DialogContent>
 
@@ -324,7 +310,7 @@ class MediaCard extends Component {
                              variant="outlined" />
 
                             <DialogContent>
-                            <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.state.couleurs} versionCouleurs={this.props.couleurs}
+                            <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.props.allModeles.find(x => x.id === this.props.idModele).couleurs} versionCouleurs={this.props.couleurs}
                             handleCouleursChecked={this.handleCouleursChecked}  />
                             </DialogContent>
 
@@ -366,31 +352,13 @@ class MediaCard extends Component {
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>
-                            
-                            {/*
-                            <MyForm initialValues={this.state.initialValues} />
-                            
-                            <MyForm initialValues={this.props.options} />
-                            <input
-                                accept="image/*"
-                                id="contained-button-file"
-                                multiple
-                                type="file"
-                                style={{display:'none'}}
-                            />
-                            <label htmlFor="contained-button-file">
-                                <Button variant="contained" component="span" >
-                                    Upload
-                                </Button>
-                            </label>*/}
+
                         </DialogContent>
                         <DialogActions style={styles.actions}>
                             <Button onClick={this.handleClose} color="default">
                                 Cancel
                             </Button>
-                            <Button onClick={this.handleDelete} style={styles.delete}>
-                                Delete
-                            </Button>
+                            <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
                             <Button onClick={this.handleUpdate} color="primary">
                                 Modifier
                             </Button>

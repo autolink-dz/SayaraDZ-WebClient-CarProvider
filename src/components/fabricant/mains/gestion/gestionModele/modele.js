@@ -3,42 +3,19 @@ import './../../../../../styles/signInInfo.css'
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-//import PostData from './testjson'
-import SimpleModal from './../../modal'
 import gestionReducer  from './../../../../../reducers/gestionReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import image from './../../../../../images/renault-logo.jpg';
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
 import { getFormValues} from 'redux-form'
-
-//import FieldArraysForm from './FieldArraysForm'
 import MediaCard from './cardModele'
-import MediaCard2 from './cardModele2'
-import MyForm from './OptionsForm'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Waypoint} from "react-waypoint";
 import CustomizedSnackbars from "./../../../snackBar";
-
-
 import AddModele from './../../../../../containers/fabricant/addModele'
 import {getModelesList} from './../../../../../actions/modeleActions/getModelesList'
 import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpdateModele";
 import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
-
+import ShowModele from './showModele'
 
 const styles = theme => ({
     root: {
@@ -59,24 +36,72 @@ const styles = theme => ({
       button: {
         margin: theme.spacing.unit,
       },
+      place:{
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 130,
+        marginTop: theme.spacing.unit * 3,
+      },
 });
+
+const style = {
+  margin: 0,
+  top: 'auto',
+  right: 20,
+  bottom: 20,
+  left: 'auto',
+  position: 'fixed',
+};
 
 class Modele extends Component {
   constructor(props)
     {
         super(props);
         this.fetchData = this.fetchData.bind(this);
+        this.state = {
+          open: false,
+          nom:'',
+          code:'',
+          url:'',
+          options:[],
+          couleurs:[]
+        };
     }
+
+    componentDidMount() {
+
+      this.props.dispatch({type: 'CLEAR_VERSIONS'});
+    }
+    handleClickOpen = () => {
+      this.setState({ open: true });
+    };
+  
+    handleClose = () => {
+      this.setState({ open: false });
+    };
+//code,nom,url,options,couleurs
+  test = (code,nom,url,options,couleurs)=>{
+    this.setState({ open: true });
+    this.setState({ code: code });
+    this.setState({ nom: nom });
+    this.setState({ url: url });
+    this.setState({ options: options });
+    this.setState({ couleurs: couleurs });    
+  };
   _renderItems(){
- //   setTimeout(()=>{console.log(this.props.modeles)},5000);
     console.log(this.props.modeles)
     return (
       <Grid container spacing={24}>
           {this.props.modeles.map( (modele,index) =>
             <Grid item xs={12} md={3} sm={6}>
-             <MediaCard nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />
+              
+             <MediaCard test={this.test} nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />
+
              </Grid>
       )}
+      <ShowModele
+       open={this.state.open} handleClickOpen={this.handleClickOpen} handleClose={this.handleClose}
+       code={this.state.code} nom={this.state.nom} url={this.state.url} options={this.state.options} couleurs={this.state.couleurs} 
+       />
        </Grid>
     );
 }
@@ -93,20 +118,6 @@ _renderWaypoint(){
       );
   }
 }
-/*
-_renderItems2(){
-  console.log(this.props.modeles)
-  return (
-    <Grid container spacing={24}>
-        {this.props.modeles.map( (modele,index) =>
-          <Grid item xs={12} md={4} sm={6}>
-           <MediaCard2 nom={modele.nom} url={modele.url} id={modele.id} />
-           {index}
-           </Grid>
-    )}
-     </Grid>
-  );
-}*/
     render() {
       
         const { classes } = this.props;
@@ -138,11 +149,11 @@ _renderItems2(){
          let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
         return (
 
-          <Grid item xs={10}>
+          <Grid item xs={12}>
           <div className={classes.root}>
               <AddModele />
               {snack}
-            <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
+            <CircularProgress className={classes.place} style={this.props.loading ? {display:'none'}  : stProgresse} />
             {
               this._renderItems()
             }

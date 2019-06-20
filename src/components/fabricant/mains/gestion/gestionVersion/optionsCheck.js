@@ -45,38 +45,23 @@ class OptionsCheck extends React.Component {
   handleToggle = value => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
-   /* this.setState({
-      checked: this.props.optionsChecked,
-    });*/
     const newChecked = [...checked];
-  
-    console.log(checked.indexOf(value))
-    console.log(value)
    
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
-    }
-
-    
+    }   
     this.setState({
       checked: newChecked,
     });
     
     setTimeout(()=>{
-      console.log("***********************************")  
-      console.log(this.state.checked)
-      console.log("***********************************")
       this.props.handleOptionsChecked(this.state.checked)
-    },1000);
-  //  console.log(checked)
-    //  setTimeout(()=>{this.props.handleOptionsChecked(checked)},2000);
-    
+    },1000);  
   };
   test=()=>{
     const { checked } = this.state;
-    console.log(checked)
   }
   render() {
     const { classes } = this.props;
@@ -98,7 +83,6 @@ class OptionsCheck extends React.Component {
             </ListItemSecondaryAction>
           </ListItem>
         ))}
-        <Button onClick={this.test}>test</Button>
       </List>
     );
   }
@@ -109,15 +93,3 @@ OptionsCheck.propTypes = {
 };
 
 export default withStyles(styles)(OptionsCheck);
-//export default  connect(null, {withRef: true})(OptionsCheck)
-/*
-function mapStateToProps(state) {
-
-}
-function matchDispatchToProps(dispatch) {
-
-}
-
-export default connect(
-  mapStateToProps,matchDispatchToProps,null, {withRef: true}
-)(withStyles(styles)(OptionsCheck));*/

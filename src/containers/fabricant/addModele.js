@@ -20,12 +20,13 @@ import CustomizedSnackbars from "./../../components/fabricant/snackBar";
 
 import {addModele} from "./../../actions/modeleActions/addModele";
 import {resetAddModele} from "./../../actions/modeleActions/resetAddModele";
+import { allModeles } from './../../actions/modeleActions/allModeles';
 
 import MyForm from "./../../components/fabricant/mains/gestion/gestionModele/OptionsForm";
 import CouleursForm from "./../../components/fabricant/mains/gestion/gestionModele/CouleursForm";
+
+
 import { getFormValues} from 'redux-form'
-
-
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -67,6 +68,11 @@ const styles = theme => ({
       chip2: {
         marginRight: theme.spacing.unit * 15,
       },
+      fab: {
+      //  position: 'absolute',
+        bottom: theme.spacing.unit * 2,
+        left:'95%',
+      },
 });
 
 class AddModele extends React.Component {
@@ -101,6 +107,10 @@ class AddModele extends React.Component {
         {
           this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
         }
+        
+        setTimeout(()=>{
+          this.props.dispatch(allModeles());
+        },5000);
 
         this.handleCloseA();
     };
@@ -130,7 +140,7 @@ class AddModele extends React.Component {
         return (
             <div >
                 {snack}
-                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} position='static' >
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position="static" >
                     <AddIcon />
                 </Fab>
              { //<FloatingActionButtons/>
@@ -279,6 +289,7 @@ function mapStateToProps(state) {
     return {
         add : state.gestionReducer.add,
         error : state.gestionReducer.error,
+        all : state.gestionReducer.allModeles,
         options: getFormValues('MyForm')(state),
         couleurs: getFormValues('CouleursForm')(state),
         
@@ -288,7 +299,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addModele
+        addModele,allModeles
     });
     return { ...actions, dispatch };
 }

@@ -30,6 +30,7 @@ const gestionReducer = (state=initialState,action)=>{
                 allModeles: action.payload
             };
         case 'ALL_MODELES':
+                console.log(action.payload)
              return {
                 ...state,
                 allModeles: action.payload
@@ -66,16 +67,9 @@ const gestionReducer = (state=initialState,action)=>{
                 modeles.push(action.payload.data);
                 tmp1=true;
                 modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
-                console.log("************************************")
-                console.log(modeles)
-                console.log("****************************************")
             }
             else {
                 modeles.push(...action.payload.data.data);
-                console.log("+++++++++++++++++++++++++++++++++++++")
-                console.log(modeles)
-                console.log("+++++++++++++++++++++++++++++++++++++")
-                
             }
             return {
                 ...state,

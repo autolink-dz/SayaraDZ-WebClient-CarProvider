@@ -25,8 +25,11 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { getFormValues} from 'redux-form'
 
-import SimpleCardVersion from './simpleCardVersion'
-
+//import FieldArraysForm from './FieldArraysForm'
+import MediaCard from './cardVersion'
+/*import MediaCard2 from './cardModele2'
+import MyForm from './FieldArraysForm'
+*/
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Waypoint} from "react-waypoint";
@@ -37,7 +40,7 @@ import AddVersion from './../../../../../containers/fabricant/addVersion'
 import {getVersionsList} from './../../../../../actions/versionActions/getVersionList'
 import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
 import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
-
+import ShowVersion from './showVersion'
 
 const styles = theme => ({
     root: {
@@ -60,21 +63,63 @@ const styles = theme => ({
       },
 });
 
-class Version extends Component {
+class Versions extends Component {
   constructor(props)
     {
         super(props);
         this.fetchData = this.fetchData.bind(this);
+        this.state = {
+          open: false,
+          nom:'',
+          code:'',
+          url:'',
+          options:[],
+          couleurs:[],
+          fiche_tech:[]
+        };
     }
+
+    handleClickOpen = () => {
+      this.setState({ open: true });
+    };
+  
+    handleClose = () => {
+      this.setState({ open: false });
+    };
+
+    test = (code,nom,url,options,couleurs,fich)=>{
+
+    //  let obj = this.props.fiche_tech
+        //find(x => x.id === this.state.modele).options
+        var result = Object.keys(fich).map(function(key) {
+          return  {attr:key ,  val: fich[key]}; 
+        });
+
+
+      this.setState({ open: true });
+      this.setState({ code: code });
+      this.setState({ nom: nom });
+      this.setState({ url: url });
+      this.setState({ options: options });
+      this.setState({ couleurs: couleurs });    
+      this.setState({ fiche_tech: result });    
+    };
+
   _renderItems(){
     console.log(this.props.versions)
     return (
       <Grid container spacing={24}>
           {this.props.versions.map( (version,index) =>
             <Grid item xs={12} md={3} sm={6}>
-             <SimpleCardVersion nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} fiche_tech={version.fiche_tech} idModele={version.id_modele} />
+              
+             <MediaCard test={this.test} nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} fiche_tech={version.fiche_tech} idModele={version.id_modele} />
              </Grid>
           )}
+          <ShowVersion
+       open={this.state.open} handleClickOpen={this.handleClickOpen} handleClose={this.handleClose}
+       code={this.state.code} nom={this.state.nom} url={this.state.url} 
+       options={this.state.options} couleurs={this.state.couleurs} fiche_tech={this.state.fiche_tech}
+       />
        </Grid>
     );
 }
@@ -91,7 +136,6 @@ _renderWaypoint(){
       );
   }
 }
-
     render() {
       
         const { classes } = this.props;
@@ -122,7 +166,9 @@ _renderWaypoint(){
 
           <Grid item xs={12}>
           <div className={classes.root}>
-
+              <h1>{this.props.match.params.nom}</h1>
+              <AddVersion id={this.props.match.params.id} />
+              {snack}
             <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
             {
               this._renderItems()
@@ -136,7 +182,7 @@ _renderWaypoint(){
     }
 }
 
-Version.propTypes = {
+Versions.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
@@ -161,4 +207,4 @@ Version.propTypes = {
   }
   export default connect(
     mapStateToProps,matchDispatchToProps
-  )(withStyles(styles)(Version));
+  )(withStyles(styles)(Versions));

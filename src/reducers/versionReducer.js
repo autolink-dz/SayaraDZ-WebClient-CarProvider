@@ -7,18 +7,27 @@ const initialState = {
     loading:false,
     next:0
 };
-let versions=null;
+let versions=[];
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
+        case 'CLEAR_VERSIONS':
+                versions.splice(0,versions.length)
+                return {
+                    ...state,
+                    loading: false,
+                    versions,
+                };
         case 'SELECT_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp=false;
             if(action.payload.data.data ==null){
+                versions.splice(0,versions.length)
                 versions.push(action.payload.data);
                 tmp=true;
                 versions.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
+                versions.splice(0,versions.length)
                 versions.push(...action.payload.data.data);
             }
             return {

@@ -32,10 +32,7 @@ class OptionsCheck extends React.Component {
   this.setState({
     checked: this.props.versionOptions
   });
-  this.props.handleOptionsChecked(this.props.versionOptions)
- /* setTimeout(()=>{
-    console.log(this.state.checked)
-  },1000);*/  
+  this.props.handleOptionsChecked(this.props.versionOptions)  
   }
 
   componentWillUnmount() {
@@ -50,19 +47,10 @@ class OptionsCheck extends React.Component {
 
   handleToggle = value => () => {
     const { checked } = this.state;
-    //const currentIndex = checked.indexOf(value);
-    console.log(checked)
     const currentIndex = checked.findIndex(i => i.nom === value.nom && i.code === value.code)
-   /* this.setState({
-      checked: this.props.optionsChecked,
-    });*/
     const newChecked = [...checked];
-  
-   // console.log(checked.indexOf(value))
     console.log(checked.indexOf(checked.findIndex(i => i.nom === value.nom && i.code === value.code)))
-    //{"nom":value.nom,"code":value.code}
-    console.log(value)
-   
+ 
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -75,14 +63,9 @@ class OptionsCheck extends React.Component {
     });
     
     setTimeout(()=>{
-      console.log("***********************************")  
-      console.log(this.state.checked)
-      console.log("***********************************")
       this.props.handleOptionsChecked(this.state.checked)
     },1000);
-  //  console.log(checked)
-    //  setTimeout(()=>{this.props.handleOptionsChecked(checked)},2000);
-    
+
   };
   test=()=>{
     const { checked } = this.state;
@@ -96,8 +79,6 @@ class OptionsCheck extends React.Component {
         {this.props.modeleOptions.map((value, index) => (
           <ListItem key={index} role={undefined} dense button onClick={this.handleToggle(value)}>
             <Checkbox
-             // checked={this.state.checked.indexOf(value) !== -1}
-            // checked={this.state.checked.filter(e => e.nom === value.nom).length > 0}
             checked={this.state.checked.findIndex(i => i.nom === value.nom && i.code === value.code) !== -1}
             
             tabIndex={-1}

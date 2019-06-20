@@ -21,7 +21,6 @@ export function addVersion(nom,code, url,id_modele,options,couleurs,fiche_tech) 
     return dispatch =>{
         request.post('/versions', body, head)
             .then(function (response) {
-                console.log("success add version")
                 dispatch({type : 'ADD_VERSIONS', payload: response});
             })
             .catch(function (error) {
