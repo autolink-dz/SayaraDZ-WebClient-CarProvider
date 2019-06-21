@@ -90,7 +90,7 @@ class NavBar extends React.Component {
                           <Tab value="one" label="Dashbord" component={Link} to="/fabricant/dashbord" onClick={this.menuDashbord} />
                           <Tab value="two" label="Gestion" component={Link} to="/fabricant/gestion/modele" />
                           <Tab value="three" label="Stock" component={Link} to="/fabricant/stock" />
-                          <Tab value="four" label="Simulation" to="/fabricant/simulation" />
+                          <Tab value="four" label="Simulation" component={Link} to="/fabricant/simulation" />
                           <Tab value="five" label="Commande" component={Link} to="/fabricant/commande" />
                         </Tabs>
                         {auth && (

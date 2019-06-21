@@ -6,6 +6,8 @@ import marquesListReducer from "./marquesListReducer";
 import fabAdminListReducer from "./fabAdminListReducer";
 import showDialogReducer from "./showDialogReducer";
 import commandesReducer from "./commandesReducer";
+import modeleListReducer from "./modeleListReducer";
+import versionListReducer from "./versionListReducer";
 
 
 const AllReducers = combineReducers({
@@ -15,7 +17,9 @@ const AllReducers = combineReducers({
     showDialogReducer,
     gestionReducer,
     versionReducer,
-    commandesReducer
+    commandesReducer,
+    modeleListReducer,
+    versionListReducer
 });
 
 export default AllReducers;

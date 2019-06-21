@@ -4,6 +4,8 @@ import SignInUi from "./components/signIn/signInUI";
 import Admin from './components/admin/admin';
 import Commande from './containers/fabricant/commande';
 import Stock from './containers/fabricant/stock';
+import SimulerPrixModel from './containers/fabricant/simulerPrixModel';
+import SimulerPrixVersions from './containers/fabricant/simulerPrixVersions';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {PrivateRoute} from './utils/privateRoute'
 import {createMuiTheme} from "@material-ui/core";
@@ -42,6 +44,13 @@ class App extends Component {
                                 </FirebaseContext.Consumer>
                             }/>
                             <PrivateRoute path="/fabricant/commande" component={Commande}/>
+
+                            {/* Fabricant/Simulation Routes */}
+                            <PrivateRoute path="/fabricant/simulation/versions/:id/:version" component={SimulerPrixVersions}/>
+                            <PrivateRoute path="/fabricant/simulation/versions/:id" component={SimulerPrixVersions}/>
+
+
+                            <PrivateRoute path="/fabricant/simulation" component={SimulerPrixModel}/>
                             <PrivateRoute path="/fabricant" component={Dashbord}/>
                             <Route component={SignInUi}/>
                             <Route path="/" component={SignInUi} exact/>
