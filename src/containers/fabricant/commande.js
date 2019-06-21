@@ -57,8 +57,12 @@ class Commande extends Component {
     }
 
     componentDidMount() {
+        if ( this.props.commandes.length === 0){
+
+            this.props.dispatch(getCommandes(this.state.id_marque));
+        }
         this.fetchImage(this.state.id_marque);
-        this.props.dispatch(getCommandes(this.state.id_marque));
+        localStorage.setItem('value',"three");
     }
 
     commandDialog() {

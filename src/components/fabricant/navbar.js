@@ -42,7 +42,7 @@ class NavBar extends React.Component {
     state = {
         auth: true,
         anchorEl: null,
-        value: 'one',
+        value: localStorage.getItem('value'),
     };
 
     componentDidMount() {
@@ -87,11 +87,9 @@ class NavBar extends React.Component {
                                 backgroundColor: "#ffffff"
                             }
                         }} value={value} onChange={this.handleChange}>
-                          <Tab value="one" label="Dashbord" component={Link} to="/fabricant/dashbord" onClick={this.menuDashbord} />
-                          <Tab value="two" label="Gestion" component={Link} to="/fabricant/gestion/modele" />
-                          <Tab value="three" label="Stock" component={Link} to="/fabricant/stock" />
-                          <Tab value="four" label="Simulation" component={Link} to="/fabricant/simulation" />
-                          <Tab value="five" label="Commande" component={Link} to="/fabricant/commande" />
+                          <Tab value="one" label="Stock" component={Link} to="/fabricant/stock" />
+                          <Tab value="two" label="Simulation" component={Link} to="/fabricant/simulation" />
+                          <Tab value="three" label="Commande" component={Link} to="/fabricant/commande" />
                         </Tabs>
                         {auth && (
                             <div>

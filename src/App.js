@@ -12,7 +12,6 @@ import {createMuiTheme} from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import FabricantAdmin from "./components/admin/fabricantAdmin";
 import {FirebaseContext} from "./utils/firebase/indexFireBase";
-import Dashbord  from './components/fabricant/sidebar/dashbord'
 const theme = createMuiTheme({
     palette: {
         primary: {main: '#158CF6'},
@@ -49,9 +48,7 @@ class App extends Component {
                             <PrivateRoute path="/fabricant/simulation/versions/:id/:version" component={SimulerPrixVersions}/>
                             <PrivateRoute path="/fabricant/simulation/versions/:id" component={SimulerPrixVersions}/>
 
-
                             <PrivateRoute path="/fabricant/simulation" component={SimulerPrixModel}/>
-                            <PrivateRoute path="/fabricant" component={Dashbord}/>
                             <Route component={SignInUi}/>
                             <Route path="/" component={SignInUi} exact/>
                         </Switch>

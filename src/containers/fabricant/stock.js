@@ -52,6 +52,7 @@ class Stock extends React.Component {
         };
         this.input1 = React.createRef();
         this.input2 = React.createRef();
+        localStorage.setItem('value',"one");
     }
 
      handleStock(e) {
