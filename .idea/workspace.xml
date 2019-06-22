@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3eb7f2a9-0402-4e30-9e44-80dd5d9071e4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/containers/admin/card.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/admin/card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/admin/mainAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/admin/mainAdmin.js" afterDir="false" />
-    </list>
+    <list default="true" id="3eb7f2a9-0402-4e30-9e44-80dd5d9071e4" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -62,7 +59,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/containers/admin/card.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
+            <state relative-caret-position="260">
               <caret line="241" column="34" selection-start-line="241" selection-start-column="34" selection-end-line="241" selection-end-column="34" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -320,12 +317,12 @@
       <workItem from="1560547891428" duration="4058000" />
       <workItem from="1560589186300" duration="12093000" />
       <workItem from="1561099895087" duration="449000" />
-      <workItem from="1561151117407" duration="2128000" />
+      <workItem from="1561151117407" duration="2387000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="146673000" />
+    <option name="totallyTimeSpent" value="146932000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -338,15 +335,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.877709" visible="true" weight="0.19063005" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.877709" visible="true" weight="0.19063005" />
       <window_info id="Structure" order="1" sideWeight="0.46594426" side_tool="true" weight="0.18427323" />
       <window_info id="npm" order="2" sideWeight="0.46594426" side_tool="true" weight="0.18427323" />
       <window_info id="Favorites" order="3" sideWeight="0.12229102" side_tool="true" weight="0.18427323" />
       <window_info anchor="bottom" id="Database Changes" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" weight="0.03994674" />
-      <window_info anchor="bottom" id="Terminal" order="2" visible="true" weight="0.06258322" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="2" visible="true" weight="0.3608522" />
       <window_info anchor="bottom" id="Docker" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.029097963" />
@@ -775,7 +771,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/admin/card.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
+        <state relative-caret-position="260">
           <caret line="241" column="34" selection-start-line="241" selection-start-column="34" selection-end-line="241" selection-end-column="34" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
