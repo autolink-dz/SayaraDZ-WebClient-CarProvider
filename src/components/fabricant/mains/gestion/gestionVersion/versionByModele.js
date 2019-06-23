@@ -3,39 +3,13 @@ import './../../../../../styles/signInInfo.css'
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-//import PostData from './testjson'
-import SimpleModal from './../../modal'
 import versionReducer  from './../../../../../reducers/versionReducer'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import image from './../../../../../images/renault-logo.jpg';
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import { getFormValues} from 'redux-form'
-
-//import FieldArraysForm from './FieldArraysForm'
 import MediaCard from './cardVersion'
-/*import MediaCard2 from './cardModele2'
-import MyForm from './FieldArraysForm'
-*/
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Waypoint} from "react-waypoint";
 import CustomizedSnackbars from "./../../../snackBar";
-
-
 import AddVersion from './../../../../../containers/fabricant/addVersion'
 import {getVersionsList} from './../../../../../actions/versionActions/getVersionList'
 import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
@@ -52,7 +26,6 @@ const styles = theme => ({
       card: {
         width:'100%',
         maxWidth: 345,
-        
       },
       media: {
         // ⚠️ object-fit is not supported by IE 11.
@@ -89,8 +62,6 @@ class Versions extends Component {
 
     test = (code,nom,url,options,couleurs,fich)=>{
 
-    //  let obj = this.props.fiche_tech
-        //find(x => x.id === this.state.modele).options
         var result = Object.keys(fich).map(function(key) {
           return  {attr:key ,  val: fich[key]}; 
         });
@@ -195,7 +166,6 @@ Versions.propTypes = {
       next : state.versionReducer.next,
       update : state.versionReducer.update,
       delete : state.versionReducer.delete,
-    //  opts: getFormValues('MyForm')(state)
     };
   }
 

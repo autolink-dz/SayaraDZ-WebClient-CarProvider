@@ -19,7 +19,6 @@ const variantIcon = {
     error: ErrorIcon,
     info: InfoIcon,
 };
-
 const styles1 = theme => ({
     success: {
         backgroundColor: green[600],
@@ -45,11 +44,9 @@ const styles1 = theme => ({
         alignItems: 'center',
     },
 });
-
 function MySnackbarContent(props) {
     const { classes, className, message, onClose, variant, ...other } = props;
     const Icon = variantIcon[variant];
-
     return (
         <SnackbarContent
             className={classNames(classes[variant], className)}
@@ -109,11 +106,9 @@ class CustomizedSnackbars extends React.Component {
         }
         this.setState({ open: false });
     };
-
     render() {
         return (
             <div>
-
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',

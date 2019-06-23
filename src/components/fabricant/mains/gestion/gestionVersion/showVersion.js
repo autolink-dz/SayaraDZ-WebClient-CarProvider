@@ -16,7 +16,6 @@ import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 
 const styles  = theme => ({
   appBar: {
@@ -43,20 +42,15 @@ const styles  = theme => ({
   },
 });
 
-
-
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
 class ShowVersion extends React.Component {
-
   state = {
     fich: [],
   }
-
-  componentDidMount() {
-    
+  componentDidMount() { 
   }
   render() {
     const { classes } = this.props;
@@ -84,7 +78,6 @@ class ShowVersion extends React.Component {
           </AppBar>
           <br />
               <Grid container className={classes.root2} spacing={24}>
-                 
                   <Grid container
   direction="row"
   justify="center"

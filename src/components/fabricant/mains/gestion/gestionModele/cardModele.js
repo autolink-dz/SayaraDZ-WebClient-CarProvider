@@ -7,17 +7,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit'
 import DialogActions from "@material-ui/core/DialogActions";
 import TextField from '@material-ui/core/TextField';
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {bindActionCreators} from "redux";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
-import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -29,14 +25,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import CustomizedSnackbars from "./../../../snackBar";
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
 import {deleteModele} from "./../../../../../actions/modeleActions/deleteModele";
 import { allModeles } from "./../../../../../actions/modeleActions/allModeles";
 import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
-import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpdateModele";
-import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
 import MyForm from './OptionsForm'
 import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'

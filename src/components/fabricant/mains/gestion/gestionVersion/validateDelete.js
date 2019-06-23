@@ -70,12 +70,9 @@ class AlertDialogSlide extends React.Component {
 
   render() {
     const { classes } = this.props;
-        
     return (
       <div>
-
         {this.btnDelete()}
-
         <Dialog
           open={this.state.open}
           TransitionComponent={Transition}
@@ -84,7 +81,6 @@ class AlertDialogSlide extends React.Component {
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
-
           <DialogTitle id="alert-dialog-slide-title">
             {"Suppression de la version "}{this.props.nom}
           </DialogTitle>

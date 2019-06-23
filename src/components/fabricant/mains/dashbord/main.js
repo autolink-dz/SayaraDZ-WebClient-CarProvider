@@ -7,9 +7,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import EnhancedTable  from './../../table'
-
-
 const styles = theme => ({
     main: {
         width:'100%',
@@ -38,8 +35,6 @@ class Main extends Component {
                     <Typography component="h1" variant="h5">
                        Modele
                     </Typography><br/>
-                    <EnhancedTable />
-
                 </Paper>
             </main>
         </Grid>

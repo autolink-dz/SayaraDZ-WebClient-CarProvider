@@ -8,8 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-import Button from '@material-ui/core/Button';
-import {connect} from 'react-redux';
 
 const styles = theme => ({
   root: {

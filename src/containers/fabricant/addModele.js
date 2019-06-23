@@ -12,22 +12,14 @@ import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
-
 import Avatar from '@material-ui/core/Avatar';
-import DoneIcon from '@material-ui/icons/Done';
-
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
-
 import {addModele} from "./../../actions/modeleActions/addModele";
 import {resetAddModele} from "./../../actions/modeleActions/resetAddModele";
 import { allModeles } from './../../actions/modeleActions/allModeles';
-
 import MyForm from "./../../components/fabricant/mains/gestion/gestionModele/OptionsForm";
 import CouleursForm from "./../../components/fabricant/mains/gestion/gestionModele/CouleursForm";
-
-
 import { getFormValues} from 'redux-form'
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -37,7 +29,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
-//import {FloatingActionButtons} from "./panelOptions"
 
 const styles = theme => ({
     root: {
@@ -69,7 +60,7 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 15,
       },
       fab: {
-      //  position: 'absolute',
+     //   position:'fixed',
         bottom: theme.spacing.unit * 2,
         left:'95%',
       },
@@ -138,15 +129,13 @@ class AddModele extends React.Component {
             this.props.dispatch(resetAddModele())
         }
         return (
+          
             <div >
                 {snack}
                 <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position="static" >
                     <AddIcon />
                 </Fab>
-             { //<FloatingActionButtons/>
-             
-             }  
-             
+               
                 <Dialog
                 PaperProps={{ style: { maxWidth: 'none' } }}
                 className={classes.hh}

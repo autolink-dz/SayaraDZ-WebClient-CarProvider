@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TabOption  from './tabOption'
 
 const styles = theme => ({
     main: {
@@ -17,7 +16,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 3,
     },
     paper: {
-      //  marginTop: theme.spacing.unit * 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -36,8 +34,6 @@ class Option extends Component {
                     <Typography component="h1" variant="h5">
                        Options
                     </Typography><br/>
-                    <TabOption />
-
                 </Paper>
             </main>
         </Grid>

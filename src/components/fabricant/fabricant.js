@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import NavBar  from './navbar'
-import Gestion  from './sidebar/gestion'
-import Stock  from './sidebar/stock'
 import Main  from './mains/dashbord/main'
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Modele from './mains/gestion/gestionModele/modele'
-import Version from './mains/gestion/gestionVersion/version'
 import Versions from './mains/gestion/gestionVersion/versionByModele'
-
 import Option from './mains/gestion/option'
 import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -81,8 +77,6 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-   // padding: '0 8px',
-   // marginTop:100,
     ...theme.mixins.toolbar,
   },
   content: {
@@ -107,15 +101,11 @@ class Fabricant extends Component {
   };
 
     render() {
-
       const { classes, theme } = this.props;
-        let affiche=<Gestion/>
-        
         return (
             <div className={classes.root}>
               <CssBaseline />
               <NavBar openMenu={this.state.open} handleDrawerOpen={this.handleDrawerOpen} />
-
               <Drawer
                 variant="permanent"
                 className={classNames(classes.drawer, {
@@ -148,10 +138,9 @@ class Fabricant extends Component {
                         <ListItemText primary={'Gérer version'} />
                       </ListItem>
 */}
-                      
                   </List>
                 <Divider />
-              </Drawer>
+              </Drawer>           
               <main className={classes.content}>
                 <div className={classNames('main', classes.toolbar)}>
                       <Switch>
@@ -163,11 +152,6 @@ class Fabricant extends Component {
                               <Route path='/fabricant/gestion/modele' render={props =>
                                   <Grid container spacing={24}>
                                       <Modele />
-                                  </Grid>
-                                  } />
-                              <Route path='/fabricant/gestion/version' render={props =>
-                                  <Grid container spacing={24}>
-                                      <Version />
                                   </Grid>
                                   } />
 
@@ -189,17 +173,17 @@ class Fabricant extends Component {
 
                               <Route path='/fabricant/stock' render={props =>
                                   <Grid container spacing={24}>
-                                      <Stock />
+                                  
                                   </Grid>
                                   } />
                               <Route path='/fabricant/simulation' render={props =>
                                   <Grid container spacing={24}>
-                                      {affiche}
+
                                   </Grid>
                                   } />
                               <Route path='/fabricant/commandes' render={props =>
                                   <Grid container spacing={24}>
-                                      {affiche}
+
                                   </Grid>
                                   } />
                       </Switch>

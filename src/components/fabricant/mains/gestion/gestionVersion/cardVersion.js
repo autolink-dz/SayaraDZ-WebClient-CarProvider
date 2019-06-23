@@ -7,15 +7,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit'
 import DialogActions from "@material-ui/core/DialogActions";
 import TextField from '@material-ui/core/TextField';
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {bindActionCreators} from "redux";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
 import Chip from '@material-ui/core/Chip';
 import PropTypes from 'prop-types';
@@ -28,15 +25,9 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-
-import CustomizedSnackbars from "./../../../snackBar";
 import {putVersion} from "./../../../../../actions/versionActions/putVersion";
 import {deleteVersion} from "./../../../../../actions/versionActions/deleteVersion";
-import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
-import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
 import FichTech from "./FichTechForm";
-
-import SelectModele from './selectModeleUpdate'
 import OptionsCheck from './optionsCheckUpdate'
 import CouleursCheck from './couleursCheckUpdate'
 //import MyForm from './FieldArraysForm'
@@ -256,8 +247,6 @@ class MediaCard extends Component {
                             <DialogContentText>
                                   Veuillez modifier les information que vous voulez
                             </DialogContentText>
-                            <SelectModele handleModele={this.handleModele} allModeles={this.props.allModeles} idModele={this.props.idModele} />
-
 
                             <TextField
                                 autoFocus

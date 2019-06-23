@@ -12,20 +12,12 @@ import Menu from '@material-ui/core/Menu';
 import Car from '@material-ui/icons/DirectionsCar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import Button from '@material-ui/core/Button';
 import {getModelesList} from "./../../actions/modeleActions/getModelesList";
-import {getVersionsList} from "./../../actions/versionActions/getVersionList";
-
-import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import { Link } from 'react-router-dom'
-//import {deleteVersion} from './../../actions/versionActions/deleteVersion'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { allModeles } from '../../actions/modeleActions/allModeles';
-
 import classNames from 'classnames';
-
-const axios = require('axios');
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -73,41 +65,27 @@ class NavBar extends React.Component {
         anchorEl: null,
         value: 'one',
     };
-
-//////////////////////////////////////////////////////////////////////////
     componentDidMount() {
-        console.log("---------------------------")
         this.props.dispatch(getModelesList('0'));
-      //  this.props.dispatch(getVersionsList('0'));
         this.props.dispatch(allModeles());
-     //   this.props.dispatch(deleteVersion("hRnfDx2nW1NM6r3ZE4to"));
-     
-        console.log("----------------------")
-        console.log(this.props.versions)
-        
     };
     fetchData(){
         this.props.dispatch(getModelesList(this.props.next));
     };
-/////////////////////////////////////////////////////////////////////////////
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
     };
-
     handleClose = () => {
         this.setState({ anchorEl: null });
     };
-
     handleChange = (event, value) => {
       this.setState({ value });
     };
 
-      
     render() {
         const { classes } = this.props;
         const { auth, anchorEl, value } = this.state;
         const open = Boolean(anchorEl);
-
         return (
                 <AppBar position="fixed"
           className={classNames(classes.appBar, {
@@ -130,9 +108,7 @@ class NavBar extends React.Component {
                           <Tab value="three" label="Stock" component={Link} to="/fabricant/stock" />
                           <Tab value="four" label="Simulation" to="/fabricant/simulation" />
                           <Tab value="five" label="Commande" component={Link} to="/fabricant/commande" />
-                          
                         </Tabs>
-          
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             <Car className={classes.icon} /> Sayara
                         </Typography>     

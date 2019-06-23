@@ -2,7 +2,6 @@ import React from 'react'
 import { Field, FieldArray, reduxForm, formValueSelector, change } from 'redux-form'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import gestionReducer  from './../../../../../reducers/gestionReducer'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Badge from '@material-ui/core/Badge';
 import Fab from '@material-ui/core/Fab';

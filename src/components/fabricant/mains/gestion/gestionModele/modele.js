@@ -78,7 +78,6 @@ class Modele extends Component {
     handleClose = () => {
       this.setState({ open: false });
     };
-//code,nom,url,options,couleurs
   test = (code,nom,url,options,couleurs)=>{
     this.setState({ open: true });
     this.setState({ code: code });

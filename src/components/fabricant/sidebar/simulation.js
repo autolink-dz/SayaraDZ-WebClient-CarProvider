@@ -14,10 +14,8 @@ const styles = theme => ({
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-
     },
     paper: {
-      //  marginTop: theme.spacing.unit * 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -28,7 +26,6 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: '#393A7E'
     },
-
 });
 
 function Login(props) {

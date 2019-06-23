@@ -8,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -57,7 +56,6 @@ class OptionsCheck extends React.Component {
       newChecked.splice(currentIndex, 1);
     }
 
-    
     this.setState({
       checked: newChecked,
     });
@@ -65,7 +63,6 @@ class OptionsCheck extends React.Component {
     setTimeout(()=>{
       this.props.handleOptionsChecked(this.state.checked)
     },1000);
-
   };
   test=()=>{
     const { checked } = this.state;
@@ -80,9 +77,8 @@ class OptionsCheck extends React.Component {
           <ListItem key={index} role={undefined} dense button onClick={this.handleToggle(value)}>
             <Checkbox
             checked={this.state.checked.findIndex(i => i.nom === value.nom && i.code === value.code) !== -1}
-            
             tabIndex={-1}
-              disableRipple
+            disableRipple
             />
             <ListItemText primary={`  ${value.nom }`} />
             <ListItemSecondaryAction>

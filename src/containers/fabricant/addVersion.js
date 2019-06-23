@@ -12,7 +12,6 @@ import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
-import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
 
 
@@ -32,8 +31,6 @@ import CouleursCheck from "./../../components/fabricant/mains/gestion/gestionVer
 
 import {addVersion} from "./../../actions/versionActions/addVersion";
 import {resetAddVersion} from "./../../actions/versionActions/resetAddVersion";
-
-import SelectModele from './../../components/fabricant/mains/gestion/gestionVersion/selectModele'
 import FichTech from "./../../components/fabricant/mains/gestion/gestionVersion/FichTechForm";
 import { getFormValues} from 'redux-form'
 
@@ -66,7 +63,7 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 15,
       },
       fab: {
-        //  position: 'absolute',
+        //  position: 'fixed',
           bottom: theme.spacing.unit * 2,
           left:'95%',
         },
@@ -75,8 +72,7 @@ const styles = theme => ({
 class AddVersion extends React.Component {
     constructor(props) {
         super(props);
-      //  this.superheroElement = React.createRef();
-      this.childRef=null;
+        this.childRef=null;
         this.state = {
             open: false,
             name:'',
