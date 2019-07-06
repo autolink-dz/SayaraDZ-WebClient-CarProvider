@@ -8,6 +8,7 @@ import showDialogReducer from "./showDialogReducer";
 import commandesReducer from "./commandesReducer";
 import modeleListReducer from "./modeleListReducer";
 import versionListReducer from "./versionListReducer";
+import optionsColorsReducer from "./optionsColorsReducer";
 
 
 const AllReducers = combineReducers({
@@ -19,7 +20,8 @@ const AllReducers = combineReducers({
     versionReducer,
     commandesReducer,
     modeleListReducer,
-    versionListReducer
+    versionListReducer,
+    optionsColorsReducer
 });
 
 export default AllReducers;
