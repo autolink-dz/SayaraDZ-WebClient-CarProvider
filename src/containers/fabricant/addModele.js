@@ -67,12 +67,18 @@ const styles = theme => ({
 });
 
 class AddModele extends React.Component {
-    state = {
-        open: false,
-        name:'',
-        url:'',
-        code:''
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      name:'',
+      url:'',
+      code:'',
     };
+}
+
     handleClickOpen = () => {
         
         this.setState({ open: true });

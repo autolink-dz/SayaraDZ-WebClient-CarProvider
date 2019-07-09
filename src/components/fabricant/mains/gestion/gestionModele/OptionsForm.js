@@ -46,7 +46,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           component={renderTextField} 
           label="Nom Option"/>
           &nbsp; &nbsp; &nbsp;
-
+{/*
           <Field
   name="color"
   component={ColorPickerField}
@@ -56,6 +56,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
             name={`${member}.color`}
             component={ColorPickerFieldd}
             label="hex"/>     
+*/}
         <Fab aria-label="Delete"
             title="Remove Member"
             color="secondary"
