@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Car from '@material-ui/icons/DirectionsCar';
+import Car from './../../assets/logoWhite.svg'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {getModelesList} from "./../../actions/modeleActions/getModelesList";
@@ -32,9 +32,9 @@ const styles = theme => ({
         marginLeft: -12,
         marginRight: 20,
     },
-    icon:{
+  //  icon:{
     //    marginTop:10
-    },
+   // },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -57,13 +57,21 @@ const styles = theme => ({
       hide: {
         display: 'none',
       },
+      icon: {
+        height: 35,
+        width: 35,
+    },
+    toolbar: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
 });
 var request = require('./../../actions/api/service');
 class NavBar extends React.Component {
     state = {
         auth: true,
         anchorEl: null,
-        value: 'one',
+        value: localStorage.getItem('value'),
     };
     componentDidMount() {
         this.props.dispatch(getModelesList('0'));
@@ -81,7 +89,11 @@ class NavBar extends React.Component {
     handleChange = (event, value) => {
       this.setState({ value });
     };
-
+    handleSignOut = () => {
+        this.handleClose();
+        localStorage.clear();
+        window.location.reload();
+    };
     render() {
         const { classes } = this.props;
         const { auth, anchorEl, value } = this.state;
@@ -112,6 +124,7 @@ class NavBar extends React.Component {
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             <Car className={classes.icon} /> Sayara
                         </Typography>     
+
                         {auth && (
                             <div>
                                 <IconButton
@@ -137,7 +150,8 @@ class NavBar extends React.Component {
                                     onClose={this.handleClose}
                                 >
                                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Mon Compte</MenuItem>
+                                    <MenuItem onClick={this.handleSignOut}>Déconnecter</MenuItem>
                                 </Menu>
                             </div>
                         )}

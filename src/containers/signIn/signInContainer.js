@@ -87,10 +87,6 @@ class SignInContainer extends Component {
                                 <InputLabel htmlFor="password">Mot de Passe</InputLabel><br/>
                                 <Input name="password" type="password" id="password" autoComplete="current-password" />
                             </FormControl><br/><br/>
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
                             <br/><br/>
                             <Button
                                 type="submit"
@@ -116,7 +112,7 @@ class SignInContainer extends Component {
 }
 function mapStateToProps(state) {
     return {
-        loading : state.fireSignIn.loading
+        loading : state.signInReducer.loading
     };
 }
 function matchDispatchToProps(dispatch) {

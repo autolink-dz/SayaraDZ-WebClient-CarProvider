@@ -34,7 +34,6 @@ import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
 
-
 const styles =  theme =>  ({
 
     actions:{
@@ -113,26 +112,21 @@ class MediaCard extends Component {
         this.setState({ code: this.props.code }); 
     //    this.setState({ initialValues: {'options':[{'code':'Axl Rose', 'nom':'Brian Johnson'}]} });
         this.setState({ initialValues: {'options':this.props.options }})
-        this.setState({ initialValuesCouleurs: {'couleurs':this.props.couleurs }})
-        
+        this.setState({ initialValuesCouleurs: {'couleurs':this.props.couleurs }})      
     };
-
     handleName= (e) =>{
         this.setState({ nom: e.target.value });
     };
     handleCode= (e) =>{
         this.setState({ code: e.target.value });
     };
-    
     handleUrl= (e) =>{
         this.setState({ url: e.target.value });
     };
     handleoptions= (e) =>{
         this.setState({ initialValues: {'options':this.props.newoptions.options } });
-        this.setState({ initialValuesCouleurs: {'couleurs':this.props.newCouleurs.couleurs }})
-        
+        this.setState({ initialValuesCouleurs: {'couleurs':this.props.newCouleurs.couleurs }})  
     };
-    
     handleClickOpen = () => {
         this.setState({ open: true });
     };
@@ -148,11 +142,9 @@ class MediaCard extends Component {
         },5000);
         this.handleClose();
     };
-
     test = () => {
       this.props.dispatch(getVersionListOfModele(0,this.props.id));
   };
-
     handleUpdate(){
         this.handleoptions()
         if(this.props.newoptions==undefined){
@@ -194,7 +186,6 @@ class MediaCard extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-
                 <Button component={Link} to={"/fabricant/gestion/versions/"+this.props.id+"/"+this.props.nom} onClick={this.test} size="small" variant="contained" color="secondary" className={classes.button}>
                    versions
                 </Button>
@@ -251,8 +242,7 @@ class MediaCard extends Component {
                                 onChange={ this.handleUrl }
                                 defaultValue={this.props.url}
                             />
-                            
-                            
+                    
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -330,9 +320,7 @@ class MediaCard extends Component {
                             <Button onClick={this.handleClose} color="default">
                                 Cancel
                             </Button>
-
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
-                            
                             <Button onClick={this.handleUpdate} color="primary">
                                 Modifier
                             </Button>

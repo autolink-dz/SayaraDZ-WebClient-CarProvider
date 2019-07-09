@@ -7,6 +7,7 @@ const initialState = {
     loading:false,
     next:0
 };
+
 let versions=[];
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
@@ -17,6 +18,7 @@ const gestionReducer = (state=initialState,action)=>{
                     loading: false,
                     versions,
                 };
+
         case 'SELECT_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp=false;
@@ -37,7 +39,6 @@ const gestionReducer = (state=initialState,action)=>{
                 add:tmp,
                 next:action.payload.data.next || null
             };
-            
         case 'ADD_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp1=false;
@@ -72,7 +73,6 @@ const gestionReducer = (state=initialState,action)=>{
                     version.couleurs = action.couleurs;
                     version.fiche_tech = action.fiche_tech;
                     version.id_modele = action.id_modele;
-
                 }
             });
             return{

@@ -88,7 +88,6 @@ class AddModele extends React.Component {
         this.setState({ open: false });
     };
     handleAdd = ()=>{
-
         if(this.props.options === undefined && this.props.couleurs === undefined)
         {
           this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
@@ -108,6 +107,7 @@ class AddModele extends React.Component {
         setTimeout(()=>{
           this.props.dispatch(allModeles());
         },5000);
+
 
         this.handleCloseA();
     };
@@ -135,7 +135,6 @@ class AddModele extends React.Component {
             this.props.dispatch(resetAddModele())
         }
         return (
-          
             <div >
                 {snack}
                 <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position="static" >
@@ -176,7 +175,6 @@ class AddModele extends React.Component {
                             fullWidth
                             onChange={ this.handleUrl }
                         />
-
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary

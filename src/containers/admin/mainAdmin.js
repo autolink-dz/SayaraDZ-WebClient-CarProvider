@@ -7,6 +7,7 @@ import MediaCard from './card'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import {Waypoint} from "react-waypoint";
+import {FirebaseContext} from "./../../utils/firebase/indexFireBase";
 
 class MainAdmin extends Component {
     constructor(props)
@@ -32,10 +33,16 @@ class MainAdmin extends Component {
         return (
             <GridList style={{marginLeft:'5%',marginTop:'5%'}} cellHeight={350} cols={5}>
                 {this.props.loading && this.props.fabricants.map( (fab,index) =>
-                <GridListTile key={index}>
-                    <MediaCard nom={fab.nom} url={fab.url} id={fab.id} />
-                </GridListTile>
-            )}
+                    <GridListTile key={index}>
+                        <FirebaseContext.Consumer>{
+                            firebase => {
+                                return <MediaCard firebase={firebase} nom={fab.nom} url={fab.url} id={fab.id} />
+                            }
+                        }
+                        </FirebaseContext.Consumer>
+
+                    </GridListTile>
+                )}
             </GridList>
         );
     }

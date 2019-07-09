@@ -1,13 +1,11 @@
 var request = require('./../api/service');
-
 export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele) {
     let head= {
         headers: {
             "Accept": "application/json",
             'Content-Type':'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
-        }
-        
+        }   
     };
     let body={
         id,
@@ -25,7 +23,6 @@ export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele
             .then(function (response) {
                 
                 dispatch(end(id,nom,code,url,options,couleurs,fiche_tech,id_modele));
-                
             })
             .catch(function (error) {
                 console.log(error);

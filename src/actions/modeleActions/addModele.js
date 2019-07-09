@@ -1,7 +1,6 @@
 var request = require('./../api/service');
 
 export function addModele(nom, url,code,opts,cols) {
-
     let body={
         "nom": nom,
         "url": "https://www.autobip.com/storage/photos/car_models/3235.png",
@@ -28,7 +27,6 @@ export function addModele(nom, url,code,opts,cols) {
             });
     }
 }
-
 export const err = (error) => ({
     type: "ERROR_GET",
     payload: error

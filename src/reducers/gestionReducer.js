@@ -1,21 +1,11 @@
 const initialState = {
     modeles: [],
     allModeles: [],
-  /*  options:[{code: "VOL_CADDY_DZ",
-    couleurs: [],
-    id: "v4h4os5ZHQhK7EjcHDnM",
-    id_marque: "HE54VwUdghgPRb6ZO6I8",
-    nom: "Volkswagen Caddy",
-    options:  [],
-    url: "https://www.autobip.com/storage/photos/car_models/3191.png"
-    }],*/
     error:false,
-
     add:false,
     update:false,
     delete:false,
     loading:false,
-
     next:0
 };
 let modeles=null;
@@ -35,7 +25,6 @@ const gestionReducer = (state=initialState,action)=>{
                 ...state,
                 allModeles: action.payload
             };
-        
         case 'SELECT_MODELES':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp=false;
@@ -130,7 +119,6 @@ const gestionReducer = (state=initialState,action)=>{
                 loading:false,
                 err:true
             };
-
         case 'END_DELETE_MODELE':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             modeles.forEach((modele,i)=>{

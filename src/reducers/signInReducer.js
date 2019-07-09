@@ -1,7 +1,7 @@
 const initialState = {
     loading: false,
 };
-const fireSignIn = (state=initialState,action)=>{
+const signInReducer = (state=initialState, action)=>{
     switch (action.type) {
         case 'BEGIN_SIGN_IN':
             return {
@@ -22,4 +22,4 @@ const fireSignIn = (state=initialState,action)=>{
             return state;
     }
 };
-export default fireSignIn;
+export default signInReducer;

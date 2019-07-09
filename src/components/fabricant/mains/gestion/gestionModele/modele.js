@@ -92,9 +92,7 @@ class Modele extends Component {
       <Grid container spacing={24}>
           {this.props.modeles.map( (modele,index) =>
             <Grid item xs={12} md={3} sm={6}>
-              
              <MediaCard test={this.test} nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />
-
              </Grid>
       )}
       <ShowModele
@@ -117,8 +115,8 @@ _renderWaypoint(){
       );
   }
 }
+
     render() {
-      
         const { classes } = this.props;
         const datas = this.props.modeles;
         let snack = null;
@@ -126,7 +124,6 @@ _renderWaypoint(){
             if(!this.props.error){
                // let msg = "Modele " +this.props.nom+" est modifié avec success !\"";
                 let msg = "Modele est modifié avec success !\"";
-                
                 snack = <CustomizedSnackbars type='success' msg={msg} />
             }
             else {
@@ -147,7 +144,6 @@ _renderWaypoint(){
          }
          let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
         return (
-
           <Grid item xs={12}>
           <div className={classes.root}>
               <AddModele />

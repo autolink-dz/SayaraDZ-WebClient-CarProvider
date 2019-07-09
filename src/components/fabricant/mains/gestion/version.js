@@ -6,6 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import TabVersion  from './tabVersion'
+
 const styles = theme => ({
     main: {
         width:'100%',
@@ -15,6 +17,7 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 3,
     },
     paper: {
+      //  marginTop: theme.spacing.unit * 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -23,7 +26,7 @@ const styles = theme => ({
     },
 });
 
-class Option extends Component {
+class Version extends Component {
     render() {
         return (
         <Grid item xs={10}>
@@ -31,8 +34,9 @@ class Option extends Component {
                 <CssBaseline />
                 <Paper className={this.props.classes.paper}>
                     <Typography component="h1" variant="h5">
-                       Options
+                       Version
                     </Typography><br/>
+                    <TabVersion />
                 </Paper>
             </main>
         </Grid>
@@ -40,8 +44,8 @@ class Option extends Component {
     }
 }
 
-Option.propTypes = {
+Version.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-export default withStyles(styles)(Option);
+export default withStyles(styles)(Version);

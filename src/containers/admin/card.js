@@ -68,14 +68,21 @@ class MediaCard extends Component {
         this.state = {
             open: false,
             snack:null,
-            redirect:false
+            redirect:false,
+            file:null,
         };
+        this.input1 = React.createRef();
     }
     handleName= (e) =>{
         this.setState({ nom: e.target.value });
     };
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
+    handleUrl = (e) => {
+        if (e.target.files[0]){
+            this.setState({
+                finish : true,
+                file : e.target.files[0]
+            });
+        }
     };
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -101,7 +108,23 @@ class MediaCard extends Component {
     };
 
     handleUpdate(){
-        this.props.dispatch(putMarque(this.props.id,this.state.nom,this.state.url));
+        this.input1.current.value = '';
+        let fb = this.props.firebase;
+        fb.storage().ref()
+            .child('/images/marques/' + this.state.file.name)
+            .put(this.state.file)
+            .then(() => {
+                fb.storage().ref()
+                    .child('/images/marques/' + this.state.file.name)
+                    .getDownloadURL()
+                    .then((url) => {
+                        this.setState({
+                            url,
+                            finish:false
+                        });
+                        this.props.dispatch(putMarque(this.props.id,this.state.nom,this.state.url));
+                    })
+            });
         this.handleClose();
     }
     gotoFabricant() {
@@ -148,7 +171,7 @@ class MediaCard extends Component {
                         <img src={this.props.url} alt="brand" style={styles.brand}/>
                         <DialogContent>
                             <DialogContentText>
-                                Veuillez introduire le nom du fabricant ainsi que l'url de sa photo
+                                Veuillez introduire le nom du fabricant ainsi que sa photo
                             </DialogContentText>
                             <TextField
                                 autoFocus
@@ -160,27 +183,28 @@ class MediaCard extends Component {
                                 //defaultValue={this.props.nom}
                             />
                             <br/>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="url"
-                                label="URL"
-                                fullWidth
-                                onChange={ this.handleUrl }
-                                //defaultValue={this.props.url}
-                            />
-                            {/*<input
+                            <input
                                 accept="image/*"
                                 id="contained-button-file"
-                                multiple
                                 type="file"
-                                style={{display:'none'}}
+                                style={{display: 'none'}}
+                                onChange={this.handleUrl}
+                                ref={this.input1}
                             />
                             <label htmlFor="contained-button-file">
-                                <Button variant="contained" component="span" >
-                                    Upload
+                                <Button variant="contained" component="span" style={
+                                    {
+                                        justifyContent: 'center',
+                                        marginLeft: '34%',
+                                        marginTop: '10%',
+                                        padding:5,
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
+                                    Upload Photo
                                 </Button>
-                            </label>*/}
+                            </label>
                         </DialogContent>
                         <DialogActions style={styles.actions}>
                             <Button onClick={this.handleClose} color="default">
