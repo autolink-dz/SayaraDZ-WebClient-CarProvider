@@ -3,9 +3,9 @@ var request = require('./../api/service');
 export function addModele(nom, url,code,opts,cols) {
     let body={
         "nom": nom,
-        "url": "https://www.autobip.com/storage/photos/car_models/3235.png",
+        "url": url,
         "code": code,
-        "id_marque": "HE54VwUdghgPRb6ZO6I8",
+        "id_marque": localStorage.id_marque,
         "options": opts,
         "couleurs": cols,
     };

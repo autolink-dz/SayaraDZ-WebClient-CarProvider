@@ -72,6 +72,10 @@ const styles =  theme =>  ({
       media: {
         // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
+        maxHeight : 200,
+        minHeight : 200,
+      //  maxWidth : 200,
+
       },
       button: {
         margin: theme.spacing.unit,
@@ -90,6 +94,9 @@ const styles =  theme =>  ({
       chip2: {
         marginRight: theme.spacing.unit * 15,
       },
+      cardaction: {
+        
+      },
 });
 
 class MediaCard extends Component {
@@ -103,8 +110,9 @@ class MediaCard extends Component {
             snack:null,
             initialValues: null,
             initialValuesCouleurs: null,
-
+            file:null,
         };
+        this.input1 = React.createRef();
     }
     componentDidMount() {
         this.setState({ nom: this.props.nom });
@@ -120,9 +128,14 @@ class MediaCard extends Component {
     handleCode= (e) =>{
         this.setState({ code: e.target.value });
     };
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
-    };
+    handleUrl = (e) => {
+      if (e.target.files[0]){
+          this.setState({
+              finish : true,
+              file : e.target.files[0]
+          });
+      }
+  };
     handleoptions= (e) =>{
         this.setState({ initialValues: {'options':this.props.newoptions.options } });
         this.setState({ initialValuesCouleurs: {'couleurs':this.props.newCouleurs.couleurs }})  
@@ -145,19 +158,51 @@ class MediaCard extends Component {
     test = () => {
       this.props.dispatch(getVersionListOfModele(0,this.props.id));
   };
+
     handleUpdate(){
-        this.handleoptions()
-        if(this.props.newoptions==undefined){
-            this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
-        }else{
-            this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
-        
-        }
-        setTimeout(()=>{
-          this.props.dispatch(allModeles());
-        },5000);
-        this.handleClose();
-    }
+
+      this.handleoptions()
+      let newoptions=this.props.newoptions
+      let newCouleurs=this.props.newCouleurs
+      this.input1.current.value = '';
+      let fb = this.props.firebase;
+      console.log(this.state.file)
+      if(this.state.file != null)
+       {console.log("/////////////   1")
+          fb.storage().ref()
+              .child('/images/modeles/' + this.state.file.name)
+              .put(this.state.file)
+              .then(() => {
+                  fb.storage().ref()
+                      .child('/images/modeles/' + this.state.file.name)
+                      .getDownloadURL()
+                      .then((url) => {
+                          this.setState({
+                              url,
+                              finish:false
+                          });
+                          if(newoptions==undefined){
+                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
+                          }else{
+                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,newoptions.options,newCouleurs.couleurs));
+                          
+                          }
+                          setTimeout(()=>{
+                            this.props.dispatch(allModeles());
+                          },5000);
+
+                      })
+              });
+       }else{console.log("/////////////   2")
+          if(this.props.newoptions==undefined){
+              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
+          }else{
+              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
+          
+          }
+       }
+      this.handleClose();
+  }
 
     render() {
         const { classes } = this.props;
@@ -167,7 +212,7 @@ class MediaCard extends Component {
             
             <Card className={classes.card}>
             
-              <CardActionArea>
+              <CardActionArea className={classes.cardaction} >
                 <CardMedia
                   component="img"
                   alt="Contemplative Reptile"
@@ -233,15 +278,28 @@ class MediaCard extends Component {
                             />
                             
                             <br/>
-                            <TextField
-                              //  autoFocus
-                                margin="dense"
-                                id="url"
-                                label="URL"
-                                fullWidth
-                                onChange={ this.handleUrl }
-                                defaultValue={this.props.url}
+                            <input
+                                accept="image/*"
+                                id="contained-button-file"
+                                type="file"
+                                style={{display: 'none'}}
+                                onChange={this.handleUrl}
+                                ref={this.input1}
                             />
+                            <label htmlFor="contained-button-file">
+                                <Button variant="contained" component="span" style={
+                                    {
+                                        justifyContent: 'center',
+                                        marginLeft: '34%',
+                                        marginTop: '10%',
+                                        padding:5,
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
+                                    Upload Photo
+                                </Button>
+                            </label>
                     
 <div className={classes.root}>
       <ExpansionPanel>

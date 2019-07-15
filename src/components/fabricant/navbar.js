@@ -122,7 +122,7 @@ class NavBar extends React.Component {
                           <Tab value="five" label="Commande" component={Link} to="/fabricant/commande" />
                         </Tabs>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
-                            <Car className={classes.icon} /> Sayara
+                        {/*  <Car className={classes.icon} /> Sayara */}    
                         </Typography>     
 
                         {auth && (

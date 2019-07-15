@@ -111,6 +111,8 @@ class MediaCard extends Component {
             optionsChecked:[],
             couleursChecked:[],
             initialValuesFichTech: null,
+            newValuesFichTech: null,
+            
         };
     }
     componentDidMount() {
@@ -128,6 +130,10 @@ class MediaCard extends Component {
         var result = Object.keys(obj).map(function(key) {
           return  {attr:key ,  val: obj[key]}; 
         });
+        console.log("/////////////")
+        console.log(this.props.fiche_tech)
+        console.log(result)
+        
         this.setState({ initialValuesFichTech: {'fiche_tech':result }})
     };
 
@@ -158,6 +164,7 @@ class MediaCard extends Component {
         this.props.dispatch(deleteVersion(this.props.id));
         this.handleClose();
     };
+
     handleFichTech= (e) =>{
       let ob={}
         if(this.props.newFichTech.fiche_tech.length > 0){
@@ -167,14 +174,21 @@ class MediaCard extends Component {
                    }
             }
             
-      this.setState({ initialValuesFichTech: {'fiche_tech':this.props.newFichTech.fiche_tech } })
-      setTimeout(()=>{console.log(this.state.initialValuesFichTech)},1000); 
+      this.setState({ initialValuesFichTech: this.props.newFichTech })
+      this.setState({ newValuesFichTech: {'fiche_tech':ob } })
+      console.log(ob)
+      setTimeout(()=>{
+        console.log(this.state.initialValuesFichTech)
+        console.log(this.state.newValuesFichTech)
+      
+      },1000); 
     };
     handleUpdate(){
       
         this.handleFichTech();
+        
         setTimeout(()=>{
-          this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.initialValuesFichTech.fiche_tech,this.state.modele));
+          this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
         },1000); 
         this.handleClose();
     }

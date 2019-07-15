@@ -10,7 +10,7 @@ export function allModeles() {
     };
 
     return dispatch =>{
-        request.get('/modeles?next',head)
+        request.get('/modeles?id_marque='+localStorage.id_marque+'&next',head)
             .then(function (response) {
                 dispatch({type : 'ALL_MODELES', payload: response.data.data});
             })

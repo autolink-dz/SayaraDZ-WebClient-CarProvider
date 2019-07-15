@@ -17,12 +17,14 @@ import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpd
 import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
 import ShowModele from './showModele'
 
+import {FirebaseContext} from "./../../../../../utils/firebase/indexFireBase";
+
 const styles = theme => ({
     root: {
         flexGrow: 1,
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        marginTop: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 10,
       },
       card: {
         width:'100%',
@@ -92,7 +94,20 @@ class Modele extends Component {
       <Grid container spacing={24}>
           {this.props.modeles.map( (modele,index) =>
             <Grid item xs={12} md={3} sm={6}>
-             <MediaCard test={this.test} nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />
+              <FirebaseContext.Consumer>{
+                            firebase => {
+                                return <MediaCard firebase={firebase} test={this.test} 
+                                nom={modele.nom} 
+                                url={modele.url} 
+                                id={modele.id} 
+                                code={modele.code} 
+                                options={modele.options}
+                                couleurs={modele.couleurs} />
+                            }
+                        }
+              </FirebaseContext.Consumer>
+
+          {/*   <MediaCard test={this.test} nom={modele.nom} url={modele.url} id={modele.id} code={modele.code} options={modele.options} couleurs={modele.couleurs} />*/}
              </Grid>
       )}
       <ShowModele
@@ -146,7 +161,12 @@ _renderWaypoint(){
         return (
           <Grid item xs={12}>
           <div className={classes.root}>
-              <AddModele />
+              <FirebaseContext.Consumer>{
+                            firebase => {
+                                return <AddModele firebase={firebase}/>
+                            }
+                        }
+              </FirebaseContext.Consumer>
               {snack}
             <CircularProgress className={classes.place} style={this.props.loading ? {display:'none'}  : stProgresse} />
             {

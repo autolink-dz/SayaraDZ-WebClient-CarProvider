@@ -29,6 +29,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const styles = theme => ({
     root: {
@@ -60,9 +61,10 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 15,
       },
       fab: {
-     //   position:'fixed',
+        position:'fixed',
         bottom: theme.spacing.unit * 2,
         left:'95%',
+        zIndex : '9999 !important'
       },
 });
 
@@ -76,50 +78,115 @@ class AddModele extends React.Component {
       name:'',
       url:'',
       code:'',
+      file: null,
+      finish:false
     };
+    this.input1 = React.createRef();
 }
 
     handleClickOpen = () => {
-        
         this.setState({ open: true });
     };
 
     handleCloseA = () => {
         this.setState({ open: false });
     };
+
+    
     handleAdd = ()=>{
-        if(this.props.options === undefined && this.props.couleurs === undefined)
-        {
-          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
-        }
-        else if(this.props.options != undefined && this.props.couleurs === undefined)
-        {
-          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],this.props.couleurs.couleurs));
-        }
-        else if(this.props.options === undefined && this.props.couleurs != undefined)
-        {
-          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,[]));
-        }else
-        {
-          this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
-        }
-        
-        setTimeout(()=>{
-          this.props.dispatch(allModeles());
-        },5000);
+      this.input1.current.value = '';
+      let fb = this.props.firebase;
+      let bool = 0
+      let options = this.props.options;
+      let couleurs = this.props.couleurs;
+      fb.storage().ref()
+          .child('/images/modeles/' + this.state.file.name)
+          .put(this.state.file)
+          .then(() => {
+              fb.storage().ref()
+                  .child('/images/modeles/' + this.state.file.name)
+                  .getDownloadURL()
+                  .then((url) => {
+                      this.setState({
+                          url,
+                          finish:false
+                      });
+                      if(options === undefined && couleurs === undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,[],[]));
+                      }
+                      else if(options != undefined && couleurs === undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,[],couleurs.couleurs));
+                      }
+                      else if(options === undefined && couleurs != undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,[]));
+                      }else
+                      {
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,couleurs.couleurs));
+                      }
+                      setTimeout(()=>{
+                        this.props.dispatch(allModeles());
+                      },5000);
+                  })
+          });
 
 
+
+
+      
         this.handleCloseA();
     };
+
+
+/*
+    handleAdd = ()=>{
+      console.log(localStorage.id_marque)
+
+                      if(this.props.options === undefined && this.props.couleurs === undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
+                      }
+                      else if(this.props.options != undefined && this.props.couleurs === undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],this.props.couleurs.couleurs));
+                      }
+                      else if(this.props.options === undefined && this.props.couleurs != undefined)
+                      {
+                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,[]));
+                      }else
+                      {
+                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
+                      }
+
+                      setTimeout(()=>{
+                        this.props.dispatch(allModeles());
+                      },5000);
+
+        this.handleCloseA();
+    };*/
+
     handleName= (e) =>{
         this.setState({ name: e.target.value });
     };
     handleCode= (e) =>{
         this.setState({ code: e.target.value });
     };
+    /*
     handleUrl= (e) =>{
         this.setState({ url: e.target.value });
     };
+    */
+
+    handleUrl = (e) => {
+      if (e.target.files[0]){
+          this.setState({
+              finish : true,
+              file : e.target.files[0]
+          });
+      }
+  };
 
     render() {
         const { classes } = this.props;
@@ -137,7 +204,7 @@ class AddModele extends React.Component {
         return (
             <div >
                 {snack}
-                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position="static" >
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab}  >
                     <AddIcon />
                 </Fab>
                
@@ -168,13 +235,40 @@ class AddModele extends React.Component {
                             fullWidth
                             onChange={ this.handleCode }
                         />
-                        <TextField
+                 {/*       <TextField
                             margin="dense"
                             id="url"
                             label="URL"
                             fullWidth
                             onChange={ this.handleUrl }
+                 /> */}
+
+                        <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            type="file"
+                            style={{display: 'none'}}
+                            onChange={this.handleUrl}
+                            ref={this.input1}
                         />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" component="span" style={
+                                {
+                                    justifyContent: 'center',
+                                    marginLeft: '34%',
+                                    marginTop: '10%',
+                                    padding:5,
+                                    backgroundColor: '#3EB741',
+                                    color: '#FFF',
+                                }
+                            }>
+                                Upload Photo
+                            </Button>
+                        </label>
+
+
+
+
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary

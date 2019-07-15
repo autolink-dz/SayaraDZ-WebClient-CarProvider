@@ -13,6 +13,10 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import FabricantAdmin from "./components/admin/fabricantAdmin";
 import {FirebaseContext} from "./utils/firebase/indexFireBase";
 import SimulerPrixOptions from "./containers/fabricant/simulerPrixOptions";
+
+
+import Modele from './components/fabricant/mains/gestion/gestionModele/modele'
+import Versions from './components/fabricant/mains/gestion/gestionVersion/versionByModele'
 const theme = createMuiTheme({
     palette: {
         primary: {main: '#158CF6'},
@@ -35,6 +39,21 @@ class App extends Component {
 
                             {/* Fabricant Routes */}
 
+
+                            <PrivateRoute path="/fabricant/gestion/modele" component={Modele}/>
+                            <PrivateRoute path="/fabricant/gestion/versions/:id/:nom" component={Versions}/>
+                         
+{/*
+                            <PrivateRoute path='/fabricant/gestion/modele' component={() =>
+                                <FirebaseContext.Consumer>{
+                                    firebase => {
+                                        return <Modele firebase={firebase}/>
+                                    }
+                                }
+                                </FirebaseContext.Consumer>
+                            }/>
+                            
+ */}                              
                             <PrivateRoute path='/fabricant/stock' component={() =>
                                 <FirebaseContext.Consumer>{
                                     firebase => {

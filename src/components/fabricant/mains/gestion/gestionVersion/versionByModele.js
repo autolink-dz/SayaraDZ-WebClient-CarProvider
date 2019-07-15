@@ -15,13 +15,14 @@ import {getVersionsList} from './../../../../../actions/versionActions/getVersio
 import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetUpdateVersion";
 import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
 import ShowVersion from './showVersion'
+import {FirebaseContext} from "./../../../../../utils/firebase/indexFireBase";
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        marginTop: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 10,
       },
       card: {
         width:'100%',
@@ -82,8 +83,20 @@ class Versions extends Component {
       <Grid container spacing={24}>
           {this.props.versions.map( (version,index) =>
             <Grid item xs={12} md={3} sm={6}>
-              
-             <MediaCard test={this.test} nom={version.nom} url={version.url} id={version.id} code={version.code} options={version.options} couleurs={version.couleurs} fiche_tech={version.fiche_tech} idModele={version.id_modele} />
+             <FirebaseContext.Consumer>{
+                            firebase => {
+                                return <MediaCard firebase={firebase} test={this.test} 
+                                nom={version.nom} 
+                                url={version.url} 
+                                id={version.id} 
+                                code={version.code} 
+                                options={version.options} 
+                                couleurs={version.couleurs} 
+                                fiche_tech={version.fiche_tech} 
+                                idModele={version.id_modele} /> 
+                            }
+                        }
+              </FirebaseContext.Consumer>
              </Grid>
           )}
           <ShowVersion
@@ -138,7 +151,13 @@ _renderWaypoint(){
           <Grid item xs={12}>
           <div className={classes.root}>
               <h1>{this.props.match.params.nom}</h1>
-              <AddVersion id={this.props.match.params.id} />
+              
+              <FirebaseContext.Consumer>{
+                            firebase => {
+                                return <AddVersion firebase={firebase} id={this.props.match.params.id} />
+                            }
+                        }
+              </FirebaseContext.Consumer>
               {snack}
             <CircularProgress style={this.props.loading ? {display:'none'}  : stProgresse} />
             {

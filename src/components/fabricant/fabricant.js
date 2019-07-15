@@ -145,12 +145,13 @@ class Fabricant extends Component {
               <main className={classes.content}>
                 <div className={classNames('main', classes.toolbar)}>
                       <Switch>
+                        {/*
                               <Route path='/fabricant/dashbord' render={props =>
                                   <Grid container spacing={24}>
                                       <Main />
                                   </Grid>
                                   } />
-                              <Route path='/fabricant/gestion/modele' render={props =>
+                              <Route exact path='/fabricant/gestion/modele' render={props =>
                                   <Grid container spacing={24}>
                                       <Modele />
                                   </Grid>
@@ -172,6 +173,8 @@ class Fabricant extends Component {
                                   </Grid>
                                   } />
 
+
+
                               <Route path='/fabricant/stock' render={props =>
                                   <Grid container spacing={24}>
                                   
@@ -187,6 +190,7 @@ class Fabricant extends Component {
 
                                   </Grid>
                                   } />
+                                */}
                       </Switch>
                       </div>
               </main>

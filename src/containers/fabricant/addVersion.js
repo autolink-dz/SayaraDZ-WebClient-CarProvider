@@ -63,9 +63,10 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 15,
       },
       fab: {
-        //  position: 'fixed',
+          position: 'fixed',
           bottom: theme.spacing.unit * 2,
           left:'95%',
+          zIndex : '9999 !important'
         },
 });
 
@@ -83,7 +84,10 @@ class AddVersion extends React.Component {
             optionsChecked:[],
             couleursChecked:[],
             modele:'',
+            file: null,
+            finish:false
         };
+        this.input1 = React.createRef();
       }
       componentDidMount() {
         this.setState({ options: this.props.allModeles.find(x => x.id === this.props.id).options });
@@ -98,26 +102,47 @@ class AddVersion extends React.Component {
         this.setState({ open: false });
     };
     handleAdd = ()=>{
-        console.log(this.state.optionsChecked)
-        console.log(this.state.couleursChecked)
-        if(this.state.modele != ''){
-            if(this.props.fichTech === undefined){
-                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,{}));
-            }else{
-                let obj={}
-                if(this.props.fichTech.fiche_tech.length > 0){
-                        let i=0;
-                        for(i=0 ; i<this.props.fichTech.fiche_tech.length;i++){
-                            obj[this.props.fichTech.fiche_tech[i].attr]=this.props.fichTech.fiche_tech[i].val;
+
+      this.input1.current.value = '';
+      let fb = this.props.firebase;
+      let fichTech = this.props.fichTech;
+      fb.storage().ref()
+          .child('/images/versions/' + this.state.file.name)
+          .put(this.state.file)
+          .then(() => {
+              fb.storage().ref()
+                  .child('/images/versions/' + this.state.file.name)
+                  .getDownloadURL()
+                  .then((url) => {
+                      this.setState({
+                          url,
+                          finish:false
+                      });
+
+
+                      if(this.state.modele != ''){
+                        if(fichTech === undefined){
+                            this.props.dispatch(addVersion(this.state.name,this.state.code,url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,{}));
+                        }else{
+                            let obj={}
+                            if(fichTech.fiche_tech.length > 0){
+                                    let i=0;
+                                    for(i=0 ; i<fichTech.fiche_tech.length;i++){
+                                        obj[fichTech.fiche_tech[i].attr]=fichTech.fiche_tech[i].val;
+                                    }
+                                }
+                            this.props.dispatch(addVersion(this.state.name,this.state.code,url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,obj));
+                            console.log(obj)
                         }
+                        this.handleCloseA();
+                    }else{
+                        alert("choose modele")
                     }
-                this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,obj));
-                console.log(obj)
-            }
-            this.handleCloseA();
-        }else{
-            alert("choose modele")
-        }
+
+                  })
+          });
+
+        
         
             
       //  this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,obj));
@@ -130,8 +155,13 @@ class AddVersion extends React.Component {
         this.setState({ code: e.target.value });
         console.log(this.state.code)
     };
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
+    handleUrl = (e) => {
+        if (e.target.files[0]){
+            this.setState({
+                finish : true,
+                file : e.target.files[0]
+            });
+        }
     };
 
     handleModele= () =>{
@@ -175,7 +205,7 @@ class AddVersion extends React.Component {
             <div >
                 {snack}
                 
-                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} position='static' >
+                <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} >
                     <AddIcon />
                 </Fab>
                 <Dialog
@@ -206,13 +236,28 @@ class AddVersion extends React.Component {
                             fullWidth
                             onChange={ this.handleCode }
                         />
-                        <TextField
-                            margin="dense"
-                            id="url"
-                            label="URL"
-                            fullWidth
-                            onChange={ this.handleUrl }
+                        <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            type="file"
+                            style={{display: 'none'}}
+                            onChange={this.handleUrl}
+                            ref={this.input1}
                         />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" component="span" style={
+                                {
+                                    justifyContent: 'center',
+                                    marginLeft: '34%',
+                                    marginTop: '10%',
+                                    padding:5,
+                                    backgroundColor: '#3EB741',
+                                    color: '#FFF',
+                                }
+                            }>
+                                Upload Photo
+                            </Button>
+                        </label>
             
                  {/*       <MyForm />*/}
                         
