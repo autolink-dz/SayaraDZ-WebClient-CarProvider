@@ -112,8 +112,9 @@ class MediaCard extends Component {
             couleursChecked:[],
             initialValuesFichTech: null,
             newValuesFichTech: null,
-            
+            file:null,
         };
+        this.input1 = React.createRef();
     }
     componentDidMount() {
      // this.props.dispatch(deleteVersion("X3OmvlSgET7FoOrRARYq"));
@@ -144,8 +145,13 @@ class MediaCard extends Component {
         this.setState({ code: e.target.value });
     };
     
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
+    handleUrl = (e) => {
+        if (e.target.files[0]){
+            this.setState({
+                finish : true,
+                file : e.target.files[0]
+            });
+        }
     };
     handleOptions= (e) =>{
       this.setState({ options: this.props.allModeles.find(x => x.id === this.state.modele).options });
@@ -186,9 +192,29 @@ class MediaCard extends Component {
     handleUpdate(){
       
         this.handleFichTech();
-        
+        this.input1.current.value = '';
+        let fb = this.props.firebase;
         setTimeout(()=>{
-          this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
+          if(this.state.file != null)
+          {
+              fb.storage().ref()
+                  .child('/images/versions/' + this.state.file.name)
+                  .put(this.state.file)
+                  .then(() => {
+                      fb.storage().ref()
+                          .child('/images/versions/' + this.state.file.name)
+                          .getDownloadURL()
+                          .then((url) => {
+                              this.setState({
+                                  url,
+                                  finish:false
+                              });
+                              this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
+                          })
+                  });
+          }else{
+            this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
+          }
         },1000); 
         this.handleClose();
     }
@@ -284,15 +310,28 @@ class MediaCard extends Component {
                             />
                             
                             <br/>
-                            <TextField
-                              //  autoFocus
-                                margin="dense"
-                                id="url"
-                                label="URL"
-                                fullWidth
-                                onChange={ this.handleUrl }
-                                defaultValue={this.props.url}
+                            <input
+                                accept="image/*"
+                                id="contained-button-file"
+                                type="file"
+                                style={{display: 'none'}}
+                                onChange={this.handleUrl}
+                                ref={this.input1}
                             />
+                            <label htmlFor="contained-button-file">
+                                <Button variant="contained" component="span" style={
+                                    {
+                                        justifyContent: 'center',
+                                        marginLeft: '34%',
+                                        marginTop: '10%',
+                                        padding:5,
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
+                                    Upload Photo
+                                </Button>
+                            </label>
 
                              <br /><br /><br />
                             <Chip

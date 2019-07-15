@@ -12,7 +12,7 @@ export function getVersionListOfModele(next,modele_id) {
     return dispatch =>{
         if(next==null){
             return;
-        }//ome50dBzVvuAP7h7f3na
+        }
         request.get('/versions?next='+next+'&id_modele='+modele_id+'&page=20',head)
             .then(function (response) {
                 dispatch({type : 'SELECT_VERSIONS', payload: response});

@@ -129,13 +129,13 @@ class MediaCard extends Component {
         this.setState({ code: e.target.value });
     };
     handleUrl = (e) => {
-      if (e.target.files[0]){
-          this.setState({
-              finish : true,
-              file : e.target.files[0]
-          });
-      }
-  };
+        if (e.target.files[0]){
+            this.setState({
+                finish : true,
+                file : e.target.files[0]
+            });
+        }
+    };
     handleoptions= (e) =>{
         this.setState({ initialValues: {'options':this.props.newoptions.options } });
         this.setState({ initialValuesCouleurs: {'couleurs':this.props.newCouleurs.couleurs }})  
@@ -168,7 +168,7 @@ class MediaCard extends Component {
       let fb = this.props.firebase;
       console.log(this.state.file)
       if(this.state.file != null)
-       {console.log("/////////////   1")
+       {
           fb.storage().ref()
               .child('/images/modeles/' + this.state.file.name)
               .put(this.state.file)
@@ -193,7 +193,7 @@ class MediaCard extends Component {
 
                       })
               });
-       }else{console.log("/////////////   2")
+       }else{
           if(this.props.newoptions==undefined){
               this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
           }else{
