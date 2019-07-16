@@ -40,6 +40,10 @@ const styles  = theme => ({
     textAlign: 'center',
     //color: theme.palette.text.secondary,
   },
+  image:{
+    maxWidth:400,
+    maxHeight:400,
+  }
 });
 
 function Transition(props) {
@@ -82,7 +86,7 @@ class ShowVersion extends React.Component {
   direction="row"
   justify="center"
   alignItems="center" item xs={12} sm={4}>
-                    <Paper  className={classes.paper}><img src={this.props.url} alt="brand" /></Paper>
+                    <Paper  className={classes.paper}><img className={classes.image} src={this.props.url} alt="brand" /></Paper>
                   </Grid>
                   <Grid item xs={12} sm={8}>
                     <Paper className={classes.paper} >

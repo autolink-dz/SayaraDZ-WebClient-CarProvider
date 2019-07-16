@@ -72,6 +72,8 @@ const styles =  theme =>  ({
       media: {
         // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
+        maxHeight : 200,
+        minHeight : 200,
       },
       button: {
         margin: theme.spacing.unit,
@@ -401,7 +403,7 @@ class MediaCard extends Component {
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
-                            <Button onClick={this.handleUpdate} color="primary">
+                            <Button onClick={this.handleUpdate} color="primary" style={{color: '#3EB741',}}>
                                 Modifier
                             </Button>
                         </DialogActions>

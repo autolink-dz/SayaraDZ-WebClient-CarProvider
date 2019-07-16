@@ -5,8 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Badge from '@material-ui/core/Badge';
 import Fab from '@material-ui/core/Fab';
-import ColorPickerField from 'material-ui-color-picker';
-import ColorPicker from 'material-ui-color-picker'
+
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     
     <TextField hintText={label}
@@ -18,15 +17,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     />
   )
 
-  const ColorPickerFieldd = ({ input, label, meta: { touched, error }, ...custom }) => (
-    <ColorPicker hintText={label}
-      floatingLabelText={label}
-      label={label}
-      errorText={touched && error}
-      {...input}
-      {...custom}
-    />
-  )
+  
 
 const renderMembers = ({ fields, meta: { touched, error } }) => (
   <div>
@@ -45,17 +36,6 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           component={renderTextField} 
           label="Nom Option"/>
           &nbsp; &nbsp; &nbsp;
-{/*
-          <Field
-  name="color"
-  component={ColorPickerField}
-/>
-          
-          <Field
-            name={`${member}.color`}
-            component={ColorPickerFieldd}
-            label="hex"/>     
-*/}
         <Fab aria-label="Delete"
             title="Remove Member"
             color="secondary"

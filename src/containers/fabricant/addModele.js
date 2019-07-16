@@ -131,54 +131,14 @@ class AddModele extends React.Component {
                       },5000);
                   })
           });
-
-
-
-
-      
         this.handleCloseA();
     };
-
-
-/*
-    handleAdd = ()=>{
-      console.log(localStorage.id_marque)
-
-                      if(this.props.options === undefined && this.props.couleurs === undefined)
-                      {
-                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],[]));
-                      }
-                      else if(this.props.options != undefined && this.props.couleurs === undefined)
-                      {
-                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,[],this.props.couleurs.couleurs));
-                      }
-                      else if(this.props.options === undefined && this.props.couleurs != undefined)
-                      {
-                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,[]));
-                      }else
-                      {
-                        this.props.dispatch(addModele(this.state.name,this.state.url,this.state.code,this.props.options.options,this.props.couleurs.couleurs));
-                      }
-
-                      setTimeout(()=>{
-                        this.props.dispatch(allModeles());
-                      },5000);
-
-        this.handleCloseA();
-    };*/
-
     handleName= (e) =>{
         this.setState({ name: e.target.value });
     };
     handleCode= (e) =>{
         this.setState({ code: e.target.value });
     };
-    /*
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
-    };
-    */
-
     handleUrl = (e) => {
       if (e.target.files[0]){
           this.setState({

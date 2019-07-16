@@ -184,13 +184,8 @@ class MediaCard extends Component {
                           if(newoptions==undefined){
                               this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
                           }else{
-                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,newoptions.options,newCouleurs.couleurs));
-                          
+                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,newoptions.options,newCouleurs.couleurs));          
                           }
-                          setTimeout(()=>{
-                            this.props.dispatch(allModeles());
-                          },5000);
-
                       })
               });
        }else{
@@ -201,6 +196,9 @@ class MediaCard extends Component {
           
           }
        }
+       setTimeout(()=>{
+        this.props.dispatch(allModeles());
+      },5000);
       this.handleClose();
   }
 
@@ -379,7 +377,8 @@ class MediaCard extends Component {
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
-                            <Button onClick={this.handleUpdate} color="primary">
+                            <Button onClick={this.handleUpdate} color="primary" 
+                                    style={{color: '#3EB741',}}>
                                 Modifier
                             </Button>
                         </DialogActions>

@@ -60,7 +60,7 @@ class AlertDialogSlide extends React.Component {
         );
       }else{
         return (
-            <Button onClick={this.handleClickOpen}>
+            <Button onClick={this.handleClickOpen} style={{color: '#ff0000',}}>
                 supprimer
             </Button>
         );
@@ -97,7 +97,7 @@ class AlertDialogSlide extends React.Component {
             <Button onClick={this.handleCloseNo} color="primary">
               annuler
             </Button>
-            <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseYes} >
+            <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseYes}  >
               Supprimer
             </Button>
           </DialogActions>
