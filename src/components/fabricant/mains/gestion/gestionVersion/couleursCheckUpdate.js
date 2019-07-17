@@ -80,9 +80,13 @@ class CouleursCheck extends React.Component {
             />
             <ListItemText primary={`${value.nom }`} />
             <ListItemSecondaryAction>
-              <IconButton aria-label="Comments">
-                <CommentIcon />
-              </IconButton>
+                <div id="color-changer" style={{
+                    background: `${value.color }`,
+                    width:40,
+                    height:40,
+                    borderRadius:15
+                  }}>
+                </div>
             </ListItemSecondaryAction>
           </ListItem>
         ))}

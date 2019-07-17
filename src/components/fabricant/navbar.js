@@ -105,15 +105,7 @@ class NavBar extends React.Component {
           })}>
                 
                     <Toolbar disableGutters={!this.props.openMenu}>
-                        <IconButton color="inherit"
-                                    aria-label="mENU"
-                                    onClick={this.props.handleDrawerOpen}
-                                    className={classNames(classes.menuButton, {
-                                        [classes.hide]: this.props.openMenu,
-                                    })}
-                         >
-                            <MenuIcon />
-                        </IconButton>
+                        
                         <Tabs value={value} onChange={this.handleChange}>
                           <Tab value="one" label="Dashbord" component={Link} to="/fabricant/dashbord" onClick={this.menuDashbord} />
                           <Tab value="two" label="Gestion" component={Link} to="/fabricant/gestion/modele" />

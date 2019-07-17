@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import versionReducer  from './../../../../../reducers/versionReducer'
+import { allModeles } from "./../../../../../actions/modeleActions/allModeles";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
 import MediaCard from './cardVersion'
@@ -16,6 +17,7 @@ import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetU
 import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
 import ShowVersion from './showVersion'
 import {FirebaseContext} from "./../../../../../utils/firebase/indexFireBase";
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
     root: {
@@ -35,6 +37,16 @@ const styles = theme => ({
       button: {
         margin: theme.spacing.unit,
       },
+      titre:{
+        fontFamily:'Arial',
+        textAlign:'center',
+        marginLeft: theme.spacing.unit * 10,
+        marginRight: theme.spacing.unit * 10,
+        marginTop: theme.spacing.unit * 10,
+        marginBottom: theme.spacing.unit * 2,
+        padding:theme.spacing.unit * 1,
+        backgroundColor:'#EEF2F9'
+      }
 });
 
 class Versions extends Component {
@@ -53,6 +65,9 @@ class Versions extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.dispatch(allModeles());
+    }
     handleClickOpen = () => {
       this.setState({ open: true });
     };
@@ -150,8 +165,9 @@ _renderWaypoint(){
 
           <Grid item xs={12}>
           <div className={classes.root}>
+            <Paper className={classes.titre}>
               <h1>{this.props.match.params.nom}</h1>
-              
+            </Paper>
               <FirebaseContext.Consumer>{
                             firebase => {
                                 return <AddVersion firebase={firebase} id={this.props.match.params.id} />
@@ -190,7 +206,7 @@ Versions.propTypes = {
 
   function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-      getVersionsList
+      getVersionsList,allModeles
     });
     return { ...actions, dispatch };
   }

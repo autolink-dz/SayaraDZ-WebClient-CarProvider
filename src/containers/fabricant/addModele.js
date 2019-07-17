@@ -195,14 +195,6 @@ class AddModele extends React.Component {
                             fullWidth
                             onChange={ this.handleCode }
                         />
-                 {/*       <TextField
-                            margin="dense"
-                            id="url"
-                            label="URL"
-                            fullWidth
-                            onChange={ this.handleUrl }
-                 /> */}
-
                         <input
                             accept="image/*"
                             id="contained-button-file"

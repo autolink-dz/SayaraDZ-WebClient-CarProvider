@@ -16,6 +16,7 @@ import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { autorun } from 'mobx';
 
 const styles  = theme => ({
   appBar: {
@@ -76,8 +77,10 @@ class ShowModele extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <br />
-              <Grid container className={classes.root2} spacing={24}>
+
+              <Grid container className={classes.root2} spacing={24} style={{
+                  backgroundColor:'#e5e5ff',
+               }}>
                  
                   <Grid container
                     direction="row"
@@ -149,17 +152,31 @@ class ShowModele extends React.Component {
                               <div>
                               <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
-                                  {icon_op}
+                                  
+                                  <div id="color-changer" style={{
+                                    background: `${couleur.color }`,
+                                    marginTop : 10,
+                                    marginLeft:-10,
+                                    width:45,
+                                    height:45,
+                                    borderRadius:15
+                                  }}>
+                                    </div>
                                 </ListItemAvatar>
                                 <ListItemText
                                   primary={couleur.nom}
                                   secondary={
                                     <React.Fragment>
-                                      {"code de l'option :"}
+                                      {"code de la couleur :"}
                                       <Typography component="span" className={classes.inline} color="textPrimary">
                                         {couleur.code}
                                       </Typography>
-                                    
+                                      <br />
+                                      {"hex : "}
+                                    <Typography component="span" className={classes.inline} color="textPrimary">
+                                      {couleur.color}
+                                    </Typography>
+                                  
                                     </React.Fragment>
                                   }
                                 />

@@ -13,8 +13,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
 import Chip from '@material-ui/core/Chip';
-
-
 import clsx from 'clsx';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -258,11 +256,6 @@ class AddVersion extends React.Component {
                                 Upload Photo
                             </Button>
                         </label>
-            
-                 {/*       <MyForm />*/}
-                        
-                             
-                             
                              <br /><br /><br />
                             <Chip
                             color="primary"

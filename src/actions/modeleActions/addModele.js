@@ -1,3 +1,4 @@
+import { allModeles } from "./allModeles";
 var request = require('./../api/service');
 
 export function addModele(nom, url,code,opts,cols) {
@@ -20,6 +21,9 @@ export function addModele(nom, url,code,opts,cols) {
         request.post('/modeles', body, head)
             .then(function (response) {
                 dispatch({type : 'ADD_MODELE', payload: response});
+                setTimeout(()=>{
+                    dispatch(allModeles());
+                  },1000);
             })
             .catch(function (error) {
                 dispatch(err(error));

@@ -168,13 +168,6 @@ _renderWaypoint(){
                         }
               </FirebaseContext.Consumer>
               {snack}
-              <div id="color-changer" style={{
-                background: '#478287',
-                width:40,
-                height:40,
-                borderRadius:15
-              }}>
-                </div>
             <CircularProgress className={classes.place} style={this.props.loading ? {display:'none'}  : stProgresse} />
             {
               this._renderItems()
