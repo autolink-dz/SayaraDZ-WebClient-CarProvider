@@ -201,8 +201,7 @@ class AddVersion extends React.Component {
         }
         return (
             <div >
-                {snack}
-                
+                {snack}                
                 <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab} >
                     <AddIcon />
                 </Fab>
@@ -262,7 +261,7 @@ class AddVersion extends React.Component {
                              label={<h3>choisir les options</h3>} 
                              variant="outlined" />
                             <DialogContent>
-                               <OptionsCheck onRef={ref => (this.child = ref)} options={this.state.options} handleOptionsChecked={this.handleOptionsChecked} /> 
+                               <OptionsCheck onRef={ref => (this.child = ref)} options={this.props.allModeles.find(x => x.id === this.props.id).options} handleOptionsChecked={this.handleOptionsChecked} /> 
                             </DialogContent>
                             <br />
                             
@@ -272,7 +271,7 @@ class AddVersion extends React.Component {
                              label={<h3>choisir les couleurs</h3>} 
                              variant="outlined" />
                             <DialogContent>
-                               <CouleursCheck onRef={ref => (this.child2 = ref)} couleurs={this.state.couleurs} handleCouleursChecked={this.handleCouleursChecked} /> 
+                               <CouleursCheck onRef={ref => (this.child2 = ref)} couleurs={this.props.allModeles.find(x => x.id === this.props.id).couleurs} handleCouleursChecked={this.handleCouleursChecked} /> 
                             </DialogContent>
 
                             <div className={classes.root}>

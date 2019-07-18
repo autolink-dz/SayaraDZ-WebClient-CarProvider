@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Modele from './mains/gestion/gestionModele/modele'
 import Versions from './mains/gestion/gestionVersion/versionByModele'
-import Option from './mains/gestion/option'
 import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -132,65 +131,13 @@ class Fabricant extends Component {
                         <ListItemIcon> <InboxIcon /></ListItemIcon>
                         <ListItemText primary={'Gérer modele'} />
                       </ListItem>
-
-{/*
-<ListItem button  component={Link} to="/fabricant/gestion/version">
-                        <ListItemIcon> <InboxIcon /></ListItemIcon>
-                        <ListItemText primary={'Gérer version'} />
-                      </ListItem>
-*/}
                   </List>
                 <Divider />
               </Drawer>           
               <main className={classes.content}>
                 <div className={classNames('main', classes.toolbar)}>
                       <Switch>
-                        {/*
-                              <Route path='/fabricant/dashbord' render={props =>
-                                  <Grid container spacing={24}>
-                                      <Main />
-                                  </Grid>
-                                  } />
-                              <Route exact path='/fabricant/gestion/modele' render={props =>
-                                  <Grid container spacing={24}>
-                                      <Modele />
-                                  </Grid>
-                                  } />
 
-                              <Route exact  path='/fabricant/gestion/versions/:id/:nom' render={props =>
-                                    <Grid container spacing={24}>
-                                        <Versions {...props}/>
-                                    </Grid>
-                                  } />
-                              
-                              <Route path='/fabricant/gestion/option' render={props =>
-                                  <Grid container spacing={24}>
-                                      <Option />
-                                  </Grid>
-                                  } />
-                              <Route path='/fabricant/gestion/couleur' render={props =>
-                                  <Grid container spacing={24}>
-                                  </Grid>
-                                  } />
-
-
-
-                              <Route path='/fabricant/stock' render={props =>
-                                  <Grid container spacing={24}>
-                                  
-                                  </Grid>
-                                  } />
-                              <Route path='/fabricant/simulation' render={props =>
-                                  <Grid container spacing={24}>
-
-                                  </Grid>
-                                  } />
-                              <Route path='/fabricant/commandes' render={props =>
-                                  <Grid container spacing={24}>
-
-                                  </Grid>
-                                  } />
-                                */}
                       </Switch>
                       </div>
               </main>

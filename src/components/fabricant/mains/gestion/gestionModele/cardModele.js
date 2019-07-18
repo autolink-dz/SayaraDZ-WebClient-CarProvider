@@ -150,9 +150,12 @@ class MediaCard extends Component {
 
     handleDelete(){
         this.props.dispatch(deleteModele(this.props.id));
-        setTimeout(()=>{
-          this.props.dispatch(allModeles());
-        },5000);
+        {/*
+          setTimeout(()=>{
+            this.props.dispatch(allModeles());
+          },5000);
+        */}
+        
         this.handleClose();
     };
     test = () => {
@@ -196,9 +199,12 @@ class MediaCard extends Component {
           
           }
        }
-       setTimeout(()=>{
-        this.props.dispatch(allModeles());
-      },5000);
+       {/*
+        setTimeout(()=>{
+          this.props.dispatch(allModeles());
+        },5000);
+      */}
+       
       this.handleClose();
   }
 
@@ -229,7 +235,12 @@ class MediaCard extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button component={Link} to={"/fabricant/gestion/versions/"+this.props.id+"/"+this.props.nom} onClick={this.test} size="small" variant="contained" color="secondary" className={classes.button}>
+                <Button component={Link} to={"/fabricant/gestion/versions/"+this.props.id+"/"+this.props.nom} onClick={this.test} size="small" variant="contained" color="secondary" className={classes.button} style={
+                                    {
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
                    versions
                 </Button>
                 <Button size="small" variant="contained" color="secondary" className={classes.button} onClick={this.handleClickOpen}>

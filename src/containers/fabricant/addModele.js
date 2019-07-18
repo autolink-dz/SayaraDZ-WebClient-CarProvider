@@ -126,9 +126,11 @@ class AddModele extends React.Component {
                       {
                         this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,couleurs.couleurs));
                       }
-                      setTimeout(()=>{
-                        this.props.dispatch(allModeles());
-                      },5000);
+                  {/*
+                    setTimeout(()=>{
+                      this.props.dispatch(allModeles());
+                    },5000);
+                  */}    
                   })
           });
         this.handleCloseA();

@@ -51,13 +51,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           component={renderTextField} 
           label="Nom Couleur"/>
           &nbsp; &nbsp; &nbsp;
-          </Grid>
-          {/*
-          <Field
-  name="color"
-  component={ColorPickerField}
-/>
-   */}   
+          </Grid> 
 <Grid item xs={2}>
           <Field
             name={`${member}.color`}
