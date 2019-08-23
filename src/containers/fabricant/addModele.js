@@ -69,8 +69,6 @@ const styles = theme => ({
 });
 
 class AddModele extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -90,8 +88,11 @@ class AddModele extends React.Component {
 
     handleCloseA = () => {
         this.setState({ open: false });
+        this.setState({ name: '' });
+        this.setState({ url: '' });
+        this.setState({ code: '' });
+        this.setState({ file: null });
     };
-
     
     handleAdd = ()=>{
       this.input1.current.value = '';
@@ -99,6 +100,10 @@ class AddModele extends React.Component {
       let bool = 0
       let options = this.props.options;
       let couleurs = this.props.couleurs;
+      if(this.state.file == null){
+        alert("vous n'avez pas importer une image")
+        return
+      }
       fb.storage().ref()
           .child('/images/modeles/' + this.state.file.name)
           .put(this.state.file)
@@ -117,23 +122,21 @@ class AddModele extends React.Component {
                       }
                       else if(options != undefined && couleurs === undefined)
                       {
-                        this.props.dispatch(addModele(this.state.name,url,this.state.code,[],couleurs.couleurs));
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,[]));
                       }
                       else if(options === undefined && couleurs != undefined)
                       {
-                        this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,[]));
+                        this.props.dispatch(addModele(this.state.name,url,this.state.code,[],couleurs.couleurs));
                       }else
                       {
                         this.props.dispatch(addModele(this.state.name,url,this.state.code,options.options,couleurs.couleurs));
                       }
-                  {/*
                     setTimeout(()=>{
-                      this.props.dispatch(allModeles());
-                    },5000);
-                  */}    
+                      this.handleCloseA();
+                    },1000);
                   })
           });
-        this.handleCloseA();
+          this.setState({ open: false });  
     };
     handleName= (e) =>{
         this.setState({ name: e.target.value });
@@ -149,7 +152,6 @@ class AddModele extends React.Component {
           });
       }
   };
-
     render() {
         const { classes } = this.props;
         let snack = null;
@@ -168,8 +170,7 @@ class AddModele extends React.Component {
                 {snack}
                 <Fab  color="secondary" aria-label="Add" onClick={this.handleClickOpen} className={classes.fab}  >
                     <AddIcon />
-                </Fab>
-               
+                </Fab>           
                 <Dialog
                 PaperProps={{ style: { maxWidth: 'none' } }}
                 className={classes.hh}
@@ -219,10 +220,6 @@ class AddModele extends React.Component {
                                 Upload Photo
                             </Button>
                         </label>
-
-
-
-
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -233,13 +230,11 @@ class AddModele extends React.Component {
           <div className={classes.column}>
             <Typography className={classes.heading}>OPTIONS : </Typography>
           </div>
-           
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}> declarer les options</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-        
           <div className={clsx(classes.column, classes.helper)}>
               <MyForm />
           </div>
@@ -255,12 +250,9 @@ class AddModele extends React.Component {
           // onDelete={handleDelete}
           variant="outlined"
         />
-          
-           
         </ExpansionPanelActions>
       </ExpansionPanel>
-    </div>
-                        
+    </div>              
     <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -276,7 +268,6 @@ class AddModele extends React.Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-        
           <div className={clsx(classes.column, classes.helper)}>
           <CouleursForm />
           </div>
@@ -296,17 +287,6 @@ class AddModele extends React.Component {
       </ExpansionPanel>
     </div>   
                         <hr />
-                        
-                        {
-                            /*
-                             <br />
-                            <h3>choisir les options</h3>
-                            <DialogContent>
-                                <OptionsCheck />
-                            </DialogContent>
-                            
-                            */
-                        }
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleCloseA} color="primary">
@@ -333,9 +313,6 @@ function mapStateToProps(state) {
         all : state.gestionReducer.allModeles,
         options: getFormValues('MyForm')(state),
         couleurs: getFormValues('CouleursForm')(state),
-        
-    //    couleurs: getFormValues('CouleursForm')(state)
-        
     };
 }
 function matchDispatchToProps(dispatch) {

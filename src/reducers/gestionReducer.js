@@ -55,18 +55,22 @@ const gestionReducer = (state=initialState,action)=>{
             if(action.payload.data.data ==null){
                 modeles.push(action.payload.data);
                 tmp1=true;
-                modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
+                //setTimeout(()=>{ alert("ok")},1000);
+                  modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
+               // modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
                 modeles.push(...action.payload.data.data);
             }
-            return {
-                ...state,
-                loading: true,
-                modeles,
-                add:tmp1,
-                next:action.payload.data.next || null
-            };
+
+                return {
+                    ...state,
+                    loading: true,
+                    modeles,
+                    add:tmp1,
+                    next:action.payload.data.next || null
+                };
+            
         case 'RESET_ADD_MODELE':
             return{
                 ...state,

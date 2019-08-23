@@ -113,14 +113,13 @@ class MediaCard extends Component {
             file:null,
         };
         this.input1 = React.createRef();
+        this.inputName = React.createRef();
+        this.inputCode = React.createRef();
     }
     componentDidMount() {
         this.setState({ nom: this.props.nom });
         this.setState({ url: this.props.url });
-        this.setState({ code: this.props.code }); 
-    //    this.setState({ initialValues: {'options':[{'code':'Axl Rose', 'nom':'Brian Johnson'}]} });
-        this.setState({ initialValues: {'options':this.props.options }})
-        this.setState({ initialValuesCouleurs: {'couleurs':this.props.couleurs }})      
+        this.setState({ code: this.props.code });   
     };
     handleName= (e) =>{
         this.setState({ nom: e.target.value });
@@ -148,14 +147,18 @@ class MediaCard extends Component {
         this.setState({ open: false });
     };
 
+    handleCancel = () => {
+        this.setState({ open: false });
+        this.setState({ nom: this.props.nom });
+        this.setState({ url: this.props.url });
+        this.setState({ file: null });
+        this.setState({ code: this.props.code }); 
+        this.setState({ initialValues: {'options':this.props.options }})
+        this.setState({ initialValuesCouleurs: {'couleurs':this.props.couleurs }})  
+    };
+
     handleDelete(){
         this.props.dispatch(deleteModele(this.props.id));
-        {/*
-          setTimeout(()=>{
-            this.props.dispatch(allModeles());
-          },5000);
-        */}
-        
         this.handleClose();
     };
     test = () => {
@@ -163,13 +166,16 @@ class MediaCard extends Component {
   };
 
     handleUpdate(){
+      this.setState({ nom: this.nameInput.value });
+      this.setState({ code: this.codeInput.value });
 
-      this.handleoptions()
-      let newoptions=this.props.newoptions
+    //  this.handleoptions()
+    let nom = this.nameInput.value;
+    let code = this.codeInput.value;
+    let newoptions=this.props.newoptions
       let newCouleurs=this.props.newCouleurs
       this.input1.current.value = '';
       let fb = this.props.firebase;
-      console.log(this.state.file)
       if(this.state.file != null)
        {
           fb.storage().ref()
@@ -184,38 +190,36 @@ class MediaCard extends Component {
                               url,
                               finish:false
                           });
-                          if(newoptions==undefined){
-                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
+                          if(newoptions===undefined && newCouleurs===undefined){
+                              this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,[],[]));
+                          }else if(newoptions!=undefined && newCouleurs===undefined){
+                            this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,newoptions.options,[]));
+                          }else if(newoptions===undefined && newCouleurs!=undefined){
+                            this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,[],newCouleurs.couleurs));
                           }else{
-                              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,newoptions.options,newCouleurs.couleurs));          
+                              this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,newoptions.options,newCouleurs.couleurs));          
                           }
+                          this.setState({ file: null })
                       })
               });
        }else{
-          if(this.props.newoptions==undefined){
-              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,[],[]));
+          if(newoptions==undefined && newCouleurs===undefined){
+              this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,[],[]));
+          }else if(newoptions!=undefined && newCouleurs===undefined){
+            this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,this.props.newoptions.options,[]));
+          }else if(newoptions===undefined && newCouleurs!=undefined){
+            this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,[],this.props.newCouleurs.couleurs));
           }else{
-              this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.code,this.state.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
-          
+              this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
           }
-       }
-       {/*
-        setTimeout(()=>{
-          this.props.dispatch(allModeles());
-        },5000);
-      */}
-       
+       }       
       this.handleClose();
   }
 
     render() {
-        const { classes } = this.props;
-        
-          
+        const { classes } = this.props;      
         return (
-            
             <Card className={classes.card}>
-            
               <CardActionArea className={classes.cardaction} >
                 <CardMedia
                   component="img"
@@ -230,7 +234,6 @@ class MediaCard extends Component {
                   {this.props.nom}
                   </Typography>
                   <Typography component="p">
-                    
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -248,8 +251,6 @@ class MediaCard extends Component {
                 </Button>
                 <AlertDialogSlide nom={this.props.nom} handleDelete={this.handleDelete} btn={0} />
               </CardActions>
-
-
               <Dialog
                         PaperProps={{ style: { maxWidth: 'none' } }}
                         className={classes.cardLeft}
@@ -258,9 +259,6 @@ class MediaCard extends Component {
                         aria-labelledby="fo"     
                     >
                         <h2 style={styles.title}>Modifier Le modele {this.props.nom}</h2>
-
-                        {/*<img src={this.props.url} alt="brand" style={styles.brand} height="200"/>*/}
-
                         <DialogContent>
                             <DialogContentText>
                                 Veuillez modifier les information que vous voulez
@@ -269,17 +267,18 @@ class MediaCard extends Component {
                                 autoFocus
                                 margin="dense"
                                 id="name"
-                                
+                                inputRef={x => this.nameInput = x}
                                 label="Name"
                                 fullWidth
                                 onChange={ this.handleName }
                                 defaultValue={this.props.nom}
-                            /><br />
+                            />
+                            <br />
                             <TextField
                                 autoFocus
                                 margin="dense"
                                 id="code"
-                                
+                                inputRef={x => this.codeInput = x}
                                 label="Code"
                                 fullWidth
                                 onChange={ this.handleCode }
@@ -309,6 +308,7 @@ class MediaCard extends Component {
                                     Upload Photo
                                 </Button>
                             </label>
+                            
                     
 <div className={classes.root}>
       <ExpansionPanel>
@@ -320,15 +320,13 @@ class MediaCard extends Component {
           <div className={classes.column}>
             <Typography className={classes.heading}>OPTIONS : </Typography>
           </div>
-           
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}> declarer les options</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-        
           <div className={clsx(classes.column, classes.helper)}>
-            <MyForm initialValues={this.state.initialValues}/>
+            <MyForm initialValues={{'options':this.props.options }}/>
           </div>
         </ExpansionPanelDetails>
         <Divider />
@@ -342,8 +340,6 @@ class MediaCard extends Component {
           // onDelete={handleDelete}
           variant="outlined"
         />
-          
-           
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>
@@ -363,9 +359,8 @@ class MediaCard extends Component {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-        
           <div className={clsx(classes.column, classes.helper)}>
-            <CouleursForm initialValues={this.state.initialValuesCouleurs} />
+            <CouleursForm initialValues={{'couleurs':this.props.couleurs }} />
           </div>
         </ExpansionPanelDetails>
         <Divider />
@@ -384,7 +379,7 @@ class MediaCard extends Component {
     </div> 
                         </DialogContent>             
                         <DialogActions style={styles.actions}>
-                            <Button onClick={this.handleClose} color="default">
+                            <Button onClick={this.handleCancel} color="default">
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />

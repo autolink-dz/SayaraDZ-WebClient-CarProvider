@@ -21,7 +21,6 @@ export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele
         
         request.put('/versions/'+id,body,head)
             .then(function (response) {
-                
                 dispatch(end(id,nom,code,url,options,couleurs,fiche_tech,id_modele));
             })
             .catch(function (error) {

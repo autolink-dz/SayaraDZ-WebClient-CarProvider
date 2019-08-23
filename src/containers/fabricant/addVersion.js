@@ -22,11 +22,9 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
 import OptionsCheck from "./../../components/fabricant/mains/gestion/gestionVersion/optionsCheck";
 import CouleursCheck from "./../../components/fabricant/mains/gestion/gestionVersion/couleursCheck";
-
 import {addVersion} from "./../../actions/versionActions/addVersion";
 import {resetAddVersion} from "./../../actions/versionActions/resetAddVersion";
 import FichTech from "./../../components/fabricant/mains/gestion/gestionVersion/FichTechForm";
@@ -42,7 +40,6 @@ const styles = theme => ({
       card: {
         width:'100%',
         maxWidth: 345,
-        
       },
       media: {
         // ⚠️ object-fit is not supported by IE 11.
@@ -98,12 +95,21 @@ class AddVersion extends React.Component {
 
     handleCloseA = () => {
         this.setState({ open: false });
+        this.setState({ name: '' });
+        this.setState({ url: '' });
+        this.setState({ code: '' });
+        this.setState({ file: null });
+        this.setState({ optionsChecked: [] });
+        this.setState({ couleursChecked: [] });
     };
     handleAdd = ()=>{
-
       this.input1.current.value = '';
       let fb = this.props.firebase;
       let fichTech = this.props.fichTech;
+      if(this.state.file == null){
+        alert("vous n'avez pas importer une image")
+        return
+      }
       fb.storage().ref()
           .child('/images/versions/' + this.state.file.name)
           .put(this.state.file)
@@ -116,8 +122,6 @@ class AddVersion extends React.Component {
                           url,
                           finish:false
                       });
-
-
                       if(this.state.modele != ''){
                         if(fichTech === undefined){
                             this.props.dispatch(addVersion(this.state.name,this.state.code,url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,{}));
@@ -130,28 +134,20 @@ class AddVersion extends React.Component {
                                     }
                                 }
                             this.props.dispatch(addVersion(this.state.name,this.state.code,url,this.props.id,this.state.optionsChecked,this.state.couleursChecked,obj));
-                            console.log(obj)
                         }
                         this.handleCloseA();
                     }else{
-                        alert("choose modele")
+                        alert("error")
                     }
-
                   })
           });
-
-        
-        
-            
-      //  this.props.dispatch(addVersion(this.state.name,this.state.code,this.state.url,this.state.modele,this.state.optionsChecked,this.state.couleursChecked,obj));
-        
+        this.setState({ open: false });  
     };
     handleName= (e) =>{
         this.setState({ name: e.target.value });
     };
     handleCode= (e) =>{
         this.setState({ code: e.target.value });
-        console.log(this.state.code)
     };
     handleUrl = (e) => {
         if (e.target.files[0]){
@@ -163,14 +159,11 @@ class AddVersion extends React.Component {
     };
 
     handleModele= () =>{
-
         this.child.clearChecked()
         this.child2.clearChecked()
-        
         setTimeout(()=>{this.handleOptions()},1000);
        this.setState({ optionsChecked: [] });
        this.setState({ couleursChecked: [] });
-
     };
 
     handleOptionsChecked= (array) =>{
@@ -264,7 +257,6 @@ class AddVersion extends React.Component {
                                <OptionsCheck onRef={ref => (this.child = ref)} options={this.props.allModeles.find(x => x.id === this.props.id).options} handleOptionsChecked={this.handleOptionsChecked} /> 
                             </DialogContent>
                             <br />
-                            
                             <br /><br /><br />
                             <Chip
                             color="primary"
@@ -284,7 +276,6 @@ class AddVersion extends React.Component {
           <div className={classes.column}>
             <Typography className={classes.heading}>Fiche technique : </Typography>
           </div>
-           
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}> declarer les options</Typography>
           </div>
@@ -306,12 +297,9 @@ class AddVersion extends React.Component {
           // onDelete={handleDelete}
           variant="outlined"
         />
-          
-           
         </ExpansionPanelActions>
       </ExpansionPanel>
-    </div>
-                            
+    </div>                  
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleCloseA} color="primary">

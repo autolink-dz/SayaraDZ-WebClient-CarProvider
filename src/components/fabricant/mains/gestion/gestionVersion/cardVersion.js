@@ -119,11 +119,9 @@ class MediaCard extends Component {
         this.input1 = React.createRef();
     }
     componentDidMount() {
-     // this.props.dispatch(deleteVersion("X3OmvlSgET7FoOrRARYq"));
         this.setState({ nom: this.props.nom });
         this.setState({ url: this.props.url });
         this.setState({ code: this.props.code });
-
         this.setState({ options: this.props.allModeles.find(x => x.id === this.props.idModele).options });
         this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.idModele).couleurs });
         this.setState({ optionsChecked: this.props.versionOptions });
@@ -133,10 +131,6 @@ class MediaCard extends Component {
         var result = Object.keys(obj).map(function(key) {
           return  {attr:key ,  val: obj[key]}; 
         });
-        console.log("/////////////")
-        console.log(this.props.fiche_tech)
-        console.log(result)
-        
         this.setState({ initialValuesFichTech: {'fiche_tech':result }})
     };
 
@@ -168,6 +162,20 @@ class MediaCard extends Component {
         this.setState({ open: false });
     };
 
+    handleCancel = () => {
+      this.setState({ open: false });
+      this.setState({ nom: this.props.nom });
+      this.setState({ url: this.props.url });
+      this.setState({ code: this.props.code });
+      this.setState({ file: null });
+
+      let obj = this.props.fiche_tech
+        var result = Object.keys(obj).map(function(key) {
+          return  {attr:key ,  val: obj[key]}; 
+        });
+        this.setState({ initialValuesFichTech: {'fiche_tech':result }})
+  };
+
     handleDelete(){
         this.props.dispatch(deleteVersion(this.props.id));
         this.handleClose();
@@ -184,16 +192,13 @@ class MediaCard extends Component {
             
       this.setState({ initialValuesFichTech: this.props.newFichTech })
       this.setState({ newValuesFichTech: {'fiche_tech':ob } })
-      console.log(ob)
-      setTimeout(()=>{
-        console.log(this.state.initialValuesFichTech)
-        console.log(this.state.newValuesFichTech)
-      
-      },1000); 
     };
     handleUpdate(){
-      
+        this.setState({ nom: this.nameInput.value });
+        this.setState({ code: this.codeInput.value });
         this.handleFichTech();
+        let nom = this.nameInput.value;
+        let code = this.codeInput.value;
         this.input1.current.value = '';
         let fb = this.props.firebase;
         setTimeout(()=>{
@@ -211,23 +216,21 @@ class MediaCard extends Component {
                                   url,
                                   finish:false
                               });
-                              this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
-                          })
+                              this.props.dispatch(putVersion(this.props.id,nom,code,url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
+                              this.setState({ file: null })
+                            })
                   });
           }else{
-            this.props.dispatch(putVersion(this.props.id,this.state.nom,this.state.code,this.state.url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
+            this.props.dispatch(putVersion(this.props.id,nom,code,this.props.url,this.state.optionsChecked,this.state.couleursChecked,this.state.newValuesFichTech.fiche_tech,this.state.modele));
           }
         },1000); 
         this.handleClose();
     }
 
-
     handleModele= (m) =>{
-
         this.setState({ modele: m });
         this.child.clearChecked()
         this.child2.clearChecked()
-        
         setTimeout(()=>{this.handleOptions()},1000);
        this.setState({ optionsChecked: [] });
        this.setState({ couleursChecked: [] });
@@ -244,12 +247,13 @@ class MediaCard extends Component {
 
     render() {
         const { classes } = this.props;
-        
+        let obj = this.props.fiche_tech
+        var result = Object.keys(obj).map(function(key) {
+          return  {attr:key ,  val: obj[key]}; 
+        });
           
-        return (
-            
+        return (            
             <Card className={classes.card}>
-            
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -274,15 +278,12 @@ class MediaCard extends Component {
                 </Button>
                 <AlertDialogSlide nom={this.props.nom} handleDelete={this.handleDelete} btn={0} />
               </CardActions>
-
-
               <Dialog
                         PaperProps={{ style: { maxWidth: 'none' } }}
                         className={classes.hh}
                         open={this.state.open}
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"
-                       
                     >
                         <h2 style={styles.title}>Modifier la version {this.props.nom}</h2>
                         <DialogContent>
@@ -294,23 +295,21 @@ class MediaCard extends Component {
                                 autoFocus
                                 margin="dense"
                                 id="name"
-                                
+                                inputRef={x => this.nameInput = x}
                                 label="Name"
                                 fullWidth
                                 onChange={ this.handleName }
                                 defaultValue={this.props.nom}
                             /><br />
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="code"
-                                
+                                inputRef={x => this.codeInput = x}
                                 label="Code"
                                 fullWidth
                                 onChange={ this.handleCode }
                                 defaultValue={this.props.code}
                             />
-                            
                             <br/>
                             <input
                                 accept="image/*"
@@ -334,7 +333,6 @@ class MediaCard extends Component {
                                     Upload Photo
                                 </Button>
                             </label>
-
                              <br /><br /><br />
                             <Chip
                             color="primary"
@@ -344,20 +342,16 @@ class MediaCard extends Component {
                             <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.props.allModeles.find(x => x.id === this.props.idModele).options} versionOptions={this.props.options}
                             handleOptionsChecked={this.handleOptionsChecked}  />
                             </DialogContent>
-
                             <br />
-                            
                             <br /><br /><br />
                             <Chip
                             color="primary"
                              label={<h3>choisir les couleurs</h3>} 
                              variant="outlined" />
-
                             <DialogContent>
                             <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.props.allModeles.find(x => x.id === this.props.idModele).couleurs} versionCouleurs={this.props.couleurs}
                             handleCouleursChecked={this.handleCouleursChecked}  />
                             </DialogContent>
-
 <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary
@@ -368,16 +362,13 @@ class MediaCard extends Component {
           <div className={classes.column}>
             <Typography className={classes.heading}>OPTIONS : </Typography>
           </div>
-           
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}> declarer les options</Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-        
           <div className={clsx(classes.column, classes.helper)}>
-            <FichTech initialValues={this.state.initialValuesFichTech}/>
-            
+            <FichTech initialValues={{'fiche_tech':result }}/>
           </div>
         </ExpansionPanelDetails>
         <Divider />
@@ -391,15 +382,12 @@ class MediaCard extends Component {
           // onDelete={handleDelete}
           variant="outlined"
         />
-          
-           
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>
-
                         </DialogContent>
                         <DialogActions style={styles.actions}>
-                            <Button onClick={this.handleClose} color="default">
+                            <Button onClick={this.handleCancel} color="default">
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
