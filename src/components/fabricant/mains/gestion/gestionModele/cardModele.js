@@ -33,6 +33,7 @@ import MyForm from './OptionsForm'
 import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const styles =  theme =>  ({
 
@@ -258,31 +259,37 @@ class MediaCard extends Component {
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"     
                     >
+                  <ValidatorForm
+                      ref="form"
+                      onSubmit={this.handleUpdate}
+                      onError={errors => console.log(errors)}
+                  >
                         <h2 style={styles.title}>Modifier Le modele {this.props.nom}</h2>
                         <DialogContent>
                             <DialogContentText>
                                 Veuillez modifier les information que vous voulez
                             </DialogContentText>
-                            <TextField
+                            <TextValidator
                                 autoFocus
                                 margin="dense"
                                 id="name"
-                                inputRef={x => this.nameInput = x}
                                 label="Name"
                                 fullWidth
-                                onChange={ this.handleName }
-                                defaultValue={this.props.nom}
+                                value={this.state.name}
+                                onChange={this.handleName}
+                                validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
                             />
-                            <br />
-                            <TextField
-                                autoFocus
+                            <br/>
+                            <TextValidator
                                 margin="dense"
                                 id="code"
-                                inputRef={x => this.codeInput = x}
                                 label="Code"
                                 fullWidth
-                                onChange={ this.handleCode }
-                                defaultValue={this.props.code}
+                                value={this.state.code}
+                                onChange={this.handleCode}
+                                validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un code valide']}
                             />
                             
                             <br/>
@@ -383,11 +390,12 @@ class MediaCard extends Component {
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
-                            <Button onClick={this.handleUpdate} color="primary" 
+                            <Button type="submit" color="primary"
                                     style={{color: '#3EB741',}}>
                                 Modifier
                             </Button>
                         </DialogActions>
+                  </ValidatorForm>
                     </Dialog>
             </Card>
         );
