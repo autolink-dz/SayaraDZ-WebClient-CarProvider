@@ -55,9 +55,7 @@ const gestionReducer = (state=initialState,action)=>{
             if(action.payload.data.data ==null){
                 modeles.push(action.payload.data);
                 tmp1=true;
-                //setTimeout(()=>{ alert("ok")},1000);
-                  modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
-               // modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
+                modeles.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
                 modeles.push(...action.payload.data.data);
@@ -68,7 +66,7 @@ const gestionReducer = (state=initialState,action)=>{
                     loading: true,
                     modeles,
                     add:tmp1,
-                    next:action.payload.data.next || null
+                 //   next:action.payload.data.next || null
                 };
             
         case 'RESET_ADD_MODELE':
@@ -130,10 +128,11 @@ const gestionReducer = (state=initialState,action)=>{
                     modeles.splice(i,1);
                 }
             });
+
             return{
                 ...state,
                 delete:true,
-                modeles
+                modeles,
             };
         case 'RESET_DELETE_MODELE':
             return{

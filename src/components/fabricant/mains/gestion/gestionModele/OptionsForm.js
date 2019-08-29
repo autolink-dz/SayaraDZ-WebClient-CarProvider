@@ -57,9 +57,9 @@ const MyForm = ({ handleSubmit, pristine, reset, submitting }) => {
     <form onSubmit={handleSubmit}>
       <FieldArray name="options" component={renderMembers}/>
       <hr />
-      <div>
+    {/*  <div>
         <Button type="button" size="small" variant="contained" color="primary" disabled={pristine || submitting} onClick={reset}>Supprimer tous les options</Button>
-      </div>
+    </div>*/}
     </form>
   )
 }

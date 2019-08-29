@@ -17,8 +17,11 @@ import {resetUpdateVersion} from "./../../../../../actions/versionActions/resetU
 import {resetDeleteVersion} from "./../../../../../actions/versionActions/resetDeleteVersion";
 import ShowVersion from './showVersion'
 import {FirebaseContext} from "./../../../../../utils/firebase/indexFireBase";
+import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
 import Paper from '@material-ui/core/Paper';
-
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom'
+import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -40,13 +43,18 @@ const styles = theme => ({
       titre:{
         fontFamily:'Arial',
         textAlign:'center',
-        marginLeft: theme.spacing.unit * 10,
+      //  marginLeft: theme.spacing.unit * 10,
         marginRight: theme.spacing.unit * 10,
-        marginTop: theme.spacing.unit * 10,
+      //  marginTop: theme.spacing.unit * 10,
         marginBottom: theme.spacing.unit * 2,
         padding:theme.spacing.unit * 1,
         backgroundColor:'#EEF2F9'
-      }
+      },
+      btnRetour: {
+        left:'0%',
+        top:'15%',
+      },
+
 });
 
 class Versions extends Component {
@@ -124,7 +132,7 @@ class Versions extends Component {
     );
 }
 fetchData(){
- // this.props.dispatch(getVersionsList(this.props.next));
+  this.props.dispatch(getVersionListOfModele(this.props.next,this.props.match.params.id));
 
 };
 _renderWaypoint(){
@@ -168,7 +176,7 @@ _renderWaypoint(){
          }
          if (this.props.delete){
             if(!this.props.error){
-                let msg = "Version " +this.props.nom+" est supprimé avec success !\"";
+                let msg = "la version est supprimé avec success !\"";
                 snack = <CustomizedSnackbars type='success' msg={msg} />
             }
             else {
@@ -181,9 +189,30 @@ _renderWaypoint(){
 
           <Grid item xs={12}>
           <div className={classes.root}>
-            <Paper className={classes.titre}>
-              <h1>{this.props.match.params.nom}</h1>
-            </Paper>
+          
+          <Grid container spacing={24}>
+            <Grid  item xs={12} md={1} sm={4}>
+            <Button
+            className={classes.btnRetour}
+          //  color="secondary"
+            component={Link} to="/fabricant/gestion/modele" 
+            style={
+              {
+                backgroundColor: '#3EB741',
+                color: '#FFF',
+              }
+            }>
+              <ThreeSixtyIcon/>
+              retour</Button>
+            </Grid>
+            <Grid  item xs={12} md={11} sm={8}>
+              <Paper className={classes.titre}>  
+                <h1>{this.props.match.params.nom}</h1>
+              </Paper>
+            </Grid>
+          </Grid>
+
+
               <FirebaseContext.Consumer>{
                             firebase => {
                                 return <AddVersion firebase={firebase} id={this.props.match.params.id} />
@@ -197,8 +226,8 @@ _renderWaypoint(){
             }<br /><br />
             {noVersion}
             {this._renderWaypoint()}
-        {/*    <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
-          */}
+            <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
+          
           </div>
           </Grid>
         );
@@ -223,7 +252,7 @@ Versions.propTypes = {
 
   function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-      getVersionsList,allModeles
+      getVersionsList,allModeles,getVersionListOfModele
     });
     return { ...actions, dispatch };
   }

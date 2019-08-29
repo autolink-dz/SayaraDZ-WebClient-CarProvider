@@ -203,7 +203,7 @@ class AddVersion extends React.Component {
                     PaperProps={{ style: { maxWidth: 'none' } }}
                     className={classes.hh}
                     open={this.state.open}
-                    onClose={this.handleCloseA}
+               //     onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">Ajouter un Version</DialogTitle>

@@ -95,10 +95,6 @@ const CouleursForm = ({ handleSubmit, pristine, reset, submitting }) => {
     <form onSubmit={handleSubmit}>
       <FieldArray name="couleurs" component={renderMembers}/>
       <hr />
-      <div>
-        <Button type="button" size="small" variant="contained" color="primary" disabled={pristine || submitting} onClick={reset}>Supprimer tous les couleurs</Button>
-          
-      </div>
     </form>
   )
 }

@@ -58,9 +58,6 @@ const FichTech = ({ handleSubmit, pristine, reset, submitting }) => {
     <form onSubmit={handleSubmit}>
       <FieldArray name="fiche_tech" component={renderMembers}/>
       <hr />
-      <div>
-        <Button type="button" size="small" variant="contained" color="primary" disabled={pristine || submitting} onClick={reset}>Supprimer tous les lignes</Button>
-      </div>
     </form>
   )
 }

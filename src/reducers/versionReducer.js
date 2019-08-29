@@ -23,13 +23,13 @@ const gestionReducer = (state=initialState,action)=>{
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp=false;
             if(action.payload.data.data ==null){
-                versions.splice(0,versions.length)
+            //    versions.splice(0,versions.length)
                 versions.push(action.payload.data);
                 tmp=true;
                 versions.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
-                versions.splice(0,versions.length)
+              //  versions.splice(0,versions.length)
                 versions.push(...action.payload.data.data);
             }
             return {
@@ -55,7 +55,7 @@ const gestionReducer = (state=initialState,action)=>{
                 loading: true,
                 versions,
                 add:tmp1,
-                next:action.payload.data.next || null
+          //      next:action.payload.data.next || null
             };
         case 'RESET_ADD_VERSION':
             return{
