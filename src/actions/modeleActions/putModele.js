@@ -1,4 +1,3 @@
-
 import { allModeles } from "./allModeles";
 var request = require('./../api/service');
 

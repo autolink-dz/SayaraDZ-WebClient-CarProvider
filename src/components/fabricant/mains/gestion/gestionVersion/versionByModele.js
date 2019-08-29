@@ -89,8 +89,6 @@ class Versions extends Component {
         var result = Object.keys(fich).map(function(key) {
           return  {attr:key ,  val: fich[key]}; 
         });
-
-
       this.setState({ open: true });
       this.setState({ code: code });
       this.setState({ nom: nom });
@@ -101,8 +99,6 @@ class Versions extends Component {
     };
 
   _renderItems(){
-
-    console.log(this.props.versions)
     return (
       <Grid container spacing={24}>
           {this.props.versions.map( (version,index) =>
@@ -133,7 +129,6 @@ class Versions extends Component {
 }
 fetchData(){
   this.props.dispatch(getVersionListOfModele(this.props.next,this.props.match.params.id));
-
 };
 _renderWaypoint(){
   if (this.props.loading){
@@ -145,7 +140,6 @@ _renderWaypoint(){
   }
 }
     render() {
-      
         const { classes } = this.props;
         const datas = this.props.versions;
         let noVersion = null
@@ -211,8 +205,6 @@ _renderWaypoint(){
               </Paper>
             </Grid>
           </Grid>
-
-
               <FirebaseContext.Consumer>{
                             firebase => {
                                 return <AddVersion firebase={firebase} id={this.props.match.params.id} />

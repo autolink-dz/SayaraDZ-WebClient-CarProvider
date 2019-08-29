@@ -17,8 +17,6 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     />
   )
 
-  
-
 const renderMembers = ({ fields, meta: { touched, error } }) => (
   <div>
       {touched && error && <span>{error}</span>}

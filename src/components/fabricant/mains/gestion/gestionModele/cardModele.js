@@ -37,7 +37,6 @@ import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles =  theme =>  ({
-
     actions:{
         textAlign:'center',
         display:'inline-block',
@@ -69,7 +68,6 @@ const styles =  theme =>  ({
       card: {
         width:'100%',
         maxWidth: 345,
-        
       },
       media: {
         // ⚠️ object-fit is not supported by IE 11.

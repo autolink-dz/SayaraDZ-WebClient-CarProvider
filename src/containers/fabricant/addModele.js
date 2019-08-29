@@ -84,35 +84,7 @@ class AddModele extends React.Component {
 }
 
     handleClickOpen = () => {
-       this.setState({ open: true });
-  /*     this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m1",[],[]));
-       this.props.dispatch(addModele("bbb","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m2",[],[]));
-       this.props.dispatch(addModele("ccc","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m3",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m4",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m5",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m6",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m7",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m8",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m9",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m10",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m11",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m12",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m13",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m14",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m15",[],[]));
-       this.props.dispatch(addModele("aaa","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m16",[],[]));
-       this.props.dispatch(addModele("ppp","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m17",[],[]));
-       this.props.dispatch(addModele("qqqq","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m18",[],[]));
-       this.props.dispatch(addModele("rrrr","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m19",[],[]));
-       this.props.dispatch(addModele("ssss","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m20",[],[]));
-       this.props.dispatch(addModele("tttt","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m21",[],[]));
-       this.props.dispatch(addModele("uuuu","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m22",[],[]));
-       this.props.dispatch(addModele("vvvv","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m23",[],[]));
-       this.props.dispatch(addModele("www","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m24",[],[]));
-       this.props.dispatch(addModele("xxx","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m25",[],[]));
-       this.props.dispatch(addModele("yyy","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m26",[],[]));
-       this.props.dispatch(addModele("zzz","https://firebasestorage.googleapis.com/v0/b/sayaradz-75240.appspot.com/o/images%2Fmodeles%2Fpeugeot-208.jpg?alt=media&token=807a6d7a-ff7c-47c4-b3ff-33f01791db28","m27",[],[]));*/
-       
+       this.setState({ open: true });       
     };
 
     handleCloseA = () => {

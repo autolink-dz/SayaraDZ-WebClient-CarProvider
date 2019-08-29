@@ -83,8 +83,6 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
     )}
     
     <br /><Button type="button" onClick={() => fields.push({})} size="small" variant="contained" color="primary">Add couleur</Button>
-    {console.log(fields.getAll())
-    }
   </div>
 )
 
