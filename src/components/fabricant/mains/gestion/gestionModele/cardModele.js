@@ -114,8 +114,6 @@ class MediaCard extends Component {
             file:null,
         };
         this.input1 = React.createRef();
-        this.inputName = React.createRef();
-        this.inputCode = React.createRef();
     }
     componentDidMount() {
         this.setState({ nom: this.props.nom });
@@ -136,26 +134,17 @@ class MediaCard extends Component {
             });
         }
     };
-    handleoptions= (e) =>{
-        this.setState({ initialValues: {'options':this.props.newoptions.options } });
-        this.setState({ initialValuesCouleurs: {'couleurs':this.props.newCouleurs.couleurs }})  
-    };
+
     handleClickOpen = () => {
         this.setState({ open: true });
+        this.setState({ nom: this.props.nom });
+        this.setState({ code: this.props.code });
+        this.setState({ url: this.props.url });
+        this.setState({ file: null });
     };
 
     handleClose = () => {
         this.setState({ open: false });
-    };
-
-    handleCancel = () => {
-        this.setState({ open: false });
-        this.setState({ nom: this.props.nom });
-        this.setState({ url: this.props.url });
-        this.setState({ file: null });
-        this.setState({ code: this.props.code }); 
-        this.setState({ initialValues: {'options':this.props.options }})
-        this.setState({ initialValuesCouleurs: {'couleurs':this.props.couleurs }})  
     };
 
     handleDelete(){
@@ -170,7 +159,6 @@ class MediaCard extends Component {
       this.setState({ nom: this.nameInput.value });
       this.setState({ code: this.codeInput.value });
 
-    //  this.handleoptions()
     let nom = this.nameInput.value;
     let code = this.codeInput.value;
     let newoptions=this.props.newoptions
@@ -256,7 +244,7 @@ class MediaCard extends Component {
                         PaperProps={{ style: { maxWidth: 'none' } }}
                         className={classes.cardLeft}
                         open={this.state.open}
-                        onClose={this.handleCloseA}
+                   //     onClose={this.handleCloseA}
                         aria-labelledby="fo"     
                     >
                   <ValidatorForm
@@ -273,9 +261,12 @@ class MediaCard extends Component {
                                 autoFocus
                                 margin="dense"
                                 id="name"
+                                name="name"
                                 label="Name"
                                 fullWidth
-                                value={this.state.name}
+                                inputRef={x => this.nameInput = x}
+                              //  defaultValue={this.props.nom}
+                                value={this.state.nom}
                                 onChange={this.handleName}
                                 validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
                                 errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
@@ -286,6 +277,8 @@ class MediaCard extends Component {
                                 id="code"
                                 label="Code"
                                 fullWidth
+                                inputRef={x => this.codeInput = x}
+                             //   defaultValue={this.props.code}
                                 value={this.state.code}
                                 onChange={this.handleCode}
                                 validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
@@ -386,7 +379,7 @@ class MediaCard extends Component {
     </div> 
                         </DialogContent>             
                         <DialogActions style={styles.actions}>
-                            <Button onClick={this.handleCancel} color="default">
+                            <Button onClick={this.handleClose} color="default">
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />

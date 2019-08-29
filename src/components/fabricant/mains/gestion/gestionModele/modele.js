@@ -93,7 +93,7 @@ class Modele extends Component {
     return (
       <Grid container spacing={24}>
           {this.props.modeles.map( (modele,index) =>
-            <Grid item xs={12} md={3} sm={6}>
+            <Grid key={index} item xs={12} md={3} sm={6}>
               <FirebaseContext.Consumer>{
                             firebase => {
                                 return <MediaCard firebase={firebase} test={this.test} 

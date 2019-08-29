@@ -73,7 +73,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
         <Fab aria-label="Delete"
             title="Remove Member"
             color="secondary"
-            size="small" variant="contained"
+            size="small" variant="round"
             onClick={() => fields.remove(index)}
             >
           <DeleteIcon />

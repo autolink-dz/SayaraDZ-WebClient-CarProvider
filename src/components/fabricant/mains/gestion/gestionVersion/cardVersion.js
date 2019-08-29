@@ -30,9 +30,9 @@ import {deleteVersion} from "./../../../../../actions/versionActions/deleteVersi
 import FichTech from "./FichTechForm";
 import OptionsCheck from './optionsCheckUpdate'
 import CouleursCheck from './couleursCheckUpdate'
-//import MyForm from './FieldArraysForm'
 import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const styles =  theme =>  ({
 
@@ -126,7 +126,6 @@ class MediaCard extends Component {
         this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.idModele).couleurs });
         this.setState({ optionsChecked: this.props.versionOptions });
         this.setState({ couleursChecked: this.props.versionCouleurs });
-        let tt = {aaa : "aaaaaaaa",bbb:"bbbbbb"} 
         let obj = this.props.fiche_tech
         var result = Object.keys(obj).map(function(key) {
           return  {attr:key ,  val: obj[key]}; 
@@ -149,13 +148,13 @@ class MediaCard extends Component {
             });
         }
     };
-    handleOptions= (e) =>{
-      this.setState({ options: this.props.allModeles.find(x => x.id === this.state.modele).options });
-      this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.state.modele).couleurs });
-    };
     
     handleClickOpen = () => {
+        this.setState({ nom: this.props.nom });
+        this.setState({ code: this.props.code });
         this.setState({ open: true });
+        this.setState({ url: this.props.url });
+        this.setState({ file: null });
     };
 
     handleClose = () => {
@@ -227,16 +226,6 @@ class MediaCard extends Component {
         this.handleClose();
     }
 
-    handleModele= (m) =>{
-        this.setState({ modele: m });
-        this.child.clearChecked()
-        this.child2.clearChecked()
-        setTimeout(()=>{this.handleOptions()},1000);
-       this.setState({ optionsChecked: [] });
-       this.setState({ couleursChecked: [] });
-       
-    };
-
     handleOptionsChecked= (array) =>{
         this.setState({ optionsChecked: array });
     };
@@ -285,30 +274,42 @@ class MediaCard extends Component {
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"
                     >
+                      <ValidatorForm
+                          ref="form"
+                          onSubmit={this.handleUpdate}
+                          onError={errors => console.log(errors)}
+                      >
                         <h2 style={styles.title}>Modifier la version {this.props.nom}</h2>
                         <DialogContent>
                             <DialogContentText>
                                   Veuillez modifier les information que vous voulez
                             </DialogContentText>
 
-                            <TextField
+                            <TextValidator
                                 autoFocus
                                 margin="dense"
                                 id="name"
+                                name="name"
                                 inputRef={x => this.nameInput = x}
                                 label="Name"
                                 fullWidth
-                                onChange={ this.handleName }
-                                defaultValue={this.props.nom}
+                           //     defaultValue={this.props.nom}
+                                value={this.state.nom}
+                                onChange={this.handleName}
+                                validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
                             /><br />
-                            <TextField
+                            <TextValidator
                                 margin="dense"
                                 id="code"
                                 inputRef={x => this.codeInput = x}
                                 label="Code"
                                 fullWidth
-                                onChange={ this.handleCode }
-                                defaultValue={this.props.code}
+                          //      defaultValue={this.props.code}
+                                value={this.state.code}
+                                onChange={this.handleCode}
+                                validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un code valide']}
                             />
                             <br/>
                             <input
@@ -391,10 +392,12 @@ class MediaCard extends Component {
                                 Cancel
                             </Button>
                             <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
-                            <Button onClick={this.handleUpdate} color="primary" style={{color: '#3EB741',}}>
+                            <Button type="submit" color="primary"
+                                    style={{color: '#3EB741',}}>
                                 Modifier
                             </Button>
                         </DialogActions>
+                      </ValidatorForm>
                     </Dialog>
             </Card>
         );

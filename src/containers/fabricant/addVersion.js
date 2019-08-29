@@ -29,6 +29,7 @@ import {addVersion} from "./../../actions/versionActions/addVersion";
 import {resetAddVersion} from "./../../actions/versionActions/resetAddVersion";
 import FichTech from "./../../components/fabricant/mains/gestion/gestionVersion/FichTechForm";
 import { getFormValues} from 'redux-form'
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const styles = theme => ({
     root: {
@@ -206,25 +207,36 @@ class AddVersion extends React.Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">Ajouter un Version</DialogTitle>
+                    <ValidatorForm
+                        ref="form"
+                        onSubmit={this.handleAdd}
+                        onError={errors => console.log(errors)}
+                    >
                     <DialogContent>
                         <DialogContentText>
                             Veuillez introduire le nom du Version ainsi que l'url de sa photo
                         </DialogContentText>
 
-                        <TextField
+                        <TextValidator
                             autoFocus
                             margin="dense"
                             id="name"
                             label="Name"
                             fullWidth
-                            onChange={ this.handleName }
+                            value={this.state.name}
+                            onChange={this.handleName}
+                            validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+                            errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
                         />
-                        <TextField
+                        <TextValidator
                             margin="dense"
                             id="code"
                             label="Code"
                             fullWidth
-                            onChange={ this.handleCode }
+                            value={this.state.code}
+                            onChange={this.handleCode}
+                            validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
+                            errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un code valide']}
                         />
                         <input
                             accept="image/*"
@@ -305,10 +317,11 @@ class AddVersion extends React.Component {
                         <Button onClick={this.handleCloseA} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleAdd} color="primary">
+                        <Button type="submit" color="primary">
                             Add
                         </Button>
                     </DialogActions>
+                    </ValidatorForm>
                 </Dialog>
             </div>
         );

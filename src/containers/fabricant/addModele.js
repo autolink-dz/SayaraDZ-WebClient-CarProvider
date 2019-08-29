@@ -300,15 +300,16 @@ class AddModele extends React.Component {
     </div>   
                         <hr />
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions >
                         <Button onClick={this.handleCloseA} color="primary">
                             Cancel
                         </Button>
-                        <Button type="submit" color="primary">
+                        <Button type="submit" color="primary" >
                             Add
                         </Button>
                     </DialogActions>
                     </ValidatorForm>
+                    <br /><br /><br />
                 </Dialog>
             </div>
         );

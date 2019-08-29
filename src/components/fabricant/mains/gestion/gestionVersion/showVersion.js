@@ -114,7 +114,7 @@ class ShowVersion extends React.Component {
                         </ListItem>
                           <Divider />
                         {this.props.options.map( (option,index) =>
-                          <div>
+                          <div key={index}>
                           <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                               {icon_op}
@@ -199,7 +199,7 @@ class ShowVersion extends React.Component {
                         </ListItem>
                               <Divider />
                             {this.props.fiche_tech.map( (l,index) =>
-                              <div>
+                              <div key={index}>
                               <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                   {icon_op}

@@ -113,7 +113,7 @@ class ShowModele extends React.Component {
                         </ListItem>
                           <Divider />
                         {this.props.options.map( (option,index) =>
-                          <div>
+                          <div key={index}>
                           <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                               {icon_op}
@@ -149,7 +149,7 @@ class ShowModele extends React.Component {
                         </ListItem>
                               <Divider />
                             {this.props.couleurs.map( (couleur,index) =>
-                              <div>
+                              <div key={index}>
                               <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                   
