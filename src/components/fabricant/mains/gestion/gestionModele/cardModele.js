@@ -34,6 +34,7 @@ import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles =  theme =>  ({
 
@@ -252,7 +253,7 @@ class MediaCard extends Component {
                       onSubmit={this.handleUpdate}
                       onError={errors => console.log(errors)}
                   >
-                        <h2 style={styles.title}>Modifier Le modele {this.props.nom}</h2>
+                        <DialogTitle id="form-dialog-title">Modifier Le modele {this.props.nom}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
                                 Veuillez modifier les information que vous voulez

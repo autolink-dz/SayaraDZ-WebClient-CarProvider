@@ -93,6 +93,7 @@ class Versions extends Component {
     };
 
   _renderItems(){
+
     console.log(this.props.versions)
     return (
       <Grid container spacing={24}>
@@ -139,6 +140,21 @@ _renderWaypoint(){
       
         const { classes } = this.props;
         const datas = this.props.versions;
+        let noVersion = null
+        if(this.props.versions.length == 0 && this.props.loading){
+          noVersion = (
+            <Grid container spacing={24} style={{
+              justifyContent: 'center',
+              fontFamily:'Arial',
+              fontSize: 35,
+              padding:100,
+            }}>
+              il n'existe aucune version pour ce modele 
+            </Grid>
+          )
+        }else{
+          noVersion=""
+        }
         let snack = null;
         if (this.props.update){
             if(!this.props.error){
@@ -179,6 +195,7 @@ _renderWaypoint(){
             {
               this._renderItems()
             }<br /><br />
+            {noVersion}
             {this._renderWaypoint()}
         {/*    <CircularProgress style={this.props.next==null||this.props.next===0 ? {display:'none'}  : {marginLeft:'48%'} } />
           */}

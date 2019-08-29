@@ -309,7 +309,6 @@ class AddModele extends React.Component {
                         </Button>
                     </DialogActions>
                     </ValidatorForm>
-                    <br /><br /><br />
                 </Dialog>
             </div>
         );
