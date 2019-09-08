@@ -16,7 +16,6 @@ import Avatar from '@material-ui/core/Avatar';
 import CustomizedSnackbars from "./../../components/fabricant/snackBar";
 import {addModele} from "./../../actions/modeleActions/addModele";
 import {resetAddModele} from "./../../actions/modeleActions/resetAddModele";
-import { allModeles } from './../../actions/modeleActions/allModeles';
 import MyForm from "./../../components/fabricant/mains/gestion/gestionModele/OptionsForm";
 import CouleursForm from "./../../components/fabricant/mains/gestion/gestionModele/CouleursForm";
 import { getFormValues} from 'redux-form'
@@ -323,14 +322,13 @@ function mapStateToProps(state) {
     return {
         add : state.gestionReducer.add,
         error : state.gestionReducer.error,
-        all : state.gestionReducer.allModeles,
         options: getFormValues('MyForm')(state),
         couleurs: getFormValues('CouleursForm')(state),
     };
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        addModele,allModeles
+        addModele
     });
     return { ...actions, dispatch };
 }

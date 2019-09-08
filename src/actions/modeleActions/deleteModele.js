@@ -1,4 +1,3 @@
-import { allModeles } from "./allModeles";
 var request = require('./../api/service');
 
 export function deleteModele(id) {
@@ -14,9 +13,6 @@ export function deleteModele(id) {
         request.delete('/modeles/'+id, head)
             .then(function (response) {
                 dispatch(end(id));
-                setTimeout(()=>{
-                    dispatch(allModeles());
-                  },1000);
             })
             .catch(function (error) {
                 dispatch(err(error));

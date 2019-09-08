@@ -16,7 +16,6 @@ import {getModelesList} from "./../../actions/modeleActions/getModelesList";
 import { Link } from 'react-router-dom'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { allModeles } from '../../actions/modeleActions/allModeles';
 import classNames from 'classnames';
 
 const drawerWidth = 240;
@@ -75,7 +74,6 @@ class NavBar extends React.Component {
     };
     componentDidMount() {
         this.props.dispatch(getModelesList('0'));
-        this.props.dispatch(allModeles());
     };
     fetchData(){
         this.props.dispatch(getModelesList(this.props.next));

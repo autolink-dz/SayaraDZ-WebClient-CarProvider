@@ -1,6 +1,5 @@
 const initialState = {
     modeles: [],
-    allModeles: [],
     error:false,
     add:false,
     update:false,
@@ -14,17 +13,6 @@ let couleurs=null;
 
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
-        case 'SELECT_MARQUES':
-            return {
-                ...state,
-                allModeles: action.payload
-            };
-        case 'ALL_MODELES':
-                console.log(action.payload)
-             return {
-                ...state,
-                allModeles: action.payload
-            };
         case 'SELECT_MODELES':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp=false;
@@ -83,20 +71,6 @@ const gestionReducer = (state=initialState,action)=>{
                     modele.url = action.url;
                     modele.options=action.options;
                     modele.couleurs=action.couleurs;
-                }
-            });
-            return{
-                ...state,
-                update:true,
-                modeles
-            };
-        case 'PUT_MODELE2':
-            modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
-            modeles.forEach(modele=>{
-                if (modele.id===action.id){
-                    modele.nom = action.nom;
-                    modele.code = action.code;
-                    modele.url = action.url;
                 }
             });
             return{

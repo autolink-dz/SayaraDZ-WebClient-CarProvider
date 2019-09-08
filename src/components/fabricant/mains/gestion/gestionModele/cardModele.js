@@ -27,7 +27,6 @@ import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
 import {deleteModele} from "./../../../../../actions/modeleActions/deleteModele";
-import { allModeles } from "./../../../../../actions/modeleActions/allModeles";
 import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
 import MyForm from './OptionsForm'
 import CouleursForm from './CouleursForm'
@@ -409,7 +408,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        putModele,deleteModele,allModeles,getVersionListOfModele
+        putModele,deleteModele,getVersionListOfModele
     });
     return { ...actions, dispatch };
 }

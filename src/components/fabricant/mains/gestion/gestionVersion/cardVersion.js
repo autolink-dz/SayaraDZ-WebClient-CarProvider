@@ -123,8 +123,8 @@ class MediaCard extends Component {
         this.setState({ nom: this.props.nom });
         this.setState({ url: this.props.url });
         this.setState({ code: this.props.code });
-        this.setState({ options: this.props.allModeles.find(x => x.id === this.props.idModele).options });
-        this.setState({ couleurs: this.props.allModeles.find(x => x.id === this.props.idModele).couleurs });
+        this.setState({ options: this.props.modeles.find(x => x.id === this.props.idModele).options });
+        this.setState({ couleurs: this.props.modeles.find(x => x.id === this.props.idModele).couleurs });
         this.setState({ optionsChecked: this.props.versionOptions });
         this.setState({ couleursChecked: this.props.versionCouleurs });
         let obj = this.props.fiche_tech
@@ -341,7 +341,7 @@ class MediaCard extends Component {
                              label={<h3>choisir les options</h3>} 
                              variant="outlined" />
                             <DialogContent>
-                            <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.props.allModeles.find(x => x.id === this.props.idModele).options} versionOptions={this.props.options}
+                            <OptionsCheck onRef={ref => (this.child = ref)} modeleOptions={this.props.modeles.find(x => x.id === this.props.idModele).options} versionOptions={this.props.options}
                             handleOptionsChecked={this.handleOptionsChecked}  />
                             </DialogContent>
                             <br />
@@ -351,7 +351,7 @@ class MediaCard extends Component {
                              label={<h3>choisir les couleurs</h3>} 
                              variant="outlined" />
                             <DialogContent>
-                            <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.props.allModeles.find(x => x.id === this.props.idModele).couleurs} versionCouleurs={this.props.couleurs}
+                            <CouleursCheck onRef={ref => (this.child2 = ref)} modeleCouleurs={this.props.modeles.find(x => x.id === this.props.idModele).couleurs} versionCouleurs={this.props.couleurs}
                             handleCouleursChecked={this.handleCouleursChecked}  />
                             </DialogContent>
 <div className={classes.root}>
@@ -414,7 +414,7 @@ function mapStateToProps(state) {
         loading : state.versionReducer.loading,
         update : state.versionReducer.update,
         delete : state.versionReducer.delete,
-        allModeles : state.gestionReducer.allModeles,
+        modeles : state.gestionReducer.modeles,        
         newFichTech: getFormValues('FichTech')(state),
     };
 }

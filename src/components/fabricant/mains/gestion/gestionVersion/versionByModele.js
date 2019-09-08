@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import versionReducer  from './../../../../../reducers/versionReducer'
-import { allModeles } from "./../../../../../actions/modeleActions/allModeles";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux"
 import MediaCard from './cardVersion'
@@ -73,9 +72,6 @@ class Versions extends Component {
         };
     }
 
-    componentDidMount() {
-        this.props.dispatch(allModeles());
-    }
     handleClickOpen = () => {
       this.setState({ open: true });
     };
@@ -244,7 +240,7 @@ Versions.propTypes = {
 
   function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-      getVersionsList,allModeles,getVersionListOfModele
+      getVersionsList,getVersionListOfModele
     });
     return { ...actions, dispatch };
   }
