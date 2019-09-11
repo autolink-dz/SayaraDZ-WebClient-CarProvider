@@ -13,7 +13,7 @@ describe("Gestion des Models Ajout modification Supression", function() {
             request.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAtt4h5FUVwtrMPJK2EHmRnHcq9MpCgj_o',
                 {json: true, body: { email:email,
                         password:password,'returnSecureToken':'true'}}, function (error, response, body) {
-                    expect(response.statusCode).toBe(200);
+                    expect(body.email).toBe(email);
                     localStorage.setItem('idtoken',body.idToken)
                     done();
                 });
@@ -40,10 +40,10 @@ describe("Gestion des Models Ajout modification Supression", function() {
         var id = "";
         var id_ver="";
         it("test l'ajout d'un model !", function (done) {
-            let body={
-                "nom": "testmodel2",
+            let form={
+                "nom": "testmodel47",
                 "url": "https://www.autobip.com/storage/photos/car_models/3235.png",
-                "code": "code_testmode2",
+                "code": "code_testmode47",
                 "id_marque": "HE54VwUdghgPRb6ZO6I8",
                 "options": [
                     {
@@ -96,19 +96,31 @@ describe("Gestion des Models Ajout modification Supression", function() {
                     'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
                     'cache-control': 'no-cache'
                 },json:true,
-                form:body
+                form:form
 
             };
-            request.post(options,function (error, response, body) {
+            request.post(options,function (error, response, body) { // Ajouter un modele
 
-                id=body.id
-                expect(response.statusCode).toBe(200);
-                done();
+                id=body.id;
+                var options_2 = {
+                    url: base_url+"/modeles?next=0&page=20'",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // get list des models
+                    var set = JSON.parse(body_set);
+                    expect(set.data).toContainEqual(body); // tester si la list contien l'element ajouter
+                    done();
+                });
+
+
             });
         });
         it("test l'ajout une verssion !", function (done) {
 
-            let body={
+            let form={
                 "nom": "version1",
                 "code":"verssion_code1",
                 "url": "http://url.com",
@@ -166,19 +178,121 @@ describe("Gestion des Models Ajout modification Supression", function() {
                     'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
                     'cache-control': 'no-cache'
                 },json:true,
-                form:body
+                form:form
 
             };
-            request.post(options,function (error, response, body) {
+            request.post(options,function (error, response, body) { // ajout d'une verssion
 
                 id_ver=body.id
-                expect(response.statusCode).toBe(200);
-                done();
+
+                var options_2 = {
+                    url: base_url+"/versions?next=0&page=20",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // chercher dans la list des verssion si il ya celle qu'on a ajouter
+                    var set = JSON.parse(body_set);
+                    expect(set.data).toContainEqual(body); // tester si la list contien l'element ajouter
+                    done();
+                });
+
+
             });
         });
 
         it("test la modification d une verssion !", function (done) {
-            let body={
+            let form={
+                id:id_ver,
+                nom:"nom_modif",
+                code:"code_modif",
+                url:"https://urlmodif.com",
+
+                options: [
+                    {
+                        "code": "VOL_PASSAT_OPT_1",
+                        "nom": "Volant cuir"
+                    },
+                    {
+                        "code": "VOL_PASSAT_OPT_2",
+                        "nom": "Commandes aux volant"
+                    },
+                    {
+                        "code": "VOL_PASSAT_OPT_3",
+                        "nom": "Vitres teintés"
+                    },
+                    {
+                        "code": "VOL_PASSAT_OPT_4",
+                        "nom": "Verouillage centralisé"
+                    },
+                    {
+                        "code": "VOL_PASSAT_OPT_5",
+                        "nom": "Anti démarrage"
+                    },
+                    {
+                        "code": "VOL_PASSAT_OPT_6",
+                        "nom": "Boite a gants refrigerante"
+                    }
+                ],
+                couleurs: [
+                    {
+                        "code": "VOL_PASSAT_CLR_V",
+                        "nom": "vert"
+                    },
+                    {
+                        "code": "VOL_PASSAT_CLR_R",
+                        "nom": "rouge"
+                    },
+                    {
+                        "code": "VOL_PASSAT_CLR_O",
+                        "nom": "orange"
+                    },
+                    {
+                        "code": "VOL_PASSAT_CLR_N",
+                        "nom": "noir"
+                    }
+                ],
+                fiche_tech:"fich_teck",
+                id_modele:id,
+                "id_marque": "HE54VwUdghgPRb6ZO6I8",
+            };
+
+            var options = {
+                url: "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/versions/"+id_ver,
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                    'cache-control': 'no-cache'
+                },json:true,
+                form:form
+
+            };
+            request.put(options,function (error, response, body) {
+                var options_2 = {
+                    url: base_url+"/versions?next=0&page=20",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // chercher dans la list des verssion si il ya celle qu'on a modifier par id
+                    var set = JSON.parse(body_set);
+                    expect(set.data).toContainEqual(form);
+                    done();
+                });
+
+            });
+
+        });
+        it("test la supression de une verssion", function (done) {
+            var options = {
+                url: base_url+"/versions/"+id_ver,
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                    'cache-control': 'no-cache'
+                },
+            };
+            let verssion={
                 id:id_ver,
                 nom:"nom_modif",
                 code:"code_modif",
@@ -231,39 +345,31 @@ describe("Gestion des Models Ajout modification Supression", function() {
                 fiche_tech:"fich_teck",
                 id_modele:id
             };
-            var options = {
-                url: "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/versions/"+id_ver,
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
-                    'cache-control': 'no-cache'
-                },json:true,
-                form:body
-
-            };
-            request.put(options,function (error, response, body) {
-
-                expect(response.statusCode).toBe(200);
-                done();
-            });
-        });
-        it("test la supression de une verssion", function (done) {
-            var options = {
-                url: base_url+"/versions/"+id_ver,
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
-                    'cache-control': 'no-cache'
-                },
-            };
             request.delete(options, function (error, response, body) {
-                expect(response.statusCode).toBe(200);
-                done();
+                var options_2 = {
+                    url: base_url+"/versions?next=0&page=20",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // chercher dans la list des verssion si il ya celle qu'on a modifier par id
+                    var set = JSON.parse(body_set);
+                    expect(set.data).not.toContainEqual(verssion);
+                    done();
+                });
+
             });
         });
         it("test la modification d'un model !", function (done) {
-            let body={
+            let form={
                 id:id,
                 nom:"nomtestput",
-                url:"https://www.autobip.com/storage/photos/car_models/3235.png"
+                "id_marque": "HE54VwUdghgPRb6ZO6I8",
+                "options": [{"code": "VOL_PASSAT_OPT_1", "nom": "Volant cuir"}, {"code": "VOL_PASSAT_OPT_2", "nom": "Commandes aux volant"}, {"code": "VOL_PASSAT_OPT_3", "nom": "Vitres teintés"}, {"code": "VOL_PASSAT_OPT_4", "nom": "Verouillage centralisé"}, {"code": "VOL_PASSAT_OPT_5", "nom": "Anti démarrage"}, {"code": "VOL_PASSAT_OPT_6", "nom": "Boite a gants refrigerante"}],
+                "url": "https://www.autobip.com/storage/photos/car_models/3235.png"
+
+
             };
             var options = {
                 url: "https://us-central1-sayaradz-75240.cloudfunctions.net/sayaraDzApi/api/v1/modeles/"+id,
@@ -271,13 +377,23 @@ describe("Gestion des Models Ajout modification Supression", function() {
                     'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
                     'cache-control': 'no-cache'
                 },json:true,
-                form:body
+                form:form
 
             };
             request.put(options,function (error, response, body) {
+                var options_2 = {
+                    url: base_url+"/modeles?next=0&page=20",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // chercher dans la list des modeles si il ya celle qu'on a modifier par id
+                    var set = JSON.parse(body_set);
+                    expect(set.data).toContainEqual(form);
+                    done();
+                });
 
-                expect(response.statusCode).toBe(200);
-                done();
             });
         });
         it("test la supression de modele ajouter", function (done) {
@@ -288,7 +404,24 @@ describe("Gestion des Models Ajout modification Supression", function() {
                     'cache-control': 'no-cache'
                 },
             };
+            let modele={
+                id:id,
+                nom:"nomtestput",
+                url:"https://www.autobip.com/storage/photos/car_models/3235.png"
+            };
             request.delete(options, function (error, response, body) {
+                var options_2 = {
+                    url: base_url+"/modeles?next=0&page=20",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('idtoken'),
+                        'cache-control': 'no-cache'
+                    }
+                };
+                request.get(options_2, function (error, response, body_set) { // chercher dans la list des verssion si il ya celle qu'on a modifier par id
+                    var set = JSON.parse(body_set);
+                    expect(set.data).not.toContainEqual(modele);
+                    done();
+                });
                 expect(response.statusCode).toBe(200);
                 done();
             });
