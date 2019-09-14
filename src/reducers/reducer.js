@@ -9,6 +9,9 @@ import commandesReducer from "./commandesReducer";
 import modeleListReducer from "./modeleListReducer";
 import versionListReducer from "./versionListReducer";
 import optionsColorsReducer from "./optionsColorsReducer";
+import modeleReducer from "./modeleReducer";
+import basePriceReducer from "./basePriceReducer";
+import checkCarReducer from "./checkCarReducer";
 
 
 const AllReducers = combineReducers({
@@ -21,7 +24,10 @@ const AllReducers = combineReducers({
     commandesReducer,
     modeleListReducer,
     versionListReducer,
-    optionsColorsReducer
+    optionsColorsReducer,
+    modeleReducer,
+    basePriceReducer,
+    checkCarReducer
 });
 
 export default AllReducers;

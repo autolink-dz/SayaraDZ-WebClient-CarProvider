@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';

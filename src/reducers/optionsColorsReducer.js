@@ -2,7 +2,8 @@ const initialState = {
     loading: false,
     options:[],
     colors:[],
-    error:false
+    error:false,
+    codeVersion : '-1'
 };
 
 const optionsColorsReducer = (state=initialState, action)=>{
@@ -13,6 +14,7 @@ const optionsColorsReducer = (state=initialState, action)=>{
                 loading: true,
                 options:action.payload.data.options,
                 colors:action.payload.data.couleurs,
+                codeVersion:action.payload.data.code
             };
 
         case 'ERROR_GET_OPTIONS_COLORS':

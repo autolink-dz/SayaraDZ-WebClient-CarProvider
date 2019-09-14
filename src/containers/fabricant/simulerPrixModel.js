@@ -5,10 +5,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MediaCard from '../../components/fabricant/mains/simulation/modeleCard'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import {Waypoint} from "react-waypoint";
 import './../../styles/simulation.css'
 import {getModeleList} from "../../actions/fabricant/getModelesList";
 import {withRouter} from "react-router-dom";
+import {getPrices} from "../../actions/fabricant/getPrices";
 
 
 class SimulerPrixModel extends Component {
@@ -20,36 +20,13 @@ class SimulerPrixModel extends Component {
     componentDidMount() {
         if ( this.props.modeles.length === 0){
             this.props.dispatch(getModeleList(this.props.next,localStorage.getItem('id_marque')));
-        }localStorage.setItem('value',"two");
-
+        }
+        localStorage.setItem('value',"two");
     };
 
     fetchData(){
         this.props.dispatch(getModeleList(this.props.next,localStorage.getItem('id_marque')));
     };
-
-    _renderItems(){
-        if (this.props.error){
-            return (
-                <div style={{paddingTop:'17%'}}>
-                    <h2 align="center">
-                        Error, Token expired !
-                    </h2>
-                </div>
-            )
-        }
-
-    }
-
-    _renderWaypoint(){
-        if (this.props.loading){
-            return (
-                <Waypoint
-                    onEnter={this.fetchData}
-                />
-            );
-        }
-    }
 
     render() {
         let stProgresse = {marginLeft:'45%',marginTop:'15%',height:100,width:100};
@@ -83,7 +60,8 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        getModeleList
+        getModeleList,
+        getPrices
     });
     return { ...actions, dispatch };
 }
