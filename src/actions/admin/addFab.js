@@ -21,6 +21,7 @@ export function addFab(nom, prenom , mdp , mail, adresse , num_tlp,id_marque ) {
     return dispatch =>{
         request.post('/fabricants', body, head)
             .then(function (response) {
+                console.log(response.data)
                 dispatch(end(response));
             })
             .catch(function (error) {
