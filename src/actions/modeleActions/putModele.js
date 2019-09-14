@@ -24,6 +24,7 @@ export function putModele(id,nom,code,url,options,couleurs) {
             })
             .catch(function (error) {
                 console.log(error);
+                alert("Erreur : le code existe déja ou la connexion est interrompu")
             });
     }
 }

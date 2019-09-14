@@ -8,7 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import TextField from '@material-ui/core/TextField';
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -28,12 +27,14 @@ import Avatar from '@material-ui/core/Avatar';
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
 import {deleteModele} from "./../../../../../actions/modeleActions/deleteModele";
 import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
-import MyForm from './OptionsForm'
+import OptionsForm from './OptionsForm'
 import CouleursForm from './CouleursForm'
 import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import classNames from 'classnames';
+import red from '@material-ui/core/colors/red';
 
 const styles =  theme =>  ({
     actions:{
@@ -80,7 +81,7 @@ const styles =  theme =>  ({
         margin: theme.spacing.unit,
       },
       cardLeft:{
-        width : 1500,
+     //   width : 1500,
     //    marginLeft : -theme.spacing.unit * 50,
       },
       cardRight:{
@@ -96,6 +97,17 @@ const styles =  theme =>  ({
       cardaction: {
         
       },
+
+      margin: {
+        margin: theme.spacing.unit,
+      },
+      cssRoot: {
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[700],
+        '&:hover': {
+          backgroundColor: red[900],
+        },
+      },
 });
 
 class MediaCard extends Component {
@@ -110,6 +122,9 @@ class MediaCard extends Component {
             initialValues: null,
             initialValuesCouleurs: null,
             file:null,
+
+            openAlert:false,
+            messageAlert:""
         };
         this.input1 = React.createRef();
     }
@@ -153,6 +168,116 @@ class MediaCard extends Component {
       this.props.dispatch(getVersionListOfModele(0,this.props.id));
   };
 
+
+
+  handleClickOpenAlert = () => {
+    this.setState({ openAlert: true });       
+ };
+
+ handleCloseAlert = () => {
+  this.setState({ openAlert: false }); 
+ };
+ 
+ 
+
+  alertError(message){
+    const { classes } = this.props;
+    return(
+      <Dialog
+        open={this.state.openAlert}
+        onClose={this.handleCloseAlert}
+      >
+
+        <DialogTitle id="alert-dialog-slide-title">
+          {"Erreur !"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {message}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseAlert}  >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
+
+
+  validateOptions(options){
+    let i = 0
+    let j = 0
+        if(options!=undefined){
+          for (i = 0; i < options.options.length; i++){
+            if(i < options.options.length-1){
+              for (j = i+1; j < options.options.length; j++){
+                if(options.options[i].nom == options.options[j].nom){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le nom d'option "+options.options[i].nom +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  return 0
+                }
+              }
+            }
+          }
+          for (i = 0; i < options.options.length; i++){
+            if(i < options.options.length-1){
+              for (j = i+1; j < options.options.length; j++){
+                if(options.options[i].code == options.options[j].code){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le code d'option "+options.options[i].code +" est dupliqué au rang" + (i+1) +" et "+(j+1) });        
+                  return 0
+                }
+              }
+            }
+          }
+      }
+
+  }
+
+  validateCouleurs(couleurs){
+    let i = 0
+    let j = 0
+        if(couleurs != undefined){
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(i < couleurs.couleurs.length-1){
+              for (j = i+1; j < couleurs.couleurs.length; j++){
+                if(couleurs.couleurs[i].nom == couleurs.couleurs[j].nom){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le nom de couleur "+couleurs.couleurs[i].nom +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  return 0
+                }
+              }
+            }
+          }
+
+
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(i < couleurs.couleurs.length-1){
+              for (j = i+1; j < couleurs.couleurs.length; j++){
+                if(couleurs.couleurs[i].code == couleurs.couleurs[j].code){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le code de couleur "+couleurs.couleurs[i].code +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  
+                  return 0
+                }
+              }
+            }
+          }
+          console.log(couleurs)
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(couleurs.couleurs[i].color == undefined || couleurs.couleurs[i].color == ""){
+              this.setState({ openAlert: true }); 
+              this.setState({ messageAlert: "vous devez préciser la couleur du "+couleurs.couleurs[i].nom + " au rang " + (i+1) });
+              return 0
+            }
+          }
+      }
+  }
+
+
+
     handleUpdate(){
       this.setState({ nom: this.nameInput.value });
       this.setState({ code: this.codeInput.value });
@@ -161,6 +286,17 @@ class MediaCard extends Component {
     let code = this.codeInput.value;
     let newoptions=this.props.newoptions
       let newCouleurs=this.props.newCouleurs
+
+      let break1 = 1;
+      let break2 = 1;
+
+      break1 = this.validateOptions(newoptions)
+      break2 = this.validateCouleurs(newCouleurs)
+
+      if(break1 == 0 || break2 ==0){
+        return
+      }
+
       this.input1.current.value = '';
       let fb = this.props.firebase;
       if(this.state.file != null)
@@ -324,14 +460,14 @@ class MediaCard extends Component {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
           <div className={clsx(classes.column, classes.helper)}>
-            <MyForm initialValues={{'options':this.props.options }}/>
+            <OptionsForm initialValues={{'options':this.props.options }}/>
           </div>
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
         <Chip
           avatar={<Avatar>Rq</Avatar>}
-          label="Chaque option a un code d'option et le nom de l'option"
+          label="Chaque option doit avoir un code d'option et le nom de l'option"
           clickable
           className={classes.chip}
           color="primary"
@@ -365,7 +501,7 @@ class MediaCard extends Component {
         <ExpansionPanelActions>
         <Chip
           avatar={<Avatar>Rq</Avatar>}
-          label="Chaque Couleur a un code de couleur et le nom de la couleur"
+          label="Chaque Couleur doit avoir un code de couleur et le nom de la couleur"
           clickable
           className={classes.chip2}
           color="primary"
@@ -388,6 +524,7 @@ class MediaCard extends Component {
                         </DialogActions>
                   </ValidatorForm>
                     </Dialog>
+                    {this.alertError(this.state.messageAlert)}
             </Card>
         );
     }
@@ -402,7 +539,7 @@ function mapStateToProps(state) {
         loading : state.gestionReducer.loading,
         update : state.gestionReducer.update,
         delete : state.gestionReducer.delete,
-        newoptions: getFormValues('MyForm')(state),
+        newoptions: getFormValues('OptionsForm')(state),
         newCouleurs: getFormValues('CouleursForm')(state),
     };
 }

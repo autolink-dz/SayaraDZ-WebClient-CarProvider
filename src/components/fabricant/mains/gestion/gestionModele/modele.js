@@ -70,7 +70,6 @@ class Modele extends Component {
     }
 
     componentDidMount() {
-
       this.props.dispatch({type: 'CLEAR_VERSIONS'});
     }
     handleClickOpen = () => {

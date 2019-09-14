@@ -1,25 +1,8 @@
 import React, {Component} from 'react';
 import NavBar  from './navbar'
-import Main  from './mains/dashbord/main'
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Modele from './mains/gestion/gestionModele/modele'
-import Versions from './mains/gestion/gestionVersion/versionByModele'
-import { BrowserRouter as Router , Route, Switch} from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import { Link } from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -106,41 +89,6 @@ class Fabricant extends Component {
             <div className={classes.root}>
               <CssBaseline />
               <NavBar openMenu={this.state.open} handleDrawerOpen={this.handleDrawerOpen} />
-              <Drawer
-                variant="permanent"
-                className={classNames(classes.drawer, {
-                  [classes.drawerOpen]: this.state.open,
-                  [classes.drawerClose]: !this.state.open,
-                })}
-                classes={{
-                  paper: classNames({
-                    [classes.drawerOpen]: this.state.open,
-                    [classes.drawerClose]: !this.state.open,
-                  }),
-                }}
-                open={this.state.open}
-              >
-                <div className={classes.toolbar}>
-                  <IconButton onClick={this.handleDrawerClose}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                  </IconButton>
-                </div>
-                <Divider />
-                  <List>
-                      <ListItem button  component={Link} to="/fabricant/gestion/modele">
-                        <ListItemIcon> <InboxIcon /></ListItemIcon>
-                        <ListItemText primary={'Gérer modele'} />
-                      </ListItem>
-                  </List>
-                <Divider />
-              </Drawer>           
-              <main className={classes.content}>
-                <div className={classNames('main', classes.toolbar)}>
-                      <Switch>
-
-                      </Switch>
-                      </div>
-              </main>
             </div>
         );
     }

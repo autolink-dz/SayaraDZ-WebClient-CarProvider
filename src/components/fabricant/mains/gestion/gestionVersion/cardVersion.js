@@ -8,7 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import TextField from '@material-ui/core/TextField';
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -34,6 +33,8 @@ import { getFormValues} from 'redux-form'
 import AlertDialogSlide from './validateDelete'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import classNames from 'classnames';
+import red from '@material-ui/core/colors/red';
 
 const styles =  theme =>  ({
 
@@ -96,6 +97,16 @@ const styles =  theme =>  ({
       chip2: {
         marginRight: theme.spacing.unit * 15,
       },
+      margin: {
+        margin: theme.spacing.unit,
+      },
+      cssRoot: {
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[700],
+        '&:hover': {
+          backgroundColor: red[900],
+        },
+      },
 });
 
 class MediaCard extends Component {
@@ -116,6 +127,9 @@ class MediaCard extends Component {
             initialValuesFichTech: null,
             newValuesFichTech: null,
             file:null,
+
+            openAlert:false,
+            messageAlert:""
         };
         this.input1 = React.createRef();
     }
@@ -193,9 +207,72 @@ class MediaCard extends Component {
       this.setState({ initialValuesFichTech: this.props.newFichTech })
       this.setState({ newValuesFichTech: {'fiche_tech':ob } })
     };
+
+
+    handleClickOpenAlert = () => {
+      this.setState({ openAlert: true });       
+   };
+
+   handleCloseAlert = () => {
+    this.setState({ openAlert: false }); 
+   };
+   
+   
+
+    alertError(message){
+      const { classes } = this.props;
+      return(
+        <Dialog
+          open={this.state.openAlert}
+          onClose={this.handleCloseAlert}
+        >
+
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Erreur !"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              {message}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseAlert}  >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )
+    }
+
+    validateFichTech(fiche_tech){
+      let i = 0
+      let j = 0
+          if(fiche_tech!=undefined){
+            for (i = 0; i < fiche_tech.fiche_tech.length; i++){
+              if(i < fiche_tech.fiche_tech.length-1){
+                for (j = i+1; j < fiche_tech.fiche_tech.length; j++){
+                  if(fiche_tech.fiche_tech[i].attr == fiche_tech.fiche_tech[j].attr){
+                    this.setState({ openAlert: true }); 
+                    this.setState({ messageAlert: "Dans la fiche technique l'option "+fiche_tech.fiche_tech[i].attr +" est dupliqué au rang" + (i+1) +" et "+(j+1) });        
+                    return 0
+                  }
+                }
+              }
+            }
+        }
+
+    }
+
+
     handleUpdate(){
         this.setState({ nom: this.nameInput.value });
         this.setState({ code: this.codeInput.value });
+
+        let break1 = 1;
+        break1 = this.validateFichTech(this.props.newFichTech)
+        if(break1 == 0){
+          return
+        }
         this.handleFichTech();
         let nom = this.nameInput.value;
         let code = this.codeInput.value;
@@ -270,7 +347,6 @@ class MediaCard extends Component {
               </CardActions>
               <Dialog
                         PaperProps={{ style: { maxWidth: 'none' } }}
-                        className={classes.hh}
                         open={this.state.open}
                         onClose={this.handleCloseA}
                         aria-labelledby="fo"
@@ -294,7 +370,6 @@ class MediaCard extends Component {
                                 inputRef={x => this.nameInput = x}
                                 label="Name"
                                 fullWidth
-                           //     defaultValue={this.props.nom}
                                 value={this.state.nom}
                                 onChange={this.handleName}
                                 validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
@@ -306,7 +381,6 @@ class MediaCard extends Component {
                                 inputRef={x => this.codeInput = x}
                                 label="Code"
                                 fullWidth
-                          //      defaultValue={this.props.code}
                                 value={this.state.code}
                                 onChange={this.handleCode}
                                 validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
@@ -377,7 +451,7 @@ class MediaCard extends Component {
         <ExpansionPanelActions>
         <Chip
           avatar={<Avatar>Rq</Avatar>}
-          label="Chaque option a un code d'option et le nom de l'option"
+          label="Chaque option doit avoir un code d'option et le nom de l'option"
           clickable
           className={classes.chip}
           color="primary"
@@ -400,6 +474,7 @@ class MediaCard extends Component {
                         </DialogActions>
                       </ValidatorForm>
                     </Dialog>
+                    {this.alertError(this.state.messageAlert)}
             </Card>
         );
     }

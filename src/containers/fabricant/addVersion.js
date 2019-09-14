@@ -30,6 +30,8 @@ import {resetAddVersion} from "./../../actions/versionActions/resetAddVersion";
 import FichTech from "./../../components/fabricant/mains/gestion/gestionVersion/FichTechForm";
 import { getFormValues} from 'redux-form'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import classNames from 'classnames';
+import red from '@material-ui/core/colors/red';
 
 const styles = theme => ({
     root: {
@@ -64,6 +66,17 @@ const styles = theme => ({
           left:'95%',
           zIndex : '9999 !important'
         },
+
+        margin: {
+            margin: theme.spacing.unit,
+          },
+          cssRoot: {
+            color: theme.palette.getContrastText(red[500]),
+            backgroundColor: red[700],
+            '&:hover': {
+              backgroundColor: red[900],
+            },
+          },
 });
 
 class AddVersion extends React.Component {
@@ -81,7 +94,11 @@ class AddVersion extends React.Component {
             couleursChecked:[],
             modele:'',
             file: null,
-            finish:false
+            finish:false,
+
+
+            openAlert:false,
+            messageAlert:""
         };
         this.input1 = React.createRef();
       }
@@ -105,12 +122,76 @@ class AddVersion extends React.Component {
         this.setState({ optionsChecked: [] });
         this.setState({ couleursChecked: [] });
     };
+
+
+    handleClickOpenAlert = () => {
+        this.setState({ openAlert: true });       
+     };
+  
+     handleCloseAlert = () => {
+      this.setState({ openAlert: false }); 
+     };
+     
+     
+  
+      alertError(message){
+        const { classes } = this.props;
+        return(
+          <Dialog
+            open={this.state.openAlert}
+            onClose={this.handleCloseAlert}
+          >
+  
+            <DialogTitle id="alert-dialog-slide-title">
+              {"Erreur !"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                {message}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseAlert}  >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
+      }
+
+      validateFichTech(fiche_tech){
+        let i = 0
+        let j = 0
+            if(fiche_tech!=undefined){
+              for (i = 0; i < fiche_tech.fiche_tech.length; i++){
+                if(i < fiche_tech.fiche_tech.length-1){
+                  for (j = i+1; j < fiche_tech.fiche_tech.length; j++){
+                    if(fiche_tech.fiche_tech[i].attr == fiche_tech.fiche_tech[j].attr){
+                      this.setState({ openAlert: true }); 
+                      this.setState({ messageAlert: "Dans la fiche technique l'option "+fiche_tech.fiche_tech[i].attr +" est dupliqué au rang" + (i+1) +" et "+(j+1) });        
+                      return 0
+                    }
+                  }
+                }
+              }
+          }
+  
+      }
+
     handleAdd = ()=>{
       this.input1.current.value = '';
       let fb = this.props.firebase;
       let fichTech = this.props.fichTech;
+
+      let break1 = 1;
+      break1 = this.validateFichTech(fichTech)
+      if(break1 == 0){
+        return
+      }
+
       if(this.state.file == null){
-        alert("vous n'avez pas importer une image")
+        this.setState({ openAlert: true }); 
+        this.setState({ messageAlert: "vous n'avez pas importer une image" });
         return
       }
       fb.storage().ref()
@@ -203,7 +284,7 @@ class AddVersion extends React.Component {
                 </Fab>
                 <Dialog
                     PaperProps={{ style: { maxWidth: 'none' } }}
-                    className={classes.hh}
+                  //  className={classes.hh}
                     open={this.state.open}
                //     onClose={this.handleCloseA}
                     aria-labelledby="form-dialog-title"
@@ -304,7 +385,7 @@ class AddVersion extends React.Component {
         <ExpansionPanelActions>
         <Chip
           avatar={<Avatar>Rq</Avatar>}
-          label="Chaque ligne a un no du champ et la valeurs du champ"
+          label="Chaque option doit avoir un nom du champ et la valeurs du champ"
           clickable
           className={classes.chip}
           color="primary"
@@ -325,6 +406,7 @@ class AddVersion extends React.Component {
                     </DialogActions>
                     </ValidatorForm>
                 </Dialog>
+                {this.alertError(this.state.messageAlert)}
             </div>
         );
     }

@@ -1,33 +1,39 @@
 import React from 'react'
-import { Field, FieldArray, reduxForm, formValueSelector, change } from 'redux-form'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Badge from '@material-ui/core/Badge';
 import Fab from '@material-ui/core/Fab';
-import ColorPickerField from 'material-ui-color-picker';
 import ColorPicker from 'material-ui-color-picker'
 import Grid from '@material-ui/core/Grid';
-
+import {TextValidator} from 'react-material-ui-form-validator';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-    <TextField hintText={label}
+    <TextValidator hintText={label}
       floatingLabelText={label}
       label={label}
       errorText={touched && error}
+      validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+      errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
       {...input}
       {...custom}
     />
   )
+
+
+  
 
   const ColorPickerFieldd = ({ input, label, meta: { touched, error }, ...custom }) => (
     <ColorPicker hintText={label}
       floatingLabelText={label}
       label={label}
       errorText={touched && error}
+      validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+      errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
       {...input}
       {...custom}
     />
+    
   )
 
 const renderMembers = ({ fields, meta: { touched, error } }) => (
@@ -52,12 +58,13 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
           label="Nom Couleur"/>
           &nbsp; &nbsp; &nbsp;
           </Grid> 
-<Grid item xs={2}>
+        <Grid item xs={2}>
           <Field
             name={`${member}.color`}
             component={ColorPickerFieldd}
             label="hex"
             />   
+
             </Grid>
             <Grid item xs={1}>
             <div id="color-changer" style={{

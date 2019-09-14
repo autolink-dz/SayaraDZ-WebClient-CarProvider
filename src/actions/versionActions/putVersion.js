@@ -25,6 +25,7 @@ export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele
             })
             .catch(function (error) {
                 console.log(error);
+                alert("Erreur : le code existe déja ou la connexion est interrompu")
             });
     }
 }

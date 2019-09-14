@@ -24,6 +24,7 @@ export function addModele(nom, url,code,opts,cols) {
             .catch(function (error) {
                 dispatch(err(error));
                 console.log(error);
+                alert("Erreur : le code existe déja ou la connexion est interrompu")
             });
     }
 }

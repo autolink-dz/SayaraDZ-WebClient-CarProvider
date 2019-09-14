@@ -9,7 +9,6 @@ const initialState = {
 };
 let modeles=null;
 let options=null;
-let couleurs=null;
 
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {

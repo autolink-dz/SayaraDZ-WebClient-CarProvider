@@ -1,17 +1,18 @@
-import React, { Component } from 'react'
-import { Field, FieldArray, reduxForm, formValueSelector, change } from 'redux-form'
+import React from 'react'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Badge from '@material-ui/core/Badge';
 import Fab from '@material-ui/core/Fab';
-
+import { TextValidator } from 'react-material-ui-form-validator';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     
-    <TextField hintText={label}
+    <TextValidator hintText={label}
       floatingLabelText={label}
       label={label}
       errorText={touched && error}
+      validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+      errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
       {...input}
       {...custom}
     />
@@ -24,11 +25,12 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
       <div key={index}>
   
         <Badge badgeContent={index + 1} color="primary">
-        </Badge>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+        </Badge> &nbsp; &nbsp; &nbsp; 
         <Field 
           name={`${member}.code`}
           component={renderTextField} 
           label="Code Option"/>
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
         <Field 
           name={`${member}.nom`} 
           component={renderTextField} 
@@ -48,7 +50,7 @@ const renderMembers = ({ fields, meta: { touched, error } }) => (
     }
   </div>
 )
-const MyForm = ({ handleSubmit, pristine, reset, submitting }) => {
+const OptionsForm = ({ handleSubmit, pristine, reset, submitting }) => {
 
   return (
     
@@ -63,6 +65,6 @@ const MyForm = ({ handleSubmit, pristine, reset, submitting }) => {
 }
 
 export default reduxForm({
-  form: 'MyForm',
-})(MyForm)
+  form: 'OptionsForm',
+})(OptionsForm)
 
