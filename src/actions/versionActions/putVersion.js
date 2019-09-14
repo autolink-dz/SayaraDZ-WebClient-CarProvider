@@ -1,33 +1,42 @@
 var request = require('./../api/service');
-
-export function putModele(id,nom,url) {
+export function putVersion(id,nom,code,url,options,couleurs,fiche_tech,id_modele) {
     let head= {
         headers: {
             "Accept": "application/json",
             'Content-Type':'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('idToken'),
-        }
+        }   
     };
-
     let body={
         id,
         nom,
-        url
+        code,
+        url,
+        options,
+        couleurs,
+        fiche_tech,
+        id_modele
     };
     return dispatch =>{
-        request.put('/modeles/'+id,body,head)
+        
+        request.put('/versions/'+id,body,head)
             .then(function (response) {
-                
-                dispatch(end(id,nom,url));
+                dispatch(end(id,nom,code,url,options,couleurs,fiche_tech,id_modele));
             })
             .catch(function (error) {
                 console.log(error);
+                alert("Erreur : le code existe déja ou la connexion est interrompu")
             });
     }
 }
-export const end = (id,nom,url) => ({
-    type: "PUT_MODELE",
+export const end = (id,nom,code,url,options,couleurs,fiche_tech,id_modele) => ({
+    type: "PUT_VERSION",
     id,
     nom,
-    url
+    code,
+    url,
+    options,
+    couleurs,
+    fiche_tech,
+    id_modele
 });

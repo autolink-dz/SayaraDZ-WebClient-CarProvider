@@ -1,4 +1,4 @@
-export function resetAddModele() {
+export function resetAddVersion() {
     return dispatch =>{
         setTimeout( ()=>{
             dispatch(reset());
@@ -6,5 +6,5 @@ export function resetAddModele() {
     }
 }
 export const reset = () => ({
-    type: "RESET_ADD_MODELE"
+    type: "RESET_ADD_VERSION"
 });

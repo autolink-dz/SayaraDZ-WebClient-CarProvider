@@ -1,25 +1,104 @@
 import React, {Component} from 'react';
 import NavBar  from './navbar'
-import Dashbord  from './sidebar/dashbord'
-import Gestion  from './sidebar/gestion'
-import Main  from './mains/dashbord/main'
-import Grid from '@material-ui/core/Grid';
-import Modele from './mains/gestion/gestionModele/modele'
-import Version from './mains/gestion/version'
-import Option from './mains/gestion/option'
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { Route, Switch} from 'react-router-dom'
+const drawerWidth = 240;
+
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    menuButton: {
+        marginLeft: 12,
+        marginRight: 36,
+    },
+    hide: {
+        display: 'none',
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+    },
+    drawerOpen: {
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerClose: {
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: 'hidden',
+        width: theme.spacing.unit * 7 + 1,
+        [theme.breakpoints.up('sm')]: {
+            width: theme.spacing.unit * 9 + 1,
+        },
+    },
+    toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        ...theme.mixins.toolbar,
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+        paddingTop : theme.spacing.unit * 10,
+
+    },
+});
+
 
 class Fabricant extends Component {
-    render() {
+    state = {
+        open: false,
+    };
 
+    handleDrawerOpen = () => {
+        this.setState({ open: true });
+    };
+
+
+    render() {
+        const { classes } = this.props;
         return (
-            <div >
-                <div className='main' style={{paddingTop:70}}>
-                 </div>
+            <div className={classes.root}>
+                <CssBaseline />
+                <NavBar openMenu={this.state.open} handleDrawerOpen={this.handleDrawerOpen} />
             </div>
         );
     }
 }
 
-export default Fabricant;
+Fabricant.propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+};
+
+Fabricant.propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(Fabricant);

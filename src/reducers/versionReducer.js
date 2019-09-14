@@ -1,7 +1,5 @@
 const initialState = {
-    versions: [{"id":"ceAD233W6ZuOPn6vX33L","nom":"1.0","prix":77000000,"date_debut":"01-06-2019","date_fin":"01-09-2019","options":["ops2","ops3","ops5"]},
-    {"id":"lsq8mz9Un09gSs51Sbel","nom":"1.2","prix":1500000,"date_debut":"01-06-2019","date_fin":"01-09-2019","options":["ops1","ops2","ops4"]}
-    ],
+    versions: [],
     error:false,
     add:false,
     update:false,
@@ -9,18 +7,29 @@ const initialState = {
     loading:false,
     next:0
 };
-let versions=null;
+
+let versions=[];
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
+        case 'CLEAR_VERSIONS':
+            versions.splice(0,versions.length)
+            return {
+                ...state,
+                loading: false,
+                versions,
+            };
+
         case 'SELECT_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp=false;
             if(action.payload.data.data ==null){
+                //    versions.splice(0,versions.length)
                 versions.push(action.payload.data);
                 tmp=true;
                 versions.sort((a, b) => a.nom !== b.nom ? a.nom < b.nom ? -1 : 1 : 0);
             }
             else {
+                //  versions.splice(0,versions.length)
                 versions.push(...action.payload.data.data);
             }
             return {
@@ -30,8 +39,7 @@ const gestionReducer = (state=initialState,action)=>{
                 add:tmp,
                 next:action.payload.data.next || null
             };
-            
-        case 'ADD_VERSION':
+        case 'ADD_VERSIONS':
             versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
             let tmp1=false;
             if(action.payload.data.data ==null){
@@ -47,7 +55,7 @@ const gestionReducer = (state=initialState,action)=>{
                 loading: true,
                 versions,
                 add:tmp1,
-                next:action.payload.data.next || null
+                //      next:action.payload.data.next || null
             };
         case 'RESET_ADD_VERSION':
             return{
@@ -55,11 +63,16 @@ const gestionReducer = (state=initialState,action)=>{
                 add:false
             };
         case 'PUT_VERSION':
-                versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
-                versions.forEach(version=>{
+            versions = Object.assign(Object.create(Object.getPrototypeOf(state.versions)), state.versions);
+            versions.forEach(version=>{
                 if (version.id===action.id){
                     version.nom = action.nom;
+                    version.code = action.code;
                     version.url = action.url;
+                    version.options = action.options;
+                    version.couleurs = action.couleurs;
+                    version.fiche_tech = action.fiche_tech;
+                    version.id_modele = action.id_modele;
                 }
             });
             return{

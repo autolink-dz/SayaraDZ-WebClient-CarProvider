@@ -21,7 +21,7 @@ class SimulerPrixModel extends Component {
         if ( this.props.modeles.length === 0){
             this.props.dispatch(getModeleList(this.props.next,localStorage.getItem('id_marque')));
         }
-        localStorage.setItem('value',"two");
+        localStorage.setItem('value',"three");
     };
 
     fetchData(){

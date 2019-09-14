@@ -75,7 +75,7 @@ export function signInClick(email,password){
                                 .then((responseType) => {
                                     dispatch(signInEND());
                                     localStorage.setItem('id_marque',responseType.id_marque);
-                                    localStorage.setItem('value',"three");
+                                    localStorage.setItem('value',"four");
                                     window.location.assign("/fabricant/commande");
                                 })
                                 .catch((e)=>{

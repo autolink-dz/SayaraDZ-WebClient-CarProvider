@@ -58,7 +58,7 @@ class NavBar extends React.Component {
     };
 
     handleChange = (event, value) => {
-      this.setState({ value });
+        this.setState({ value });
     };
 
     handleSignOut = () => {
@@ -66,7 +66,7 @@ class NavBar extends React.Component {
         localStorage.clear();
         window.location.reload();
     };
- 
+
     render() {
         const { classes } = this.props;
         const { auth, anchorEl, value } = this.state;
@@ -87,9 +87,10 @@ class NavBar extends React.Component {
                                 backgroundColor: "#ffffff"
                             }
                         }} value={value} onChange={this.handleChange}>
-                          <Tab value="one" label="Stock" component={Link} to="/fabricant/stock" />
-                          <Tab value="two" label="Simulation" component={Link} to="/fabricant/simulation" />
-                          <Tab value="three" label="Commande" component={Link} to="/fabricant/commande" />
+                            <Tab value="one" label="Gestion" component={Link} to="/fabricant/gestion/modele" />
+                            <Tab value="two" label="Stock" component={Link} to="/fabricant/stock" />
+                            <Tab value="three" label="Simulation" component={Link} to="/fabricant/simulation" />
+                            <Tab value="four" label="Commande" component={Link} to="/fabricant/commande" />
                         </Tabs>
                         {auth && (
                             <div>
@@ -129,23 +130,23 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  et:PropTypes.number
+    classes: PropTypes.object.isRequired,
+    et:PropTypes.number
 };
 
 function mapStateToProps(state) {
-  return {
-    modeles : state.gestionReducer.modeles
-  };
+    return {
+        modeles : state.gestionReducer.modeles
+    };
 }
 
 function matchDispatchToProps(dispatch) {
-  let actions =  bindActionCreators({
-      
-  });
-  return { ...actions, dispatch };
+    let actions =  bindActionCreators({
+
+    });
+    return { ...actions, dispatch };
 }
 
 export default connect(
-  mapStateToProps,matchDispatchToProps
+    mapStateToProps,matchDispatchToProps
 )(withStyles(styles)(NavBar));

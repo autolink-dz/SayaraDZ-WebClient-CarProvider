@@ -7,27 +7,36 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit'
 import DialogActions from "@material-ui/core/DialogActions";
-import TextField from '@material-ui/core/TextField';
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {bindActionCreators} from "redux";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from "react-redux";
-
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-
-import CustomizedSnackbars from "./../../../snackBar";
+import clsx from 'clsx';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Chip from '@material-ui/core/Chip';
+import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 import {putModele} from "./../../../../../actions/modeleActions/putModele";
 import {deleteModele} from "./../../../../../actions/modeleActions/deleteModele";
-import {resetUpdateModele} from "./../../../../../actions/modeleActions/resetUpdateModele";
-import {resetDeleteModele} from "./../../../../../actions/modeleActions/resetDeleteModele";
+import { getVersionListOfModele } from "./../../../../../actions/versionActions/getVersionListOfModele";
+import OptionsForm from './OptionsForm'
+import CouleursForm from './CouleursForm'
+import { getFormValues} from 'redux-form'
+import AlertDialogSlide from './validateDelete'
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import classNames from 'classnames';
+import red from '@material-ui/core/colors/red';
 
 const styles =  theme =>  ({
-
     actions:{
         textAlign:'center',
         display:'inline-block',
@@ -59,14 +68,45 @@ const styles =  theme =>  ({
       card: {
         width:'100%',
         maxWidth: 345,
-        
       },
       media: {
         // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
+        maxHeight : 200,
+        minHeight : 200,
+      //  maxWidth : 200,
+
       },
       button: {
         margin: theme.spacing.unit,
+      },
+      cardLeft:{
+     //   width : 1500,
+    //    marginLeft : -theme.spacing.unit * 50,
+      },
+      cardRight:{
+        width : 1500,
+        marginRight : -theme.spacing.unit * 50,
+      },
+      chip: {
+        marginRight: theme.spacing.unit * 20,
+      },
+      chip2: {
+        marginRight: theme.spacing.unit * 15,
+      },
+      cardaction: {
+        
+      },
+
+      margin: {
+        margin: theme.spacing.unit,
+      },
+      cssRoot: {
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[700],
+        '&:hover': {
+          backgroundColor: red[900],
+        },
       },
 });
 
@@ -79,20 +119,41 @@ class MediaCard extends Component {
         this.state = {
             open: false,
             snack:null,
+            initialValues: null,
+            initialValuesCouleurs: null,
+            file:null,
+
+            openAlert:false,
+            messageAlert:""
         };
+        this.input1 = React.createRef();
     }
     componentDidMount() {
         this.setState({ nom: this.props.nom });
         this.setState({ url: this.props.url });
+        this.setState({ code: this.props.code });   
     };
     handleName= (e) =>{
         this.setState({ nom: e.target.value });
     };
-    handleUrl= (e) =>{
-        this.setState({ url: e.target.value });
+    handleCode= (e) =>{
+        this.setState({ code: e.target.value });
     };
+    handleUrl = (e) => {
+        if (e.target.files[0]){
+            this.setState({
+                finish : true,
+                file : e.target.files[0]
+            });
+        }
+    };
+
     handleClickOpen = () => {
         this.setState({ open: true });
+        this.setState({ nom: this.props.nom });
+        this.setState({ code: this.props.code });
+        this.setState({ url: this.props.url });
+        this.setState({ file: null });
     };
 
     handleClose = () => {
@@ -103,114 +164,367 @@ class MediaCard extends Component {
         this.props.dispatch(deleteModele(this.props.id));
         this.handleClose();
     };
+    test = () => {
+      this.props.dispatch(getVersionListOfModele(0,this.props.id));
+  };
+
+
+
+  handleClickOpenAlert = () => {
+    this.setState({ openAlert: true });       
+ };
+
+ handleCloseAlert = () => {
+  this.setState({ openAlert: false }); 
+ };
+ 
+ 
+
+  alertError(message){
+    const { classes } = this.props;
+    return(
+      <Dialog
+        open={this.state.openAlert}
+        onClose={this.handleCloseAlert}
+      >
+
+        <DialogTitle id="alert-dialog-slide-title">
+          {"Erreur !"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {message}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" className={classNames(classes.margin, classes.cssRoot)} onClick={this.handleCloseAlert}  >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
+
+
+  validateOptions(options){
+    let i = 0
+    let j = 0
+        if(options!=undefined){
+          for (i = 0; i < options.options.length; i++){
+            if(i < options.options.length-1){
+              for (j = i+1; j < options.options.length; j++){
+                if(options.options[i].nom == options.options[j].nom){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le nom d'option "+options.options[i].nom +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  return 0
+                }
+              }
+            }
+          }
+          for (i = 0; i < options.options.length; i++){
+            if(i < options.options.length-1){
+              for (j = i+1; j < options.options.length; j++){
+                if(options.options[i].code == options.options[j].code){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le code d'option "+options.options[i].code +" est dupliqué au rang" + (i+1) +" et "+(j+1) });        
+                  return 0
+                }
+              }
+            }
+          }
+      }
+
+  }
+
+  validateCouleurs(couleurs){
+    let i = 0
+    let j = 0
+        if(couleurs != undefined){
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(i < couleurs.couleurs.length-1){
+              for (j = i+1; j < couleurs.couleurs.length; j++){
+                if(couleurs.couleurs[i].nom == couleurs.couleurs[j].nom){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le nom de couleur "+couleurs.couleurs[i].nom +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  return 0
+                }
+              }
+            }
+          }
+
+
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(i < couleurs.couleurs.length-1){
+              for (j = i+1; j < couleurs.couleurs.length; j++){
+                if(couleurs.couleurs[i].code == couleurs.couleurs[j].code){
+                  this.setState({ openAlert: true }); 
+                  this.setState({ messageAlert: "le code de couleur "+couleurs.couleurs[i].code +" est dupliqué au rang" + (i+1) +" et "+(j+1) }); 
+                  
+                  return 0
+                }
+              }
+            }
+          }
+          console.log(couleurs)
+          for (i = 0; i < couleurs.couleurs.length; i++){
+            if(couleurs.couleurs[i].color == undefined || couleurs.couleurs[i].color == ""){
+              this.setState({ openAlert: true }); 
+              this.setState({ messageAlert: "vous devez préciser la couleur du "+couleurs.couleurs[i].nom + " au rang " + (i+1) });
+              return 0
+            }
+          }
+      }
+  }
+
+
 
     handleUpdate(){
-        this.props.dispatch(putModele(this.props.id,this.state.nom,this.state.url));
-        
-    /*    if (this.props.loading){
+      this.setState({ nom: this.nameInput.value });
+      this.setState({ code: this.codeInput.value });
 
-            if(!this.props.error){console.log(this.props.loading)
-                let msg = "La marque est modifieé avec success !\"";
-                this.setState({snack:<CustomizedSnackbars type='success' msg={msg} />});
-            }
-            else {
-                this.setState({snack:<CustomizedSnackbars type='error' msg='Erreur, veuillez resseyer svp !'/>});
-            }
-        }*/
-        this.handleClose();
-    }
+    let nom = this.nameInput.value;
+    let code = this.codeInput.value;
+    let newoptions=this.props.newoptions
+      let newCouleurs=this.props.newCouleurs
+
+      let break1 = 1;
+      let break2 = 1;
+
+      break1 = this.validateOptions(newoptions)
+      break2 = this.validateCouleurs(newCouleurs)
+
+      if(break1 == 0 || break2 ==0){
+        return
+      }
+
+      this.input1.current.value = '';
+      let fb = this.props.firebase;
+      if(this.state.file != null)
+       {
+          fb.storage().ref()
+              .child('/images/modeles/' + this.state.file.name)
+              .put(this.state.file)
+              .then(() => {
+                  fb.storage().ref()
+                      .child('/images/modeles/' + this.state.file.name)
+                      .getDownloadURL()
+                      .then((url) => {
+                          this.setState({
+                              url,
+                              finish:false
+                          });
+                          if(newoptions===undefined && newCouleurs===undefined){
+                              this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,[],[]));
+                          }else if(newoptions!=undefined && newCouleurs===undefined){
+                            this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,newoptions.options,[]));
+                          }else if(newoptions===undefined && newCouleurs!=undefined){
+                            this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,[],newCouleurs.couleurs));
+                          }else{
+                              this.props.dispatch(putModele(this.props.id,nom,code,this.state.url,newoptions.options,newCouleurs.couleurs));          
+                          }
+                          this.setState({ file: null })
+                      })
+              });
+       }else{
+          if(newoptions==undefined && newCouleurs===undefined){
+              this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,[],[]));
+          }else if(newoptions!=undefined && newCouleurs===undefined){
+            this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,this.props.newoptions.options,[]));
+          }else if(newoptions===undefined && newCouleurs!=undefined){
+            this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,[],this.props.newCouleurs.couleurs));
+          }else{
+              this.props.dispatch(putModele(this.props.id,this.nameInput.value,this.codeInput.value,this.props.url,this.props.newoptions.options,this.props.newCouleurs.couleurs));
+          }
+       }       
+      this.handleClose();
+  }
 
     render() {
-        const { classes } = this.props;
-        
-          
+        const { classes } = this.props;      
         return (
-            
             <Card className={classes.card}>
-            
-              <CardActionArea>
+              <CardActionArea className={classes.cardaction} >
                 <CardMedia
                   component="img"
                   alt="Contemplative Reptile"
                   className={classes.media}
                   image={this.props.url}
                   title="Contemplative Reptile"
+                  onClick={this.props.test.bind(this,this.props.code,this.props.nom,this.props.url,this.props.options,this.props.couleurs)}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
                   {this.props.nom}
                   </Typography>
                   <Typography component="p">
-                    
                   </Typography>
                 </CardContent>
               </CardActionArea>
               <CardActions>
+                <Button component={Link} to={"/fabricant/gestion/versions/"+this.props.id+"/"+this.props.nom} onClick={this.test} size="small" variant="contained" color="secondary" className={classes.button} style={
+                                    {
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
+                   versions
+                </Button>
                 <Button size="small" variant="contained" color="secondary" className={classes.button} onClick={this.handleClickOpen}>
                    Modifier
                 </Button>
-                <IconButton aria-label="Delete" className={classes.margin} onClick={this.handleDelete}>
-                <DeleteIcon fontSize="large" />
-                </IconButton>
+                <AlertDialogSlide nom={this.props.nom} handleDelete={this.handleDelete} btn={0} />
               </CardActions>
-
-
               <Dialog
+                        PaperProps={{ style: { maxWidth: 'none' } }}
+                        className={classes.cardLeft}
                         open={this.state.open}
-                        onClose={this.handleCloseA}
-                        aria-labelledby="fo"
+                   //     onClose={this.handleCloseA}
+                        aria-labelledby="fo"     
                     >
-                        <h2 style={styles.title}>Modifier La Marque {this.props.nom}</h2>
-                        <img src={this.props.url} alt="brand" style={styles.brand}/>
+                  <ValidatorForm
+                      ref="form"
+                      onSubmit={this.handleUpdate}
+                      onError={errors => console.log(errors)}
+                  >
+                        <DialogTitle id="form-dialog-title">Modifier Le modele {this.props.nom}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Veuillez introduire le nom du fabricant ainsi que l'url de sa photo
+                                Veuillez modifier les information que vous voulez
                             </DialogContentText>
-                            <TextField
+                            <TextValidator
                                 autoFocus
                                 margin="dense"
                                 id="name"
-                                
+                                name="name"
                                 label="Name"
                                 fullWidth
-                                onChange={ this.handleName }
-                                defaultValue={this.props.nom}
+                                inputRef={x => this.nameInput = x}
+                              //  defaultValue={this.props.nom}
+                                value={this.state.nom}
+                                onChange={this.handleName}
+                                validators={['required','matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un nom valide']}
                             />
                             <br/>
-                            <TextField
-                              //  autoFocus
+                            <TextValidator
                                 margin="dense"
-                                id="url"
-                                label="URL"
+                                id="code"
+                                label="Code"
                                 fullWidth
-                                onChange={ this.handleUrl }
-                                defaultValue={this.props.url}
+                                inputRef={x => this.codeInput = x}
+                             //   defaultValue={this.props.code}
+                                value={this.state.code}
+                                onChange={this.handleCode}
+                                validators={['required', 'matchRegexp:[A-Za-z0-9_*-]']}
+                                errorMessages={['Ce champ est obligatoire', 'Vous devez saisir un code valide']}
                             />
-                            {/*<input
+                            
+                            <br/>
+                            <input
                                 accept="image/*"
                                 id="contained-button-file"
-                                multiple
                                 type="file"
-                                style={{display:'none'}}
+                                style={{display: 'none'}}
+                                onChange={this.handleUrl}
+                                ref={this.input1}
                             />
                             <label htmlFor="contained-button-file">
-                                <Button variant="contained" component="span" >
-                                    Upload
+                                <Button variant="contained" component="span" style={
+                                    {
+                                        justifyContent: 'center',
+                                        marginLeft: '34%',
+                                        marginTop: '10%',
+                                        padding:5,
+                                        backgroundColor: '#3EB741',
+                                        color: '#FFF',
+                                    }
+                                }>
+                                    Upload Photo
                                 </Button>
-                            </label>*/}
-                        </DialogContent>
+                            </label>
+                            
+                    
+<div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>OPTIONS : </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les options</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <div className={clsx(classes.column, classes.helper)}>
+            <OptionsForm initialValues={{'options':this.props.options }}/>
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque option doit avoir un code d'option et le nom de l'option"
+          clickable
+          className={classes.chip}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div>
+                        
+    <div className={classes.root}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header"
+        >
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Couleurs : </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}> declarer les couleurs</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <div className={clsx(classes.column, classes.helper)}>
+            <CouleursForm initialValues={{'couleurs':this.props.couleurs }} />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+        <Chip
+          avatar={<Avatar>Rq</Avatar>}
+          label="Chaque Couleur doit avoir un code de couleur et le nom de la couleur"
+          clickable
+          className={classes.chip2}
+          color="primary"
+          // onDelete={handleDelete}
+          variant="outlined"
+        />
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    </div> 
+                        </DialogContent>             
                         <DialogActions style={styles.actions}>
                             <Button onClick={this.handleClose} color="default">
                                 Cancel
                             </Button>
-                            <Button onClick={this.handleDelete} style={styles.delete}>
-                                Delete
-                            </Button>
-                            <Button onClick={this.handleUpdate} color="primary">
+                            <AlertDialogSlide handleDelete={this.handleDelete} btn={1} />
+                            <Button type="submit" color="primary"
+                                    style={{color: '#3EB741',}}>
                                 Modifier
                             </Button>
                         </DialogActions>
+                  </ValidatorForm>
                     </Dialog>
+                    {this.alertError(this.state.messageAlert)}
             </Card>
         );
     }
@@ -225,11 +539,13 @@ function mapStateToProps(state) {
         loading : state.gestionReducer.loading,
         update : state.gestionReducer.update,
         delete : state.gestionReducer.delete,
+        newoptions: getFormValues('OptionsForm')(state),
+        newCouleurs: getFormValues('CouleursForm')(state),
     };
 }
 function matchDispatchToProps(dispatch) {
     let actions =  bindActionCreators({
-        putModele,deleteModele
+        putModele,deleteModele,getVersionListOfModele
     });
     return { ...actions, dispatch };
 }

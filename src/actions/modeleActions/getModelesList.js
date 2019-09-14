@@ -13,7 +13,7 @@ export function getModelesList(next) {
         if(next==null){
             return;
         }
-        request.get('/modeles?next='+next+'&page=20',head)
+        request.get('/modeles?next='+next+'&page=20&id_marque='+localStorage.id_marque,head)
             .then(function (response) {
                 dispatch({type : 'SELECT_MODELES', payload: response});
             })

@@ -8,7 +8,6 @@ import {createStore,applyMiddleware} from 'redux'
 import thunk from "redux-thunk";
 import Firebase, { FirebaseContext } from './utils/firebase/indexFireBase'
 
-
 const store = createStore(AllReducers,applyMiddleware(thunk));
 ReactDOM.render(
     <FirebaseContext.Provider value={new Firebase()}>

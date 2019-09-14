@@ -8,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -19,16 +18,31 @@ const styles = theme => ({
   },
 });
 
-class OptionsCheck extends React.Component {
+class CouleursCheck extends React.Component {
   state = {
-    checked: [0],
+    checked: [],
   };
+
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
+  clearChecked = () => {
+    this.setState({
+      checked: []
+    });
+  };
+
 
   handleToggle = value => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-    console.log(checked.indexOf(value))
+
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -38,39 +52,45 @@ class OptionsCheck extends React.Component {
     this.setState({
       checked: newChecked,
     });
+
+    setTimeout(()=>{
+      this.props.handleCouleursChecked(this.state.checked)
+    },1000);
   };
   test=()=>{
     const { checked } = this.state;
-    console.log(checked)
   }
   render() {
     const { classes } = this.props;
 
     return (
       <List className={classes.root}>
-        {[0, 1, 2, 3].map(value => (
+        {this.props.couleurs.map(value => (
           <ListItem key={value} role={undefined} dense button onClick={this.handleToggle(value)}>
             <Checkbox
               checked={this.state.checked.indexOf(value) !== -1}
               tabIndex={-1}
               disableRipple
             />
-            <ListItemText primary={`Line item ${value + 1}`} />
+            <ListItemText primary={`${value.nom }`} />
             <ListItemSecondaryAction>
-              <IconButton aria-label="Comments">
-                <CommentIcon />
-              </IconButton>
+                <div id="color-changer" style={{
+                    background: `${value.color }`,
+                    width:40,
+                    height:40,
+                    borderRadius:15
+                  }}>
+                </div>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
-        <Button onClick={this.test}>test</Button>
       </List>
     );
   }
 }
 
-OptionsCheck.propTypes = {
+CouleursCheck.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OptionsCheck);
+export default withStyles(styles)(CouleursCheck);

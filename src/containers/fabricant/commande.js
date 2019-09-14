@@ -62,7 +62,7 @@ class Commande extends Component {
             this.props.dispatch(getCommandes(this.state.id_marque));
         }
         this.fetchImage(this.state.id_marque);
-        localStorage.setItem('value',"three");
+        localStorage.setItem('value',"four");
     }
 
     commandDialog() {

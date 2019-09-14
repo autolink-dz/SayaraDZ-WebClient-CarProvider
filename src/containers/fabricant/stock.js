@@ -52,7 +52,7 @@ class Stock extends React.Component {
         };
         this.input1 = React.createRef();
         this.input2 = React.createRef();
-        localStorage.setItem('value',"one");
+        localStorage.setItem('value',"two");
     }
 
      handleStock(e) {
@@ -64,7 +64,6 @@ class Stock extends React.Component {
                      fileStock: file,
                      colorStock: 'secondary'
                  });
-                 console.log(this.state);
              };
              r.readAsText(file);
          }
@@ -79,7 +78,6 @@ class Stock extends React.Component {
                     fileTarifs:file,
                     colorTarifs:'secondary'
                 });
-                console.log(this.state);
             };
             r.readAsText(file);
         }

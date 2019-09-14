@@ -12,7 +12,7 @@ import optionsColorsReducer from "./optionsColorsReducer";
 import modeleReducer from "./modeleReducer";
 import basePriceReducer from "./basePriceReducer";
 import checkCarReducer from "./checkCarReducer";
-
+import { reducer as formReducer } from 'redux-form'
 
 const AllReducers = combineReducers({
     signInReducer,
@@ -27,7 +27,9 @@ const AllReducers = combineReducers({
     optionsColorsReducer,
     modeleReducer,
     basePriceReducer,
-    checkCarReducer
+    checkCarReducer,
+    form : formReducer
+
 });
 
 export default AllReducers;

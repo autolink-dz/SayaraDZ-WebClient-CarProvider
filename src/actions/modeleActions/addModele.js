@@ -1,56 +1,13 @@
 var request = require('./../api/service');
 
-export function addModele(nom, url,code) {
-
+export function addModele(nom, url,code,opts,cols) {
     let body={
         "nom": nom,
-        "url": "https://www.autobip.com/storage/photos/car_models/3235.png",
+        "url": url,
         "code": code,
-        "id_marque": "HE54VwUdghgPRb6ZO6I8",
-        "options": [
-            {
-                "code": "VOL_PASSAT_OPT_1",
-                "nom": "Volant cuir"
-            },
-            {
-                "code": "VOL_PASSAT_OPT_2",
-                "nom": "Commandes aux volant"
-            },
-            {
-                "code": "VOL_PASSAT_OPT_3",
-                "nom": "Vitres teintés"
-            },
-            {
-                "code": "VOL_PASSAT_OPT_4",
-                "nom": "Verouillage centralisé"
-            },
-            {
-                "code": "VOL_PASSAT_OPT_5",
-                "nom": "Anti démarrage"
-            },
-            {
-                "code": "VOL_PASSAT_OPT_6",
-                "nom": "Boite a gants refrigerante"
-            }
-        ],
-        "couleurs": [
-            {
-                "code": "VOL_PASSAT_CLR_V",
-                "nom": "vert"
-            },
-            {
-                "code": "VOL_PASSAT_CLR_R",
-                "nom": "rouge"
-            },
-            {
-                "code": "VOL_PASSAT_CLR_O",
-                "nom": "orange"
-            },
-            {
-                "code": "VOL_PASSAT_CLR_N",
-                "nom": "noir"
-            }
-        ],
+        "id_marque": localStorage.id_marque,
+        "options": opts,
+        "couleurs": cols,
     };
 
     let head= {
@@ -67,10 +24,10 @@ export function addModele(nom, url,code) {
             .catch(function (error) {
                 dispatch(err(error));
                 console.log(error);
+                alert("Erreur : le code existe déja ou la connexion est interrompu")
             });
     }
 }
-
 export const err = (error) => ({
     type: "ERROR_GET",
     payload: error

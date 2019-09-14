@@ -1,22 +1,17 @@
 const initialState = {
-    modeles: [{"id":"eee","nom":"eeeeeeeeeeee"}],
+    modeles: [],
     error:false,
-
     add:false,
     update:false,
     delete:false,
     loading:false,
-
     next:0
 };
 let modeles=null;
+let options=null;
+
 const gestionReducer = (state=initialState,action)=>{
     switch (action.type) {
-            case 'SELECT_MARQUES':
-            return {
-                ...state,
-                marques: action.payload
-            };
         case 'SELECT_MODELES':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp=false;
@@ -35,7 +30,12 @@ const gestionReducer = (state=initialState,action)=>{
                 add:tmp,
                 next:action.payload.data.next || null
             };
-            
+        case 'PUT_OPTIONS':
+            options= action.payload
+            return{
+                ...state,
+                options
+            }
         case 'ADD_MODELE':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             let tmp1=false;
@@ -47,13 +47,15 @@ const gestionReducer = (state=initialState,action)=>{
             else {
                 modeles.push(...action.payload.data.data);
             }
+
             return {
                 ...state,
                 loading: true,
                 modeles,
                 add:tmp1,
-                next:action.payload.data.next || null
+                //   next:action.payload.data.next || null
             };
+
         case 'RESET_ADD_MODELE':
             return{
                 ...state,
@@ -64,7 +66,10 @@ const gestionReducer = (state=initialState,action)=>{
             modeles.forEach(modele=>{
                 if (modele.id===action.id){
                     modele.nom = action.nom;
+                    modele.code = action.code;
                     modele.url = action.url;
+                    modele.options=action.options;
+                    modele.couleurs=action.couleurs;
                 }
             });
             return{
@@ -89,7 +94,6 @@ const gestionReducer = (state=initialState,action)=>{
                 loading:false,
                 err:true
             };
-
         case 'END_DELETE_MODELE':
             modeles = Object.assign(Object.create(Object.getPrototypeOf(state.modeles)), state.modeles);
             modeles.forEach((modele,i)=>{
@@ -97,10 +101,11 @@ const gestionReducer = (state=initialState,action)=>{
                     modeles.splice(i,1);
                 }
             });
+
             return{
                 ...state,
                 delete:true,
-                modeles
+                modeles,
             };
         case 'RESET_DELETE_MODELE':
             return{
