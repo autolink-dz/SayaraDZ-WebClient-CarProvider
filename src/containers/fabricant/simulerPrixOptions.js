@@ -126,6 +126,7 @@ class SimulerPrixVersions extends Component {
     }
 
     _renderItems() {
+
         const {classes} = this.props;
         if (this.props.price !== '' && this.state.total === 0) {
             this.setState({
@@ -149,7 +150,7 @@ class SimulerPrixVersions extends Component {
             )
         }
 
-        if (this.props.loading && JSON.parse(localStorage.getItem('prices')).length !== 0) {
+        if (this.props.price !== '' && this.props.loading && JSON.parse(localStorage.getItem('prices')).length !== 0) {
             return (
                 <div>
                     <Paper className={classes.container} elevation={2}>
@@ -252,7 +253,7 @@ function mapStateToProps(state) {
         options: state.optionsColorsReducer.options,
         colors: state.optionsColorsReducer.colors,
         codeVersion: state.optionsColorsReducer.codeVersion,
-        loading: state.optionsColorsReducer.loading,
+        loading: state.basePriceReducer.loading,
         error: state.optionsColorsReducer.error,
         price: state.basePriceReducer.price,
         available: state.checkCarReducer.available,

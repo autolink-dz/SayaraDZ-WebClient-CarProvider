@@ -15,6 +15,7 @@ const styles = theme => ({
         height:'100%',
         width:'100%',
         paddingTop:60,
+        paddingBottom:'1%',
         margin:0
     },
     container: {
@@ -193,7 +194,7 @@ class Stock extends React.Component {
                      disabled={!(this.state.fileStock != null && this.state.fileTarifs != null) || this.state.submit}
                      onClick={()=>this.handleSubmit() }
                  >
-                     Submit
+                     ENVOYER
                  </Button>
                  </Paper>
 

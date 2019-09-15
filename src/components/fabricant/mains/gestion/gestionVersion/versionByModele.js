@@ -100,7 +100,7 @@ class Versions extends Component {
     _renderItems() {
         const {classes} = this.props;
         return (
-            <div className={classes.container}>
+            <div>
                 <Grid container spacing={24}>
                     {this.props.versions.map((version, index) =>
                         <Grid key={index} item xs={12} md={3} sm={6}>
@@ -183,7 +183,7 @@ class Versions extends Component {
         }
         let stProgresse = {marginLeft: '45%', marginTop: '15%', height: 100, width: 100};
         return (
-            <div className={classes.container}>
+            <div >
                 <Grid item xs={12}>
                     <div className={classes.root}>
 

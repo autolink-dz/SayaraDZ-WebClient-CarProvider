@@ -43,7 +43,6 @@ class App extends Component {
                             <PrivateRoute path="/fabricant/gestion/modele" component={Modele}/>
                             <PrivateRoute path="/fabricant/gestion/versions/:id/:nom" component={Versions}/>
 
-
                             <PrivateRoute path='/fabricant/gestion/modele' component={() =>
                                 <FirebaseContext.Consumer>{
                                     firebase => {
